@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "ZZZ Dashboard Debug",
+  "version": "1.4",
+  "permissions": ["storage", "cookies"],
+  "host_permissions": [
+    "*://*.hoyolab.com/*",
+    "*://*.mihoyo.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "ZZZ 대시보드 열기"
+  }
+}
