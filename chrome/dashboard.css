@@ -1,0 +1,160 @@
+﻿:root {
+    --bg-color: #1a1b26;
+    --panel-bg: #24283b;
+    --text-main: #c0caf5;
+    --text-sub: #7aa2f7;
+    --border-color: #414868;
+    --highlight: #f7768e;
+}
+
+body {
+    margin: 0; padding: 20px;
+    background-color: var(--bg-color); color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.hidden { display: none !important; }
+
+/* 상단 컨트롤 및 네비게이션 */
+#header-section { margin-bottom: 20px; }
+.header-controls { margin-bottom: 15px; }
+button {
+    padding: 10px 20px; background-color: white; color: black;
+    border: none; border-radius: 5px; cursor: pointer; font-weight: bold;
+}
+#result { margin-left: 15px; font-size: 14px; }
+
+/* 에이전트 목록 (상단 바) */
+#agent-nav {
+    display: flex; gap: 8px; overflow-x: auto; padding: 15px;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.agent-icon-wrapper {
+    position: relative;
+    width: 110px; height: 45px;
+    flex-shrink: 0; cursor: pointer;
+}
+
+.selected-frame { display: none; }
+.unselected-frame { display: block; }
+
+/* 선택된 상태(.active): 기본 프레임 숨기고 노란 프레임 표시 */
+.agent-icon-wrapper.active .unselected-frame { display: none; }
+.agent-icon-wrapper.active .selected-frame { display: block; }
+
+.icon-frame, .icon-selected-frame {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 20 !important; /* 아이콘보다 높은 숫자 */
+    pointer-events: none; /* 프레임이 클릭을 막지 않도록 설정 */
+}
+
+.icon-char {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10 !important; /* 낮은 숫자 */
+    object-fit: contain;
+}
+
+/* 메인 레이아웃 (좌우 분할) */
+#main-content {
+    display: flex; gap: 20px; height: calc(100vh - 150px);
+}
+
+/* 좌측 패널 (초상화) */
+#left-panel {
+    flex: 1; max-width: 400px;
+    background-color: var(--panel-bg); border-radius: 10px;
+    display: flex; flex-direction: column; overflow: hidden;
+    position: relative;
+}
+.portrait-container {
+    position: relative; width: 100%; height: 100%;
+}
+
+#agent-portrait {
+    width: 100%; height: 100%; object-fit: contain;
+}
+
+.group-icon {
+    position: absolute; top: 20px; right: 20px;
+    width: 50px; height: 50px; filter: drop-shadow(0 0 5px black);
+}
+
+.agent-title {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+}
+.agent-title h1 { margin: 0; font-size: 24px; color: white; }
+
+/* 우측 패널 (데이터) */
+#right-panel {
+    flex: 2; display: flex; flex-direction: column; gap: 20px;
+    overflow-y: auto;
+}
+.section-box {
+    background-color: var(--panel-bg); padding: 20px;
+    border-radius: 10px;
+}
+.section-box h3 { margin-top: 0; color: var(--text-sub); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
+
+/* 디스크 그리드 */
+.disk-card {
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-color);
+    display: flex; gap: 10px; padding: 10px; border-radius: 8px;
+}
+.disk-header { position: relative; width: 60px; }
+.disk-slot-num {
+    position: absolute; top: -5px; left: -5px;
+    background: var(--highlight); color: white;
+    font-size: 10px; padding: 2px 5px; border-radius: 3px;
+}
+.disk-info { flex: 1; }
+.disk-name { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 4px; }
+.disk-main-stat { font-size: 11px; color: var(--text-sub); margin-bottom: 5px; }
+.disk-sub-stats {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+}
+.disk-sub-stats li { font-size: 10px; color: #a9b1d6; }
+.stat-val { color: #fff; float: right; margin-right: 5px; }
+
+/* 빈 슬롯 스타일 */
+.empty-slot {
+    border: 1px dashed #444; background: transparent;
+    display: flex; align-items: center; justify-content: center; height: 80px;
+}
+.empty-disk-msg { color: #555; font-size: 12px; }
+
+/* 스탯 요약 그리드 */
+.stats-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.stat-item { display: flex; flex-direction: column; }
+.stat-label { font-size: 11px; color: var(--text-sub); }
+.stat-value { font-size: 16px; font-weight: bold; color: #fff; }
+
+#stats-summary {
+    background: rgba(20, 20, 25, 0.8);
+    border: 1px solid #333;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#stats-summary h3 {
+    font-size: 14px;
+    color: #f7768e; /* 공식 페이지의 강조색 느낌 */
+    margin-top: 0;
+    margin-bottom: 12px;
+    border-left: 3px solid #f7768e;
+    padding-left: 8px;
+}
+
+/* W-엔진 스타일 */
+.weapon-display { display: flex; gap: 15px; align-items: center; }
+.weapon-icon { width: 50px; height: 50px; border-radius: 4px; border: 2px solid #555; }

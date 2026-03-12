@@ -1,0 +1,1034 @@
+{
+    "id": 1381,
+    "level": 60,
+    "name_mi18n": "Soldier 0 - Anby",
+    "full_name_mi18n": "Soldier 0 - Anby",
+    "element_type": 203,
+    "camp_name_mi18n": "Defense Force - Silver Squad",
+    "avatar_profession": 1,
+    "rarity": "S",
+    "group_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/b55f9595d2ece55e0f0cd9a0266ae9d2.png",
+    "hollow_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/78be8e81084165b91a5c29464f0198f7.png",
+    "equip": [
+        {
+            "id": 32941,
+            "level": 15,
+            "name": "Shadow Harmony [1]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/4dd5f63dff24fd0ec8bfbc1ebb044613.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "ATK",
+                    "property_id": 12102,
+                    "base": "3%",
+                    "level": 1,
+                    "valid": true,
+                    "system_id": 121,
+                    "add": 0
+                },
+                {
+                    "property_name": "Anomaly Proficiency",
+                    "property_id": 31203,
+                    "base": "18",
+                    "level": 2,
+                    "valid": false,
+                    "system_id": 312,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "4.8%",
+                    "level": 2,
+                    "valid": true,
+                    "system_id": 201,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "14.4%",
+                    "level": 3,
+                    "valid": true,
+                    "system_id": 211,
+                    "add": 2
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "HP",
+                    "property_id": 11103,
+                    "base": "2200",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32900,
+                "name": "Shadow Harmony",
+                "own": 4,
+                "desc1": "The DMG of <color=#FFFFFF>Aftershocks</color> and <color=#FFFFFF>Dash Attacks</color> is increased by 15%.",
+                "desc2": "Upon hitting an enemy with an <color=#FFFFFF>Aftershock</color> or <color=#FFFFFF>Dash Attack</color>, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+            },
+            "equipment_type": 1,
+            "invalid_property_cnt": 1,
+            "all_hit": false
+        },
+        {
+            "id": 32942,
+            "level": 15,
+            "name": "Shadow Harmony [2]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/4dd5f63dff24fd0ec8bfbc1ebb044613.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "ATK",
+                    "property_id": 12102,
+                    "base": "12%",
+                    "level": 4,
+                    "valid": true,
+                    "system_id": 121,
+                    "add": 3
+                },
+                {
+                    "property_name": "Anomaly Proficiency",
+                    "property_id": 31203,
+                    "base": "18",
+                    "level": 2,
+                    "valid": false,
+                    "system_id": 312,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "9.6%",
+                    "level": 2,
+                    "valid": true,
+                    "system_id": 211,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "2.4%",
+                    "level": 1,
+                    "valid": true,
+                    "system_id": 201,
+                    "add": 0
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "ATK",
+                    "property_id": 12103,
+                    "base": "316",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 121,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32900,
+                "name": "Shadow Harmony",
+                "own": 4,
+                "desc1": "The DMG of <color=#FFFFFF>Aftershocks</color> and <color=#FFFFFF>Dash Attacks</color> is increased by 15%.",
+                "desc2": "Upon hitting an enemy with an <color=#FFFFFF>Aftershock</color> or <color=#FFFFFF>Dash Attack</color>, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+            },
+            "equipment_type": 2,
+            "invalid_property_cnt": 1,
+            "all_hit": false
+        },
+        {
+            "id": 32743,
+            "level": 15,
+            "name": "Branch & Blade Song [3]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/574b4cf925a3abc89d2c686eab49bc1a.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "7.2%",
+                    "level": 3,
+                    "valid": true,
+                    "system_id": 201,
+                    "add": 2
+                },
+                {
+                    "property_name": "ATK",
+                    "property_id": 12103,
+                    "base": "19",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 121,
+                    "add": 0
+                },
+                {
+                    "property_name": "ATK",
+                    "property_id": 12102,
+                    "base": "3%",
+                    "level": 1,
+                    "valid": true,
+                    "system_id": 121,
+                    "add": 0
+                },
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "14.4%",
+                    "level": 3,
+                    "valid": true,
+                    "system_id": 211,
+                    "add": 2
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "DEF",
+                    "property_id": 13103,
+                    "base": "184",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 131,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32700,
+                "name": "Branch & Blade Song",
+                "own": 2,
+                "desc1": "CRIT DMG +16%",
+                "desc2": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies <color=#98EFF0>Freeze</color> or triggers the <color=#98EFF0>Shatter</color> effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+            },
+            "equipment_type": 3,
+            "invalid_property_cnt": 0,
+            "all_hit": true
+        },
+        {
+            "id": 32944,
+            "level": 15,
+            "name": "Shadow Harmony [4]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/4dd5f63dff24fd0ec8bfbc1ebb044613.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "9.6%",
+                    "level": 2,
+                    "valid": true,
+                    "system_id": 211,
+                    "add": 1
+                },
+                {
+                    "property_name": "HP",
+                    "property_id": 11103,
+                    "base": "112",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                },
+                {
+                    "property_name": "DEF",
+                    "property_id": 13103,
+                    "base": "30",
+                    "level": 2,
+                    "valid": false,
+                    "system_id": 131,
+                    "add": 1
+                },
+                {
+                    "property_name": "ATK",
+                    "property_id": 12102,
+                    "base": "9%",
+                    "level": 3,
+                    "valid": true,
+                    "system_id": 121,
+                    "add": 2
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "24%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 201,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32900,
+                "name": "Shadow Harmony",
+                "own": 4,
+                "desc1": "The DMG of <color=#FFFFFF>Aftershocks</color> and <color=#FFFFFF>Dash Attacks</color> is increased by 15%.",
+                "desc2": "Upon hitting an enemy with an <color=#FFFFFF>Aftershock</color> or <color=#FFFFFF>Dash Attack</color>, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+            },
+            "equipment_type": 4,
+            "invalid_property_cnt": 1,
+            "all_hit": false
+        },
+        {
+            "id": 32745,
+            "level": 15,
+            "name": "Branch & Blade Song [5]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/574b4cf925a3abc89d2c686eab49bc1a.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "ATK",
+                    "property_id": 12102,
+                    "base": "6%",
+                    "level": 2,
+                    "valid": true,
+                    "system_id": 121,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "4.8%",
+                    "level": 2,
+                    "valid": true,
+                    "system_id": 201,
+                    "add": 1
+                },
+                {
+                    "property_name": "DEF",
+                    "property_id": 13103,
+                    "base": "30",
+                    "level": 2,
+                    "valid": false,
+                    "system_id": 131,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "9.6%",
+                    "level": 2,
+                    "valid": true,
+                    "system_id": 211,
+                    "add": 1
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "Electric DMG Bonus",
+                    "property_id": 31803,
+                    "base": "30%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 318,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32700,
+                "name": "Branch & Blade Song",
+                "own": 2,
+                "desc1": "CRIT DMG +16%",
+                "desc2": "When Anomaly Mastery exceeds or equals 115 points, the equipper's CRIT DMG increases by 30%. When any squad member applies <color=#98EFF0>Freeze</color> or triggers the <color=#98EFF0>Shatter</color> effect on an enemy, the equipper's CRIT Rate increases by 12%, lasting 15s."
+            },
+            "equipment_type": 5,
+            "invalid_property_cnt": 1,
+            "all_hit": false
+        },
+        {
+            "id": 32946,
+            "level": 15,
+            "name": "Shadow Harmony [6]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/4dd5f63dff24fd0ec8bfbc1ebb044613.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "2.4%",
+                    "level": 1,
+                    "valid": true,
+                    "system_id": 201,
+                    "add": 0
+                },
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "14.4%",
+                    "level": 3,
+                    "valid": true,
+                    "system_id": 211,
+                    "add": 2
+                },
+                {
+                    "property_name": "Anomaly Proficiency",
+                    "property_id": 31203,
+                    "base": "9",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 312,
+                    "add": 0
+                },
+                {
+                    "property_name": "DEF",
+                    "property_id": 13102,
+                    "base": "14.4%",
+                    "level": 3,
+                    "valid": false,
+                    "system_id": 131,
+                    "add": 2
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "ATK",
+                    "property_id": 12102,
+                    "base": "30%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 121,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32900,
+                "name": "Shadow Harmony",
+                "own": 4,
+                "desc1": "The DMG of <color=#FFFFFF>Aftershocks</color> and <color=#FFFFFF>Dash Attacks</color> is increased by 15%.",
+                "desc2": "Upon hitting an enemy with an <color=#FFFFFF>Aftershock</color> or <color=#FFFFFF>Dash Attack</color>, if the DMG dealt aligns with the equipper's attribute, the equipper gains 1 stack of a buff effect, at most once per use of a skill. For each stack, the equipper's ATK increases by 4%, and CRIT Rate increases by 4%. The effect can stack up to 3 times and lasts for 15s. Repeated triggers reset the duration."
+            },
+            "equipment_type": 6,
+            "invalid_property_cnt": 2,
+            "all_hit": false
+        }
+    ],
+    "weapon": {
+        "id": 14104,
+        "level": 60,
+        "name": "The Brimstone",
+        "star": 1,
+        "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/d9466c587b010f75e756b89ee2ae6568.png",
+        "rarity": "S",
+        "properties": [
+            {
+                "property_name": "ATK",
+                "property_id": 12102,
+                "base": "30%",
+                "level": 0,
+                "valid": false,
+                "system_id": 0,
+                "add": 0
+            }
+        ],
+        "main_properties": [
+            {
+                "property_name": "Base ATK",
+                "property_id": 12101,
+                "base": "684",
+                "level": 0,
+                "valid": false,
+                "system_id": 0,
+                "add": 0
+            }
+        ],
+        "talent_title": "Scorching Breath",
+        "talent_content": "Upon hitting an enemy with a <color=#FFFFFF>Basic Attack</color>, <color=#FFFFFF>Dash Attack</color>, or <color=#FFFFFF>Dodge Counter</color>, the equipper's ATK increases by <color=#2BAD00>3.5%</color> for 8s, stacking up to 8 times. This effect can trigger once every 0.5s. The duration of each stack is calculated separately.",
+        "profession": 1
+    },
+    "properties": [
+        {
+            "property_name": "HP",
+            "property_id": 1,
+            "base": "7673",
+            "add": "2312",
+            "final": "9985"
+        },
+        {
+            "property_name": "ATK",
+            "property_id": 2,
+            "base": "1613",
+            "add": "1835",
+            "final": "3448"
+        },
+        {
+            "property_name": "DEF",
+            "property_id": 3,
+            "base": "612",
+            "add": "332",
+            "final": "944"
+        },
+        {
+            "property_name": "Impact",
+            "property_id": 4,
+            "base": "",
+            "add": "",
+            "final": "93"
+        },
+        {
+            "property_name": "CRIT Rate",
+            "property_id": 5,
+            "base": "",
+            "add": "",
+            "final": "65.0%"
+        },
+        {
+            "property_name": "CRIT DMG",
+            "property_id": 6,
+            "base": "",
+            "add": "",
+            "final": "138.0%"
+        },
+        {
+            "property_name": "Anomaly Mastery",
+            "property_id": 7,
+            "base": "",
+            "add": "",
+            "final": "94"
+        },
+        {
+            "property_name": "Anomaly Proficiency",
+            "property_id": 8,
+            "base": "",
+            "add": "",
+            "final": "138"
+        },
+        {
+            "property_name": "PEN Ratio",
+            "property_id": 9,
+            "base": "",
+            "add": "",
+            "final": "0.0%"
+        },
+        {
+            "property_name": "Energy Regen",
+            "property_id": 11,
+            "base": "",
+            "add": "",
+            "final": "1.20"
+        },
+        {
+            "property_name": "PEN",
+            "property_id": 232,
+            "base": "",
+            "add": "",
+            "final": "0"
+        },
+        {
+            "property_name": "Electric DMG Bonus",
+            "property_id": 318,
+            "base": "",
+            "add": "",
+            "final": "30.0%"
+        }
+    ],
+    "skills": [
+        {
+            "level": 12,
+            "skill_type": 0,
+            "items": [
+                {
+                    "title": "Basic Attack: Penetrating Shock",
+                    "text": "Press <IconMap:Icon_Normal> to activate:\\nPerform up to five slashes ahead, dealing <color=#2EB6FF>Electric DMG</color>.\\nOn the 3rd hit of the Basic Attack, enemies are continuously pulled in.\\nAfter the 4th attack hits the enemy, repeatedly press or hold <IconMap:Icon_Normal> to quickly pass through enemies in front up to 5 times.",
+                    "awaken": true
+                }
+            ],
+            "awaken_state": "AwakenStateActivated"
+        },
+        {
+            "level": 12,
+            "skill_type": 1,
+            "items": [
+                {
+                    "title": "Special Attack: Celestial Thunder",
+                    "text": "Press <IconMap:Icon_Special> to activate:\\nDash diagonally forward, then unleash a cross slash, dealing <color=#2EB6FF>Electric DMG</color>.\\nAnti-Interrupt level is increased while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Special Attack: Azure Flash",
+                    "text": "When Soldier 0 - Anby's attacks hit an enemy, they apply the <color=#FFFFFF>Silver Star</color> mark and charges the target \\nFor every one-third of charge, the enemy receives 1 stack of <color=#FFFFFF>White Thunder</color>, stacking up to 3 times.\\nWhen the enemy has <color=#FFFFFF>White Thunder</color>, press <IconMap:Icon_Special> to activate:\\nQuickly dash forward, slashing through enemies and dealing multiple hits of <color=#2EB6FF>Electric DMG</color>.\\nWhen the skill hits an enemy, it will consume 1 stack of <color=#FFFFFF>White Thunder</color> to trigger an <color=#FFFFFF>Aftershock</color> that deals 1 extra instance of <color=#2EB6FF>Electric DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Special Attack: Thunder Smite",
+                    "text": "When the additional damage from <color=#FFFFFF>White Thunder</color> triggers 3 times on the same enemy:\\nA lightning strike will fall at the enemy's location, dealing <color=#2EB6FF>Electric DMG</color> to enemies within range.\\nThis DMG is considered <color=#FFFFFF>Aftershock</color> DMG.",
+                    "awaken": false
+                },
+                {
+                    "title": "Special Attack: Azure Flash - Boundary",
+                    "text": "When <color=#FFFFFF>Special Attack: Thunder Smite</color> DMG is triggered:\\nIf EX Special Attack: Sundering Bolt or Special Attack: Azure Flash is currently being used, then <color=#FFFFFF>Special Attack: Azure Flash - Boundary</color> will automatically trigger when the current skill ends, unleashing a flurry of slashes that deal multiple instances of <color=#2EB6FF>Electric DMG</color>. This skill counts as an <color=#FFFFFF>Aftershock</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": true
+                },
+                {
+                    "title": "EX Special Attack: Sundering Bolt",
+                    "text": "With enough energy, hold <IconMap:Icon_SpecialReady> to activate:\\nCombines her twin swords and throws them forward for a high-speed slash, dealing massive <color=#2EB6FF>Electric DMG</color>.\\nWhen the skill hits an enemy, it will fully charge <color=#FFFFFF>Silver Star</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateActivated"
+        },
+        {
+            "level": 11,
+            "skill_type": 2,
+            "items": [
+                {
+                    "title": "Dodge: Strobe",
+                    "text": "Press <IconMap:Icon_Evade> to activate:\\nA quick dash dodge.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Dash Attack: Torrent",
+                    "text": "Press <IconMap:Icon_Normal> during a dodge to activate:\\nPerform a horizontal slash forward, then follow up with a thrust attack, dealing <color=#2EB6FF>Electric DMG</color>.",
+                    "awaken": false
+                },
+                {
+                    "title": "Dodge Counter: Ground Flash Counter",
+                    "text": "Press <IconMap:Icon_Normal> during a <color=#FFFFFF>Perfect Dodge</color> to activate:\\nPerform consecutive slashes at enemies in front, dealing <color=#2EB6FF>Electric DMG</color>. On hit, gain the Voltage Overload state for 15s. Repeated triggers refresh the duration.\\nWhile in the Voltage Overload state, dodge performance is enhanced. Additionally, when using Basic Attack/Dash Attack/Dodge Counter, if the enemy target has <color=#FFFFFF>White Thunder</color>, pressing <IconMap:Icon_Special> will immediately cancel the current skill and launch <color=#FFFFFF>Special Attack: Azure Flash</color>.\\nWhile in this state, if the enemy does not have <color=#FFFFFF>White Thunder</color>, press <IconMap:Icon_SpecialReady> to directly launch EX Special Attack: Sundering Bolt.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": true
+                }
+            ],
+            "awaken_state": "AwakenStateActivated"
+        },
+        {
+            "level": 12,
+            "skill_type": 3,
+            "items": [
+                {
+                    "title": "Chain Attack: Leaping Thunderstrike",
+                    "text": "When a <color=#FFFFFF>Chain Attack</color> is triggered, select the character to activate:\\nLeap forward, then quickly dive and perform a cross slash, dealing massive <color=#2EB6FF>Electric DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Ultimate: Voidstrike",
+                    "text": "When Decibel Rating is at <color=#FFFFFF>Maximum</color>, press <IconMap:Icon_UltimateReady> to activate:\\nPerform a powerful series of slashes at a large area in front, followed by a lightning strike, dealing massive <color=#2EB6FF>Electric DMG</color>.\\nWhen the skill hits an enemy, it will fully charge <color=#FFFFFF>Silver Star</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateActivated"
+        },
+        {
+            "level": 7,
+            "skill_type": 5,
+            "items": [
+                {
+                    "title": "Core Passive: Voltage Gap",
+                    "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target.",
+                    "awaken": true
+                },
+                {
+                    "title": "Additional Ability: Voltage Surge",
+                    "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG.",
+                    "awaken": true
+                },
+                {
+                    "title": "Awakened Potential: Electropulse",
+                    "text": "During Additional Ability: Voltage Surge, all squad members' <color=#FFFFFF>Aftershock</color> DMG against enemies marked with <color=#FFFFFF>Silver Star</color> is increased to <color=#2BAD00>50%</color>.",
+                    "awaken": true
+                }
+            ],
+            "awaken_state": "AwakenStateActivated"
+        },
+        {
+            "level": 8,
+            "skill_type": 6,
+            "items": [
+                {
+                    "title": "Quick Assist: Cloud Flash",
+                    "text": "When the active character is launched, press <IconMap:Icon_Switch> to activate:\\nRepeatedly slash enemies in front, dealing <color=#2EB6FF>Electric DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Defensive Assist: Counter Surge",
+                    "text": "When the on-field character is about to be attacked, press <IconMap:Icon_Switch> to activate:\\nParries the enemy's attack, dealing massive Daze.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Assist Follow-Up: Conducting Blow",
+                    "text": "Press <IconMap:Icon_Normal> after a <color=#FFFFFF>Defensive Assist</color> to activate:\\nDash forward and unleash a series of slashes at enemies ahead, dealing <color=#2EB6FF>Electric DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateActivated"
+        }
+    ],
+    "rank": 0,
+    "ranks": [
+        {
+            "id": 1,
+            "name": "Static Charge",
+            "desc": "When Soldier 0 - Anby uses an <color=#FFFFFF>EX Special Attack</color> to hit an enemy, it triggers the additional DMG from <color=#FFFFFF>White Thunder</color> 3 times. This effect does not consume any <color=#FFFFFF>White Thunder</color> stacks.",
+            "pos": 1,
+            "is_unlocked": false
+        },
+        {
+            "id": 2,
+            "name": "Fail-Safe Protocol",
+            "desc": "Soldier 0 - Anby's CRIT Rate increases by 12%. When she uses her <color=#FFFFFF>Ultimate</color>, she gains 6 stacks of <color=#FFFFFF>Thunder's Cry</color> (max 6 stacks). With <color=#FFFFFF>Thunder's Cry</color>, when using <color=#FFFFFF>Special Attack: Azure Flash</color> to hit an enemy with <color=#FFFFFF>White Thunder</color>, it will consume 1 stack of <color=#FFFFFF>Thunder's Cry</color> instead. Only 1 stack of <color=#FFFFFF>Thunder's Cry</color> will be consumed when a single use of a skill hits multiple enemies, and consuming <color=#FFFFFF>Thunder's Cry</color> will still activate the additional DMG from <color=#FFFFFF>White Thunder</color>.\\nAfter activating potential, every 3 stacks of <color=#FFFFFF>Thunder's Cry</color> consumed, the next Special Attack: Azure Flash - Boundary will be activated faster.",
+            "pos": 2,
+            "is_unlocked": false
+        },
+        {
+            "id": 3,
+            "name": "Past Glory",
+            "desc": "<color=#FFFFFF>Basic Attack</color>, <color=#FFFFFF>Dodge</color>, <color=#FFFFFF>Assist</color>, <color=#FFFFFF>Special Attack</color>, and <color=#FFFFFF>Chain Attack</color> Lv. +2",
+            "pos": 3,
+            "is_unlocked": false
+        },
+        {
+            "id": 4,
+            "name": "Silver Reverb",
+            "desc": "When hitting an enemy marked with <color=#FFFFFF>Silver Star</color>, Soldier 0 - Anby ignores 12% of the target's <color=#2EB6FF>Electric RES</color>.",
+            "pos": 4,
+            "is_unlocked": false
+        },
+        {
+            "id": 5,
+            "name": "Director's Cut",
+            "desc": "<color=#FFFFFF>Basic Attack</color>, <color=#FFFFFF>Dodge</color>, <color=#FFFFFF>Assist</color>, <color=#FFFFFF>Special Attack</color>, and <color=#FFFFFF>Chain Attack</color> Lv. +2",
+            "pos": 5,
+            "is_unlocked": false
+        },
+        {
+            "id": 6,
+            "name": "Prequel Protagonist",
+            "desc": "Upon triggering 6 instances of <color=#FFFFFF>White Thunder</color>'s additional DMG, an electromagnetic vortex will be generated, dealing 1000% of Soldier 0 - Anby's ATK as <color=#2EB6FF>Electric DMG</color> against the target and surrounding enemies. This DMG is considered <color=#FFFFFF>Aftershock</color> DMG.",
+            "pos": 6,
+            "is_unlocked": false
+        }
+    ],
+    "role_vertical_painting_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_vertical_painting/role_vertical_painting_1381.png",
+    "equip_plan_info": {
+        "type": 1,
+        "game_default": {
+            "property_list": [
+                {
+                    "id": 2,
+                    "name": "ATK",
+                    "full_name": "ATK",
+                    "system_id": 2,
+                    "is_select": false
+                },
+                {
+                    "id": 5,
+                    "name": "CRIT Rate",
+                    "full_name": "CRIT Rate",
+                    "system_id": 5,
+                    "is_select": false
+                },
+                {
+                    "id": 6,
+                    "name": "CRIT DMG",
+                    "full_name": "CRIT DMG",
+                    "system_id": 6,
+                    "is_select": false
+                }
+            ]
+        },
+        "cultivate_info": {
+            "name": "【0+0】Soldier 0 - Anby No Signature Weapon Build",
+            "plan_id": "10710",
+            "is_delete": false,
+            "old_plan": false
+        },
+        "custom_info": {
+            "property_list": [
+                {
+                    "id": 11103,
+                    "name": "HP",
+                    "full_name": "HP",
+                    "system_id": 111,
+                    "is_select": false
+                },
+                {
+                    "id": 11102,
+                    "name": "HP",
+                    "full_name": "Percent HP",
+                    "system_id": 111,
+                    "is_select": false
+                },
+                {
+                    "id": 12103,
+                    "name": "ATK",
+                    "full_name": "ATK",
+                    "system_id": 121,
+                    "is_select": false
+                },
+                {
+                    "id": 12102,
+                    "name": "ATK",
+                    "full_name": "Percent ATK",
+                    "system_id": 121,
+                    "is_select": false
+                },
+                {
+                    "id": 13103,
+                    "name": "DEF",
+                    "full_name": "DEF",
+                    "system_id": 131,
+                    "is_select": false
+                },
+                {
+                    "id": 13102,
+                    "name": "DEF",
+                    "full_name": "Percent DEF",
+                    "system_id": 131,
+                    "is_select": false
+                },
+                {
+                    "id": 20103,
+                    "name": "CRIT Rate",
+                    "full_name": "CRIT Rate",
+                    "system_id": 201,
+                    "is_select": false
+                },
+                {
+                    "id": 21103,
+                    "name": "CRIT DMG",
+                    "full_name": "CRIT DMG",
+                    "system_id": 211,
+                    "is_select": false
+                },
+                {
+                    "id": 31203,
+                    "name": "Anomaly Proficiency",
+                    "full_name": "Anomaly Proficiency",
+                    "system_id": 312,
+                    "is_select": false
+                },
+                {
+                    "id": 23203,
+                    "name": "PEN",
+                    "full_name": "PEN",
+                    "system_id": 232,
+                    "is_select": false
+                }
+            ]
+        },
+        "valid_property_cnt": 35,
+        "plan_only_special_property": false,
+        "equip_rating": "ER_SS",
+        "plan_effective_property_list": [
+            {
+                "id": 12102,
+                "name": "ATK",
+                "full_name": "Percent ATK",
+                "system_id": 121,
+                "is_select": false
+            },
+            {
+                "id": 20103,
+                "name": "CRIT Rate",
+                "full_name": "CRIT Rate",
+                "system_id": 201,
+                "is_select": false
+            },
+            {
+                "id": 21103,
+                "name": "CRIT DMG",
+                "full_name": "CRIT DMG",
+                "system_id": 211,
+                "is_select": false
+            }
+        ],
+        "equip_rating_score": 88.04
+    },
+    "us_full_name": "Soldier 0 - Anby",
+    "vertical_painting_color": "#F7940A",
+    "sub_element_type": 0,
+    "skin_list": [
+        {
+            "skin_id": 3113810,
+            "skin_name": "Soldier 0 - Anby: Silver Soldier",
+            "skin_vertical_painting_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_vertical_painting/role_vertical_painting_1381.png",
+            "skin_square_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_square_avatar/role_square_avatar_1381.png",
+            "skin_hollow_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/78be8e81084165b91a5c29464f0198f7.png",
+            "skin_vertical_painting_color": "#F7940A",
+            "unlocked": true,
+            "rarity": "S",
+            "is_original": true
+        }
+    ],
+    "role_square_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_square_avatar/role_square_avatar_1381.png",
+    "awaken_state": "AwakenStateActivated",
+    "skill_awaken": {
+        "has_awaken_system": true,
+        "awaken_level": 6,
+        "awaken_max_level": 6,
+        "skill_awaken_items": [
+            {
+                "awaken_level": 1,
+                "level_show_name": "Silver Heart I",
+                "awaken_skill_items": [
+                    {
+                        "skill_type": 0,
+                        "awaken_simple_info": "Upgraded: [Basic Attack: Penetrating Shock]",
+                        "skill_items": [
+                            {
+                                "title": "Basic Attack: Penetrating Shock",
+                                "text": "Press <IconMap:Icon_Normal> to activate:\\nPerform up to five slashes ahead, dealing <color=#2EB6FF>Electric DMG</color>.\\nOn the 3rd hit of the Basic Attack, enemies are continuously pulled in.\\nAfter the 4th attack hits the enemy, repeatedly press or hold <IconMap:Icon_Normal> to quickly pass through enemies in front up to 5 times."
+                            }
+                        ]
+                    },
+                    {
+                        "skill_type": 2,
+                        "awaken_simple_info": "Upgraded: [Dodge Counter: Ground Flash Counter]",
+                        "skill_items": [
+                            {
+                                "title": "Dodge Counter: Ground Flash Counter",
+                                "text": "Press <IconMap:Icon_Normal> during a <color=#FFFFFF>Perfect Dodge</color> to activate:\\nPerform consecutive slashes at enemies in front, dealing <color=#2EB6FF>Electric DMG</color>. On hit, gain the Voltage Overload state for 15s. Repeated triggers refresh the duration.\\nWhile in the Voltage Overload state, dodge performance is enhanced. Additionally, when using Basic Attack/Dash Attack/Dodge Counter, if the enemy target has <color=#FFFFFF>White Thunder</color>, pressing <IconMap:Icon_Special> will immediately cancel the current skill and launch <color=#FFFFFF>Special Attack: Azure Flash</color>.\\nWhile in this state, if the enemy does not have <color=#FFFFFF>White Thunder</color>, press <IconMap:Icon_SpecialReady> to directly launch EX Special Attack: Sundering Bolt.\\nCharacter is invulnerable while using this skill."
+                            }
+                        ]
+                    },
+                    {
+                        "skill_type": 1,
+                        "awaken_simple_info": "New: [Special Attack: Azure Flash - Boundary]",
+                        "skill_items": [
+                            {
+                                "title": "Special Attack: Azure Flash - Boundary",
+                                "text": "When <color=#FFFFFF>Special Attack: Thunder Smite</color> DMG is triggered:\\nIf EX Special Attack: Sundering Bolt or Special Attack: Azure Flash is currently being used, then <color=#FFFFFF>Special Attack: Azure Flash - Boundary</color> will automatically trigger when the current skill ends, unleashing a flurry of slashes that deal multiple instances of <color=#2EB6FF>Electric DMG</color>. This skill counts as an <color=#FFFFFF>Aftershock</color>.\\nCharacter is invulnerable while using this skill."
+                            }
+                        ]
+                    },
+                    {
+                        "skill_type": 5,
+                        "awaken_simple_info": "[Core Passive: Voltage Gap] mechanics expanded, [Additional Ability: Voltage Surge] judgment expanded",
+                        "skill_items": [
+                            {
+                                "title": "Core Passive: Voltage Gap",
+                                "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target."
+                            },
+                            {
+                                "title": "Additional Ability: Voltage Surge",
+                                "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "awaken_level": 2,
+                "level_show_name": "Silver Heart II",
+                "awaken_skill_items": [
+                    {
+                        "skill_type": 5,
+                        "awaken_simple_info": "New: [Awakened Potential: Electropulse]",
+                        "skill_items": [
+                            {
+                                "title": "Core Passive: Voltage Gap",
+                                "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target."
+                            },
+                            {
+                                "title": "Additional Ability: Voltage Surge",
+                                "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG."
+                            },
+                            {
+                                "title": "Awakened Potential: Electropulse",
+                                "text": "During Additional Ability: Voltage Surge, all squad members' <color=#FFFFFF>Aftershock</color> DMG against enemies marked with <color=#FFFFFF>Silver Star</color> is increased to <color=#2BAD00>34%</color>."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "awaken_level": 3,
+                "level_show_name": "Silver Heart III",
+                "awaken_skill_items": [
+                    {
+                        "skill_type": 5,
+                        "awaken_simple_info": "Upgraded: [Awakened Potential: Electropulse]",
+                        "skill_items": [
+                            {
+                                "title": "Core Passive: Voltage Gap",
+                                "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target."
+                            },
+                            {
+                                "title": "Additional Ability: Voltage Surge",
+                                "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG."
+                            },
+                            {
+                                "title": "Awakened Potential: Electropulse",
+                                "text": "During Additional Ability: Voltage Surge, all squad members' <color=#FFFFFF>Aftershock</color> DMG against enemies marked with <color=#FFFFFF>Silver Star</color> is increased to <color=#2BAD00>38%</color>."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "awaken_level": 4,
+                "level_show_name": "Silver Heart IV",
+                "awaken_skill_items": [
+                    {
+                        "skill_type": 5,
+                        "awaken_simple_info": "Upgraded: [Awakened Potential: Electropulse]",
+                        "skill_items": [
+                            {
+                                "title": "Core Passive: Voltage Gap",
+                                "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target."
+                            },
+                            {
+                                "title": "Additional Ability: Voltage Surge",
+                                "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG."
+                            },
+                            {
+                                "title": "Awakened Potential: Electropulse",
+                                "text": "During Additional Ability: Voltage Surge, all squad members' <color=#FFFFFF>Aftershock</color> DMG against enemies marked with <color=#FFFFFF>Silver Star</color> is increased to <color=#2BAD00>42%</color>."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "awaken_level": 5,
+                "level_show_name": "Silver Heart V",
+                "awaken_skill_items": [
+                    {
+                        "skill_type": 5,
+                        "awaken_simple_info": "Upgraded: [Awakened Potential: Electropulse]",
+                        "skill_items": [
+                            {
+                                "title": "Core Passive: Voltage Gap",
+                                "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target."
+                            },
+                            {
+                                "title": "Additional Ability: Voltage Surge",
+                                "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG."
+                            },
+                            {
+                                "title": "Awakened Potential: Electropulse",
+                                "text": "During Additional Ability: Voltage Surge, all squad members' <color=#FFFFFF>Aftershock</color> DMG against enemies marked with <color=#FFFFFF>Silver Star</color> is increased to <color=#2BAD00>46%</color>."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "awaken_level": 6,
+                "level_show_name": "Silver Heart VI",
+                "awaken_skill_items": [
+                    {
+                        "skill_type": 5,
+                        "awaken_simple_info": "Upgraded: [Awakened Potential: Electropulse]",
+                        "skill_items": [
+                            {
+                                "title": "Core Passive: Voltage Gap",
+                                "text": "Soldier 0 - Anby deals <color=#2BAD00>25%</color> more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>. When an enemy is afflicted with <color=#FFFFFF>Silver Star</color>, they take additional CRIT DMG from <color=#FFFFFF>Aftershocks</color>, equal to <color=#2BAD00>30%</color> of Soldier 0 - Anby's CRIT DMG. When marked with a Silver Star, DMG from allies' <color=#FFFFFF>Aftershocks</color> builds <color=#FFFFFF> Silver Star</color> charge on the enemy. This effect can trigger once every 5s.\\nThe Aftershock CRIT DMG bonus from Silver Star is further increased by 5% of Soldier 0 - Anby's CRIT DMG. When an enemy afflicted with <color=#FFFFFF>White Thunder</color> is defeated, automatically unleash <color=#FFFFFF>Special Attack: Thunder Smite</color> on the nearest enemy target."
+                            },
+                            {
+                                "title": "Additional Ability: Voltage Surge",
+                                "text": "When another character in your squad is a <color=#FFFFFF>Stun</color> or <color=#FFFFFF>Support</color> character:\\nSoldier 0 - Anby's CRIT Rate increases by 10%. When the current active character is Soldier 0 - Anby, all squad members' <color=#FFFFFF>Aftershocks</color> deal 25% more DMG to enemies marked with <color=#FFFFFF>Silver Star</color>.\\nSoldier 0 - Anby's <color=#FFFFFF>Chain Attack</color> and <color=#FFFFFF>Ultimate</color> are treated as <color=#FFFFFF>Aftershock</color> DMG."
+                            },
+                            {
+                                "title": "Awakened Potential: Electropulse",
+                                "text": "During Additional Ability: Voltage Surge, all squad members' <color=#FFFFFF>Aftershock</color> DMG against enemies marked with <color=#FFFFFF>Silver Star</color> is increased to <color=#2BAD00>50%</color>."
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

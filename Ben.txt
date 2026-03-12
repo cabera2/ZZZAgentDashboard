@@ -1,0 +1,713 @@
+{
+    "id": 1121,
+    "level": 40,
+    "name_mi18n": "Ben",
+    "full_name_mi18n": "Ben Bigger",
+    "element_type": 201,
+    "camp_name_mi18n": "Belobog Heavy Industries",
+    "avatar_profession": 5,
+    "rarity": "A",
+    "group_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/b1c5bdd02f0c2d25b6130d972e6c259c.png",
+    "hollow_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/831c5bd35db5778a67b92e8471cf6d51.png",
+    "equip": [
+        {
+            "id": 31541,
+            "level": 0,
+            "name": "Soul Rock [1]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/ebfef969b990a03b30f83f0b6e3fd418.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "PEN",
+                    "property_id": 23203,
+                    "base": "9",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 232,
+                    "add": 0
+                },
+                {
+                    "property_name": "DEF",
+                    "property_id": 13102,
+                    "base": "4.8%",
+                    "level": 1,
+                    "valid": true,
+                    "system_id": 131,
+                    "add": 0
+                },
+                {
+                    "property_name": "ATK",
+                    "property_id": 12103,
+                    "base": "19",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 121,
+                    "add": 0
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "HP",
+                    "property_id": 11103,
+                    "base": "550",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 31500,
+                "name": "Soul Rock",
+                "own": 1,
+                "desc1": "DEF +16%",
+                "desc2": "Upon receiving an enemy attack and losing HP, the equipper takes 40% less DMG for 2.5s. This effect can trigger once every 15s."
+            },
+            "equipment_type": 1,
+            "invalid_property_cnt": 0,
+            "all_hit": false
+        },
+        {
+            "id": 31442,
+            "level": 0,
+            "name": "Hormone Punk [2]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/27c839109663d079ccea82d3f1fa84f2.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "HP",
+                    "property_id": 11102,
+                    "base": "3%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                },
+                {
+                    "property_name": "Anomaly Proficiency",
+                    "property_id": 31203,
+                    "base": "9",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 312,
+                    "add": 0
+                },
+                {
+                    "property_name": "CRIT DMG",
+                    "property_id": 21103,
+                    "base": "4.8%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 211,
+                    "add": 0
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "ATK",
+                    "property_id": 12103,
+                    "base": "79",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 121,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 31400,
+                "name": "Hormone Punk",
+                "own": 1,
+                "desc1": "ATK +10%",
+                "desc2": "Upon becoming the active character in combat, the equipper's ATK increases by 25% for 10s. This effect can trigger once every 20s."
+            },
+            "equipment_type": 2,
+            "invalid_property_cnt": 0,
+            "all_hit": false
+        },
+        {
+            "id": 32343,
+            "level": 0,
+            "name": "Chaotic Metal [3]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/23d24291a4683e4609d9817609954daf.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "PEN",
+                    "property_id": 23203,
+                    "base": "9",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 232,
+                    "add": 0
+                },
+                {
+                    "property_name": "HP",
+                    "property_id": 11103,
+                    "base": "112",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                },
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "2.4%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 201,
+                    "add": 0
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "DEF",
+                    "property_id": 13103,
+                    "base": "46",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 131,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 32300,
+                "name": "Chaotic Metal",
+                "own": 1,
+                "desc1": "<color=#FE437E>Ether DMG</color> +10%",
+                "desc2": "The equipper's CRIT DMG increases by 20%. When any character in the squad triggers <color=#FE437E>Corruption's</color> additional DMG, this effect further increases by 5.5% for 8s, stacking up to 6 times. Repeated triggers reset the duration."
+            },
+            "equipment_type": 3,
+            "invalid_property_cnt": 0,
+            "all_hit": false
+        },
+        {
+            "id": 31645,
+            "level": 15,
+            "name": "Swing Jazz [5]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/67b7989e14353c5eaf8c6a355b8d569c.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "Anomaly Proficiency",
+                    "property_id": 31203,
+                    "base": "18",
+                    "level": 2,
+                    "valid": false,
+                    "system_id": 312,
+                    "add": 1
+                },
+                {
+                    "property_name": "CRIT Rate",
+                    "property_id": 20103,
+                    "base": "2.4%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 201,
+                    "add": 0
+                },
+                {
+                    "property_name": "DEF",
+                    "property_id": 13102,
+                    "base": "14.4%",
+                    "level": 3,
+                    "valid": true,
+                    "system_id": 131,
+                    "add": 2
+                },
+                {
+                    "property_name": "HP",
+                    "property_id": 11103,
+                    "base": "336",
+                    "level": 3,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 2
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "HP",
+                    "property_id": 11102,
+                    "base": "30%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 31600,
+                "name": "Swing Jazz",
+                "own": 2,
+                "desc1": "Energy Regen +20%",
+                "desc2": "Launching a <color=#FFFFFF>Chain Attack</color> or <color=#FFFFFF>Ultimate</color> increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+            },
+            "equipment_type": 5,
+            "invalid_property_cnt": 3,
+            "all_hit": false
+        },
+        {
+            "id": 31646,
+            "level": 0,
+            "name": "Swing Jazz [6]",
+            "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/67b7989e14353c5eaf8c6a355b8d569c.png",
+            "rarity": "S",
+            "properties": [
+                {
+                    "property_name": "Anomaly Proficiency",
+                    "property_id": 31203,
+                    "base": "9",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 312,
+                    "add": 0
+                },
+                {
+                    "property_name": "HP",
+                    "property_id": 11102,
+                    "base": "3%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                },
+                {
+                    "property_name": "HP",
+                    "property_id": 11103,
+                    "base": "112",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 111,
+                    "add": 0
+                }
+            ],
+            "main_properties": [
+                {
+                    "property_name": "DEF",
+                    "property_id": 13102,
+                    "base": "12%",
+                    "level": 1,
+                    "valid": false,
+                    "system_id": 131,
+                    "add": 0
+                }
+            ],
+            "equip_suit": {
+                "suit_id": 31600,
+                "name": "Swing Jazz",
+                "own": 2,
+                "desc1": "Energy Regen +20%",
+                "desc2": "Launching a <color=#FFFFFF>Chain Attack</color> or <color=#FFFFFF>Ultimate</color> increases all squad members' DMG by 15% for 12s. Passive effects of the same name do not stack."
+            },
+            "equipment_type": 6,
+            "invalid_property_cnt": 0,
+            "all_hit": false
+        }
+    ],
+    "weapon": {
+        "id": 13112,
+        "level": 10,
+        "name": "Big Cylinder",
+        "star": 5,
+        "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/0d6e944eedf0d78a038eff665b1d93f1.png",
+        "rarity": "A",
+        "properties": [
+            {
+                "property_name": "DEF",
+                "property_id": 13102,
+                "base": "16%",
+                "level": 0,
+                "valid": false,
+                "system_id": 0,
+                "add": 0
+            }
+        ],
+        "main_properties": [
+            {
+                "property_name": "Base ATK",
+                "property_id": 12101,
+                "base": "107",
+                "level": 0,
+                "valid": false,
+                "system_id": 0,
+                "add": 0
+            }
+        ],
+        "talent_title": "Ten Ton Top",
+        "talent_content": "Reduces DMG taken by <color=#2BAD00>12%</color>. After being attacked, the next attack to hit an enemy will trigger a critical hit and deal <color=#2BAD00>960%</color> of the equipper's DEF as additional DMG. This effect can be triggered once every 7.5s.",
+        "profession": 5
+    },
+    "properties": [
+        {
+            "property_name": "HP",
+            "property_id": 1,
+            "base": "5759",
+            "add": "3184",
+            "final": "8943"
+        },
+        {
+            "property_name": "ATK",
+            "property_id": 2,
+            "base": "510",
+            "add": "448",
+            "final": "958"
+        },
+        {
+            "property_name": "DEF",
+            "property_id": 3,
+            "base": "486",
+            "add": "275",
+            "final": "761"
+        },
+        {
+            "property_name": "Impact",
+            "property_id": 4,
+            "base": "",
+            "add": "",
+            "final": "95"
+        },
+        {
+            "property_name": "CRIT Rate",
+            "property_id": 5,
+            "base": "",
+            "add": "",
+            "final": "9.8%"
+        },
+        {
+            "property_name": "CRIT DMG",
+            "property_id": 6,
+            "base": "",
+            "add": "",
+            "final": "54.8%"
+        },
+        {
+            "property_name": "Anomaly Mastery",
+            "property_id": 7,
+            "base": "",
+            "add": "",
+            "final": "86"
+        },
+        {
+            "property_name": "Anomaly Proficiency",
+            "property_id": 8,
+            "base": "",
+            "add": "",
+            "final": "126"
+        },
+        {
+            "property_name": "PEN Ratio",
+            "property_id": 9,
+            "base": "",
+            "add": "",
+            "final": "0.0%"
+        },
+        {
+            "property_name": "Energy Regen",
+            "property_id": 11,
+            "base": "1.32",
+            "add": "0.26",
+            "final": "1.58"
+        },
+        {
+            "property_name": "PEN",
+            "property_id": 232,
+            "base": "",
+            "add": "",
+            "final": "18"
+        },
+        {
+            "property_name": "Fire DMG Bonus",
+            "property_id": 316,
+            "base": "",
+            "add": "",
+            "final": "0.0%"
+        }
+    ],
+    "skills": [
+        {
+            "level": 7,
+            "skill_type": 0,
+            "items": [
+                {
+                    "title": "Basic Attack: Debt Reconciliation",
+                    "text": "Press <IconMap:Icon_Normal> to activate:\\nUnleashes up to 3 strikes, dealing <color=#F0D12B>Physical DMG</color>.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateNotVisible"
+        },
+        {
+            "level": 7,
+            "skill_type": 1,
+            "items": [
+                {
+                    "title": "Special Attack: Fiscal Fist",
+                    "text": "Press <IconMap:Icon_Special> to activate:\\nBen lifts his weapon, blocking the enemy's attack before unleashing a forward strike, dealing <color=#F0D12B>Physical DMG</color>. Successfully blocking an attack enhances the power of this skill and triggers Block Counter, dealing massive <color=#F0D12B>Physical DMG</color>.\\nHold <IconMap:Icon_Special> to remain in the Blocking stance.\\nWhile in the Blocking stance, Ben gains a Shield that weakens over time.\\nAfter leaving the blocking stance, the Shield is removed and recovers over time.\\nThe Shield cannot exceed 16% of Ben's Max HP.\\nBen is invulnerable when activating Block.\\nAnti-Interrupt level is increased while launching strikes.",
+                    "awaken": false
+                },
+                {
+                    "title": "EX Special Attack: Cashflow Counter",
+                    "text": "With enough Energy, press <IconMap:Icon_SpecialReady> to activate:\\nBen lifts his weapon, blocking the enemy's attacks before unleashing a forward strike, dealing <color=#FF5521>Fire DMG</color>. Successfully blocking an attack enhances the power of this skill and triggers Block Counter, dealing massive <color=#FF5521>Fire DMG</color>.\\nHold <IconMap:Icon_SpecialReady> to remain in the Blocking stance.\\nWhile in the Blocking stance, Ben gains a Shield that weakens over time.\\nAfter leaving the blocking stance, the Shield is removed and recovers over time.\\nThe Shield cannot exceed 16% of Ben's Max HP.\\nWhen this skill is activated, the Shield is restored to its maximum value.\\nAfter activating the skill, press <IconMap:Icon_SpecialReady> again to follow up with a powerful forward strike, dealing massive <color=#FF5521>Fire DMG</color>.\\nBen is invulnerable when activating Block.\\nBen is invulnerable while launching strikes.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateNotVisible"
+        },
+        {
+            "level": 6,
+            "skill_type": 2,
+            "items": [
+                {
+                    "title": "Dodge: Missing Invoice",
+                    "text": "Press <IconMap:Icon_Evade> to activate:\\nA quick dash dodge.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Dash Attack: Incoming Expense",
+                    "text": "Press <IconMap:Icon_Normal> during a Dodge to activate:\\nStrikes enemies in front of him, dealing <color=#F0D12B>Physical DMG</color>.",
+                    "awaken": false
+                },
+                {
+                    "title": "Dodge Counter: Accounts Settled",
+                    "text": "Press <IconMap:Icon_Normal> during a <color=#FFFFFF>Perfect Dodge</color> to activate:\\nStrike enemies in front, dealing <color=#FF5521>Fire DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateNotVisible"
+        },
+        {
+            "level": 7,
+            "skill_type": 3,
+            "items": [
+                {
+                    "title": "Chain Attack: Signed and Sealed",
+                    "text": "When a <color=#FFFFFF>Chain Attack</color> is triggered, select the character to activate:\\nUnleashes a powerful strike at enemies in front in a large area, dealing massive <color=#FF5521>Fire DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Ultimate: Complete Payback",
+                    "text": "When Decibel Rating is at <color=#FFFFFF>Maximum</color>, press <IconMap:Icon_UltimateReady> to activate:\\nUnleashes a powerful strike at enemies in front in a large area, dealing massive <color=#FF5521>Fire DMG</color>.\\nWhen activating the skill, additionally recover 3 Assist Points.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateNotVisible"
+        },
+        {
+            "level": 2,
+            "skill_type": 5,
+            "items": [
+                {
+                    "title": "Core Passive: Guardian",
+                    "text": "Ben's initial ATK increases along with his initial DEF. He gains <color=#2BAD00>46%</color> of his initial DEF as ATK.\\nWhen Ben launches a powerful follow-up strike during his <color=#FFFFFF>EX Special Attack</color>, all squad members gain a Shield of <color=#2BAD00>17.5%</color> of his DEF +<color=#2BAD00>220</color>, lasting for 30s.",
+                    "awaken": false
+                },
+                {
+                    "title": "Additional Ability: Contractual Agreement",
+                    "text": "When another character in your squad shares the same Attribute or Faction:\\nWhile the Shield from <color=#FFFFFF>Core Passive: Guardian</color> is in effect, the character's CRIT Rate is increased by 16%.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateNotVisible"
+        },
+        {
+            "level": 7,
+            "skill_type": 6,
+            "items": [
+                {
+                    "title": "Quick Assist: Joint Account",
+                    "text": "When the active character is launched, press <IconMap:Icon_Switch> to activate:\\nStrikes enemies in front, dealing <color=#FF5521>Fire DMG</color>.\\nCharacter is invulnerable during the attack.",
+                    "awaken": false
+                },
+                {
+                    "title": "Defensive Assist: Risk Allocation",
+                    "text": "When the character on field is about to be attacked, press <IconMap:Icon_Switch> to activate:\\nParries the enemy's attack, dealing massive Daze.\\nThis skill excels at parrying enemy attacks and reduces the consumption of <color=#FFFFFF>Assist Points</color> when the character is under intense attacks.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                },
+                {
+                    "title": "Assist Follow-Up: Don't Break Contract",
+                    "text": "Press <IconMap:Icon_Normal> after a <color=#FFFFFF>Defensive Assist</color> to activate:\\nCharges and strikes enemies in front, dealing <color=#FF5521>Fire DMG</color>.\\nCharacter is invulnerable while using this skill.",
+                    "awaken": false
+                }
+            ],
+            "awaken_state": "AwakenStateNotVisible"
+        }
+    ],
+    "rank": 6,
+    "ranks": [
+        {
+            "id": 1,
+            "name": "Reacting Force",
+            "desc": "When successfully Blocking an enemy with Ben's <color=#FFFFFF>Special Attack</color> or <color=#FFFFFF>EX Special Attack</color>, the DMG dealt by the blocked enemy is reduced by 30% for 15s.",
+            "pos": 1,
+            "is_unlocked": true
+        },
+        {
+            "id": 2,
+            "name": "Offense Through Defense",
+            "desc": "When successfully triggering a Block Counter during Ben's <color=#FFFFFF>Special Attack</color> or <color=#FFFFFF>EX Special Attack</color>, inflict an additional 300% of Ben's DEF as DMG.",
+            "pos": 2,
+            "is_unlocked": true
+        },
+        {
+            "id": 3,
+            "name": "Careful Accounting",
+            "desc": "<color=#FFFFFF>Basic Attack</color>, <color=#FFFFFF>Dodge</color>, <color=#FFFFFF>Assist</color>, <color=#FFFFFF>Special Attack</color>, and <color=#FFFFFF>Chain Attack</color> Lv. +2",
+            "pos": 3,
+            "is_unlocked": true
+        },
+        {
+            "id": 4,
+            "name": "Agile Adaptation",
+            "desc": "When successfully blocking enemy DMG with Ben's invulnerable effect during his <color=#FFFFFF>Special Attack</color> or <color=#FFFFFF>EX Special Attack</color>, the following counter deals 30% more DMG.",
+            "pos": 4,
+            "is_unlocked": true
+        },
+        {
+            "id": 5,
+            "name": "Meticulous Detail",
+            "desc": "<color=#FFFFFF>Basic Attack</color>, <color=#FFFFFF>Dodge</color>, <color=#FFFFFF>Assist</color>, <color=#FFFFFF>Special Attack</color>, and <color=#FFFFFF>Chain Attack</color> Lv. +2",
+            "pos": 5,
+            "is_unlocked": true
+        },
+        {
+            "id": 6,
+            "name": "Wild Spirit",
+            "desc": "After launching an attack or follow-up attack during Ben's <color=#FFFFFF>EX Special Attack</color>, Daze inflicted by <color=#FFFFFF>Basic Attacks</color>, <color=#FFFFFF>Dash Attack</color>, and <color=#FFFFFF>Dodge Counter</color> is increased by 20%, lasting 12s.",
+            "pos": 6,
+            "is_unlocked": true
+        }
+    ],
+    "role_vertical_painting_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_vertical_painting/role_vertical_painting_1121.png",
+    "equip_plan_info": {
+        "type": 1,
+        "game_default": {
+            "property_list": [
+                {
+                    "id": 3,
+                    "name": "DEF",
+                    "full_name": "DEF",
+                    "system_id": 3,
+                    "is_select": false
+                }
+            ]
+        },
+        "cultivate_info": {
+            "name": "Big Bear",
+            "plan_id": "2491",
+            "is_delete": false,
+            "old_plan": false
+        },
+        "custom_info": {
+            "property_list": [
+                {
+                    "id": 11103,
+                    "name": "HP",
+                    "full_name": "HP",
+                    "system_id": 111,
+                    "is_select": false
+                },
+                {
+                    "id": 11102,
+                    "name": "HP",
+                    "full_name": "Percent HP",
+                    "system_id": 111,
+                    "is_select": false
+                },
+                {
+                    "id": 12103,
+                    "name": "ATK",
+                    "full_name": "ATK",
+                    "system_id": 121,
+                    "is_select": false
+                },
+                {
+                    "id": 12102,
+                    "name": "ATK",
+                    "full_name": "Percent ATK",
+                    "system_id": 121,
+                    "is_select": false
+                },
+                {
+                    "id": 13103,
+                    "name": "DEF",
+                    "full_name": "DEF",
+                    "system_id": 131,
+                    "is_select": false
+                },
+                {
+                    "id": 13102,
+                    "name": "DEF",
+                    "full_name": "Percent DEF",
+                    "system_id": 131,
+                    "is_select": false
+                },
+                {
+                    "id": 20103,
+                    "name": "CRIT Rate",
+                    "full_name": "CRIT Rate",
+                    "system_id": 201,
+                    "is_select": false
+                },
+                {
+                    "id": 21103,
+                    "name": "CRIT DMG",
+                    "full_name": "CRIT DMG",
+                    "system_id": 211,
+                    "is_select": false
+                },
+                {
+                    "id": 31203,
+                    "name": "Anomaly Proficiency",
+                    "full_name": "Anomaly Proficiency",
+                    "system_id": 312,
+                    "is_select": false
+                },
+                {
+                    "id": 23203,
+                    "name": "PEN",
+                    "full_name": "PEN",
+                    "system_id": 232,
+                    "is_select": false
+                }
+            ]
+        },
+        "valid_property_cnt": 4,
+        "plan_only_special_property": false,
+        "equip_rating": "ER_Default",
+        "plan_effective_property_list": [
+            {
+                "id": 13102,
+                "name": "DEF",
+                "full_name": "Percent DEF",
+                "system_id": 131,
+                "is_select": false
+            }
+        ],
+        "equip_rating_score": 0
+    },
+    "us_full_name": "Ben Bigger",
+    "vertical_painting_color": "#a68d73",
+    "sub_element_type": 0,
+    "skin_list": [
+        {
+            "skin_id": 3111210,
+            "skin_name": "Ben: Fluffy Beastking",
+            "skin_vertical_painting_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_vertical_painting/role_vertical_painting_1121.png",
+            "skin_square_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_square_avatar/role_square_avatar_1121.png",
+            "skin_hollow_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/831c5bd35db5778a67b92e8471cf6d51.png",
+            "skin_vertical_painting_color": "#a68d73",
+            "unlocked": true,
+            "rarity": "S",
+            "is_original": true
+        }
+    ],
+    "role_square_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_square_avatar/role_square_avatar_1121.png",
+    "awaken_state": "AwakenStateNotVisible",
+    "skill_awaken": {
+        "has_awaken_system": false,
+        "awaken_level": 0,
+        "awaken_max_level": 0,
+        "skill_awaken_items": []
+    }
+}
