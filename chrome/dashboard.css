@@ -154,6 +154,38 @@ button {
     border-left: 3px solid #f7768e;
     padding-left: 8px;
 }
+/* 스탯 그리드 컨테이너 */
+.stats-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+    background: rgba(0,0,0,0.2);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* 개별 스탯 행 */
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 4px 0;
+}
+
+.stat-name { font-size: 12px; color: #a9b1d6; }
+.stat-values-wrapper { display: flex; align-items: center; gap: 10px; }
+.stat-base-add { display: flex; flex-direction: column; align-items: flex-end; font-size: 10px; line-height: 1.2; font-family: 'Courier New', monospace; }
+.stat-base { color: #888; }
+.stat-add { color: #9ece6a; }
+.stat-final { font-size: 14px; font-weight: bold; color: #fff; font-family: 'Courier New', monospace; min-width: 45px; text-align: right; }
+
+/* 디스크 그리드 배치 */
+#disks-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
 
 /* W-엔진 스타일 */
 .weapon-display { display: flex; gap: 15px; align-items: center; }
