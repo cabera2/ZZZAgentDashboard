@@ -149,33 +149,46 @@ function renderDisks(equipArray) {
     if (!disksContainer) return;
 
     disksContainer.innerHTML = '';
+
     for (let i = 1; i <= 6; i++) {
         const disk = equipArray?.find(e => e.equipment_type === i);
         const diskSlotDiv = document.createElement('div');
-        diskSlotDiv.className = 'disk-card';
 
         if (disk) {
+            diskSlotDiv.className = 'disk-card';
+
+            // 1. 주옵션 (Soldier0Anby.txt 기준: property_name, base 필드 사용)
             const mainProp = disk.main_properties?.[0];
-            const subPropsHtml = (disk.sub_properties || []).map(sub =>
-                `<li style="display:flex; justify-content:space-between; font-size:10px;">
-                    <span>${sub.name}</span><span style="color:#fff;">+${sub.value}</span>
-                </li>`
-            ).join('');
+            const mainName = mainProp ? mainProp.property_name : '';
+            const mainValue = mainProp ? mainProp.base : '';
+
+            // 2. 부옵션 (properties 배열 사용, 1x4 형태)
+            const subPropsHtml = (disk.properties || []).map(sub => `
+                <li class="sub-item ${sub.valid ? 'valid' : ''}">
+                    <span class="sub-name">${sub.property_name}</span>
+                    <span class="sub-val">+${sub.base}</span>
+                </li>
+            `).join('');
 
             diskSlotDiv.innerHTML = `
-                <div style="display:flex; flex-direction:column; gap:5px; width:100%;">
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <img src="${disk.icon}" width="35">
-                        <div style="font-size:11px; color:#7aa2f7; font-weight:bold;">${disk.name.split('[')[0]}</div>
+                <div class="disk-main-info">
+                    <img src="${disk.icon}" class="disk-icon">
+                    <div class="disk-name-main">
+                        <span class="disk-name-text">${disk.name.split('[')[0]}</span>
+                        <div class="disk-main-stat">
+                            ${mainProp ? `${mainName} ${mainValue}` : '---'}
+                        </div>
                     </div>
-                    <div style="padding-top:4px; border-top:1px solid #333;">
-                        <div style="font-size:10px; color:#f7768e; font-weight:bold;">${mainProp ? `${mainProp.name} ${mainProp.value}` : ''}</div>
-                        <ul style="list-style:none; padding:0; margin:0; color:#a9b1d6;">${subPropsHtml}</ul>
-                    </div>
-                </div>`;
+                </div>
+                <ul class="disk-sub-list">
+                    ${subPropsHtml}
+                </ul>
+            `;
         } else {
-            diskSlotDiv.innerHTML = `<div class="empty-disk-msg">${i}번 비어있음</div>`;
+            diskSlotDiv.className = 'disk-card empty-slot';
+            diskSlotDiv.innerHTML = `<div class="empty-disk-msg">${i}번 슬롯 비어있음</div>`;
         }
+
         disksContainer.appendChild(diskSlotDiv);
     }
 }

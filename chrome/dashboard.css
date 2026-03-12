@@ -105,32 +105,72 @@ button {
 }
 .section-box h3 { margin-top: 0; color: var(--text-sub); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
 
-/* 디스크 그리드 */
+/* 디스크 그리드 배치 (이미 있다면 유지, 없다면 추가) */
+#disks-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+/* 새로운 디스크 카드 디자인 */
 .disk-card {
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border-color);
-    display: flex; gap: 10px; padding: 10px; border-radius: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
-.disk-header { position: relative; width: 60px; }
-.disk-slot-num {
-    position: absolute; top: -5px; left: -5px;
-    background: var(--highlight); color: white;
-    font-size: 10px; padding: 2px 5px; border-radius: 3px;
+
+.disk-main-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.disk-info { flex: 1; }
-.disk-name { font-size: 12px; font-weight: bold; color: #fff; margin-bottom: 4px; }
-.disk-main-stat { font-size: 11px; color: var(--text-sub); margin-bottom: 5px; }
-.disk-sub-stats {
-    list-style: none; padding: 0; margin: 0;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+
+.disk-icon { width: 40px; height: 40px; }
+
+.disk-name-main { flex: 1; }
+.disk-name-text { font-size: 11px; color: #7aa2f7; font-weight: bold; display: block; }
+.disk-main-stat { font-size: 12px; color: #f7768e; font-weight: bold; margin-top: 2px; }
+
+/* 부옵션 리스트 (공식 사이트 스타일) */
+.disk-sub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* grid 대신 flex로 세로 나열 */
+    flex-direction: column;
+    gap: 2px;
 }
-.disk-sub-stats li { font-size: 10px; color: #a9b1d6; }
-.stat-val { color: #fff; float: right; margin-right: 5px; }
+
+.sub-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px; /* 가독성을 위해 살짝 키움 */
+    color: #a9b1d6;
+    padding: 1px 0;
+}
+
+/* 유효 옵션 강조: 사용자님 지적대로 'valid' 필드 기준 */
+.sub-item.valid {
+    color: #ffeb3b; /* 노란색 강조 */
+    font-weight: bold;
+}
+
+.sub-val { color: inherit; }
 
 /* 빈 슬롯 스타일 */
 .empty-slot {
-    border: 1px dashed #444; background: transparent;
-    display: flex; align-items: center; justify-content: center; height: 80px;
+    border: 1px dashed #444;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
 }
 .empty-disk-msg { color: #555; font-size: 12px; }
 
