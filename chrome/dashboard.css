@@ -163,6 +163,24 @@ button {
 
 .sub-val { color: inherit; }
 
+/* 강화 횟수 숫자 스타일 */
+.upgrade-count {
+    font-size: 10px;
+    color: #888; /* 기본은 회색 */
+    margin-left: 5px;
+}
+
+/* 유효 옵션(노란색)일 때 강화 횟수 색상도 맞춰줌 */
+.sub-item.valid .upgrade-count {
+    color: #ffeb3b;
+    opacity: 0.8;
+}
+
+.sub-val-group {
+    display: flex;
+    align-items: center;
+}
+
 /* 빈 슬롯 스타일 */
 .empty-slot {
     border: 1px dashed #444;

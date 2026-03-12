@@ -18,7 +18,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
         const {game_role_id: roleId, region, nickname} = zzzGame;
         resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/3]</b> 목록 가져오는 중...`;
 
-        const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}`;
+        const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=ko-kr`;
 
         chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
             if (!basicRes.success || basicRes.data.retcode !== 0) return resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
@@ -28,7 +28,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
 
             const detailPromises = avatarIds.map(id => {
                 return new Promise((resolve) => {
-                    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}`;
+                    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}&lang=ko-kr`;
                     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => resolve(res));
                 });
             });
@@ -157,18 +157,23 @@ function renderDisks(equipArray) {
         if (disk) {
             diskSlotDiv.className = 'disk-card';
 
-            // 1. 주옵션 (Soldier0Anby.txt 기준: property_name, base 필드 사용)
             const mainProp = disk.main_properties?.[0];
-            const mainName = mainProp ? mainProp.property_name : '';
-            const mainValue = mainProp ? mainProp.base : '';
 
-            // 2. 부옵션 (properties 배열 사용, 1x4 형태)
-            const subPropsHtml = (disk.properties || []).map(sub => `
-                <li class="sub-item ${sub.valid ? 'valid' : ''}">
-                    <span class="sub-name">${sub.property_name}</span>
-                    <span class="sub-val">+${sub.base}</span>
-                </li>
-            `).join('');
+            // 부속성 렌더링
+            const subPropsHtml = (disk.properties || []).map(sub => {
+                // 강화 횟수 (add 필드가 0보다 클 때만 표시)
+                const upgradeHtml = sub.add > 0 ? `<span class="upgrade-count">(+${sub.add})</span>` : '';
+
+                return `
+                    <li class="sub-item ${sub.valid ? 'valid' : ''}">
+                        <span class="sub-name">${sub.property_name}</span>
+                        <div class="sub-val-group">
+                            <span class="sub-val">+${sub.base}</span>
+                            ${upgradeHtml}
+                        </div>
+                    </li>
+                `;
+            }).join('');
 
             diskSlotDiv.innerHTML = `
                 <div class="disk-main-info">
@@ -176,7 +181,7 @@ function renderDisks(equipArray) {
                     <div class="disk-name-main">
                         <span class="disk-name-text">${disk.name.split('[')[0]}</span>
                         <div class="disk-main-stat">
-                            ${mainProp ? `${mainName} ${mainValue}` : '---'}
+                            ${mainProp ? `${mainProp.property_name} ${mainProp.base}` : '---'}
                         </div>
                     </div>
                 </div>
