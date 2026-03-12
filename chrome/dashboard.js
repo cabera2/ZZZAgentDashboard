@@ -128,15 +128,19 @@ function renderWeapon(weapon) {
     const weaponBox = document.getElementById('weapon-info');
     if (!weaponBox) return;
 
-    weaponBox.innerHTML = weapon ? `
-        <div class="weapon-display">
-            <img src="${weapon.icon}" class="weapon-icon">
-            <div>
-                <div style="font-weight:bold; color:#fff;">${weapon.name}</div>
-                <div style="font-size:12px; color:#aaa;">Lv. ${weapon.level} | 돌파 ${weapon.star}</div>
+    if (weapon) {
+        weaponBox.innerHTML = `
+            <div class="weapon-display">
+                <img src="${weapon.icon}" class="weapon-icon">
+                <div class="weapon-details">
+                    <div class="weapon-name">${weapon.name}</div>
+                    <div class="weapon-level-star">Lv. ${weapon.level} | 돌파 ${weapon.star}</div>
+                </div>
             </div>
-        </div>
-    ` : `<div style="color:#666;">장착된 W-엔진이 없습니다.</div>`;
+        `;
+    } else {
+        weaponBox.innerHTML = `<div style="color:#666; font-size:12px; text-align:center;">장착된 W-엔진 없음</div>`;
+    }
 }
 
 // [분리] 디스크 정보 렌더링 함수
