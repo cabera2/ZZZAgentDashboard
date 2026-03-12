@@ -83,7 +83,7 @@ function renderAgentNav(agents) {
     });
 }
 
-// 선택된 캐릭터 상세 정보 화면 렌더링
+// 선택된 캐릭터 상세 정보 화면 렌더링 (Orchestrator)
 function renderAgentDetail(agent) {
     // 1. 메인 컨텐츠 표시
     document.getElementById('main-content').classList.remove('hidden');
@@ -93,43 +93,99 @@ function renderAgentDetail(agent) {
     document.getElementById('agent-name').innerText = agent.name_mi18n;
     document.getElementById('agent-level').innerText = `Lv. ${agent.level}`;
 
-    // 3. 캐릭터 상세 스탯 (루트의 properties 필드 사용)
-    // Soldier0Anby.txt에서 확인된 루트 properties 배열 전달
-    renderStats(agent.properties);
+    // 3. 기능별 함수 호출
+    renderStats(agent.properties);    // 상세 스탯 영역
+    renderWeapon(agent.weapon);       // W-엔진 영역
+    renderDisks(agent.equip);         // 디스크 영역
+}
 
-    // 4. W-엔진 정보 렌더링
+// [분리] 상세 스탯 렌더링 함수
+function renderStats(propsArray) {
+    let statsBox = document.getElementById('stats-summary');
+
+    // 이 부분이 누락되어 박스가 사라졌던 것입니다.
+    if (!statsBox) {
+        statsBox = document.createElement('div');
+        statsBox.id = 'stats-summary';
+        statsBox.className = 'section-box';
+        const rightPanel = document.getElementById('right-panel');
+        if (rightPanel) {
+            rightPanel.prepend(statsBox); // 우측 패널 최상단에 추가
+        } else {
+            return; // 부모가 없으면 중단
+        }
+    }
+
+    if (!propsArray || !Array.isArray(propsArray)) return;
+
+    let html = `<h3>상세 스탯</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px 24px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">`;
+
+    propsArray.forEach(s => {
+        const name = s.property_name || "스탯";
+        const base = s.base || "0";
+        const add = s.add || "0";
+        const finalVal = s.final || "0";
+        const hasAdd = (add !== "0" && add !== "0%" && add !== "0.0%" && add !== "");
+
+        html += `
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0;">
+                <span style="font-size:12px; color:#a9b1d6; flex-shrink: 0;">${name}</span>
+                <div style="display:flex; align-items:center; justify-content:flex-end; gap: 10px; flex-grow: 1;">
+                    ${hasAdd ? `
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; font-size:10px; line-height:1.2; font-family:'Courier New', monospace;">
+                            <span style="color:#888;">${base}</span>
+                            <span style="color:#9ece6a;">+${add}</span>
+                        </div>
+                    ` : ''}
+                    <span style="font-size:14px; font-weight:bold; color:#fff; font-family:'Courier New', monospace; text-align:right; min-width:45px;">
+                        ${finalVal}
+                    </span>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    statsBox.innerHTML = html;
+}
+
+// [분리] W-엔진 렌더링 함수
+function renderWeapon(weapon) {
     const weaponBox = document.getElementById('weapon-info');
-    if (agent.weapon) {
+    if (!weaponBox) return;
+
+    if (weapon) {
         weaponBox.innerHTML = `
             <div class="weapon-display" style="display:flex; gap:15px; align-items:center;">
-                <img src="${agent.weapon.icon}" width="50" style="border: 2px solid #a68d73; border-radius:4px;">
+                <img src="${weapon.icon}" width="50" style="border: 2px solid #a68d73; border-radius:4px;">
                 <div>
-                    <div style="font-weight:bold; color:#fff;">${agent.weapon.name}</div>
-                    <div style="font-size:12px; color:#aaa;">Lv. ${agent.weapon.level} | 돌파 ${agent.weapon.star}</div>
+                    <div style="font-weight:bold; color:#fff;">${weapon.name}</div>
+                    <div style="font-size:12px; color:#aaa;">Lv. ${weapon.level} | 돌파 ${weapon.star}</div>
                 </div>
             </div>
         `;
     } else {
         weaponBox.innerHTML = `<div style="color:#666;">장착된 W-엔진이 없습니다.</div>`;
     }
+}
 
-    // 5. 디스크 정보 렌더링 (3*2 Grid)
+// [분리] 디스크 정보 렌더링 함수
+function renderDisks(equipArray) {
     const disksContainer = document.getElementById('disks-container');
+    if (!disksContainer) return;
+
     disksContainer.innerHTML = '';
     disksContainer.style.display = 'grid';
     disksContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
     disksContainer.style.gap = '10px';
 
     for (let i = 1; i <= 6; i++) {
-        // equipment_type 기준으로 디스크 찾기
-        const disk = agent.equip && agent.equip.find(e => e.equipment_type === i);
+        const disk = equipArray && equipArray.find(e => e.equipment_type === i);
         const diskSlotDiv = document.createElement('div');
         diskSlotDiv.className = 'disk-card';
 
         if (disk) {
-            // 디스크 메인 옵션
             const mainProp = disk.main_properties && disk.main_properties[0];
-            // 디스크 부가 옵션 (li 형식)
             const subPropsHtml = (disk.sub_properties || []).map(sub =>
                 `<li style="display:flex; justify-content:space-between; font-size:10px;">
                     <span>${sub.name}</span>
@@ -158,53 +214,4 @@ function renderAgentDetail(agent) {
         }
         disksContainer.appendChild(diskSlotDiv);
     }
-}
-
-// 캐릭터 상세 스탯 전용 렌더링 함수
-function renderStats(propsArray) {
-    let statsBox = document.getElementById('stats-summary');
-    if (!statsBox) {
-        statsBox = document.createElement('div');
-        statsBox.id = 'stats-summary';
-        statsBox.className = 'section-box';
-        const rightPanel = document.getElementById('right-panel');
-        if (rightPanel) rightPanel.prepend(statsBox);
-    }
-
-    if (!propsArray || !Array.isArray(propsArray)) return;
-
-    // 공식 페이지 느낌의 레이아웃 설정
-    let html = `<h3>상세 스탯</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px 24px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">`;
-
-    propsArray.forEach(s => {
-        const name = s.property_name || "스탯";
-        const base = s.base || "0";
-        const add = s.add || "0";
-        const finalVal = s.final || "0";
-
-        // 추가 수치(add)가 유효한지 체크
-        const hasAdd = (add !== "0" && add !== "0%" && add !== "0.0%" && add !== "");
-
-        html += `
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0;">
-                <span style="font-size:12px; color:#a9b1d6; flex-shrink: 0;">${name}</span>
-                
-                <div style="display:flex; align-items:center; justify-content:flex-end; gap: 10px; flex-grow: 1;">
-                    ${hasAdd ? `
-                        <div style="display:flex; flex-direction:column; align-items:flex-end; font-size:10px; line-height:1.2; font-family:'Courier New', monospace;">
-                            <span style="color:#888;">${base}</span>
-                            <span style="color:#9ece6a;">+${add}</span>
-                        </div>
-                    ` : ''}
-                    
-                    <span style="font-size:14px; font-weight:bold; color:#fff; font-family:'Courier New', monospace; text-align:right; min-width:45px;">
-                        ${finalVal}
-                    </span>
-                </div>
-            </div>
-        `;
-    });
-
-    html += `</div>`;
-    statsBox.innerHTML = html;
 }
