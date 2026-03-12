@@ -125,26 +125,53 @@ button {
 
 .disk-main-info {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    justify-content: space-between; /* 이름은 왼쪽, 아이콘은 오른쪽 */
+    align-items: flex-start;
     padding-bottom: 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.disk-icon { width: 40px; height: 40px; }
-
 .disk-name-main { flex: 1; }
+.disk-level {
+    font-size: 11px;
+    color: #a9b1d6;
+    margin-top: 4px;
+}
+
+.disk-icon {
+    width: 42px;
+    height: 42px;
+    margin-left: 10px;
+}
+
 .disk-name-text { font-size: 11px; color: #7aa2f7; font-weight: bold; display: block; }
 .disk-main-stat { font-size: 12px; color: #f7768e; font-weight: bold; margin-top: 2px; }
+
+.sub-item.main-stat-row {
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.sub-item.main-stat-row .sub-name {
+    color: #fff;
+    font-weight: bold;
+}
+
+.sub-item.main-stat-row .sub-val {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 /* 부옵션 리스트 (공식 사이트 스타일) */
 .disk-sub-list {
     list-style: none;
-    padding: 0;
+    padding: 8px 0 0 0;
     margin: 0;
-    display: flex; /* grid 대신 flex로 세로 나열 */
+    display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .sub-item {
@@ -164,21 +191,29 @@ button {
 .sub-val { color: inherit; }
 
 /* 강화 횟수 숫자 스타일 */
-.upgrade-count {
-    font-size: 10px;
-    color: #888; /* 기본은 회색 */
-    margin-left: 5px;
-}
-
-/* 유효 옵션(노란색)일 때 강화 횟수 색상도 맞춰줌 */
-.sub-item.valid .upgrade-count {
-    color: #ffeb3b;
-    opacity: 0.8;
-}
-
-.sub-val-group {
+.sub-name-group {
     display: flex;
     align-items: center;
+    gap: 5px; /* 이름과 박스 사이 간격 */
+}
+
+/* 강화 횟수 사각 박스 스타일 */
+.upgrade-box {
+    display: inline-block;
+    color: #161817 !important;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 0px 4px;
+    border-radius: 4px;
+    margin-left: 6px;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+/* 수치는 우측 정렬 유지 */
+.sub-val {
+    color: inherit;
+    text-align: right;
 }
 
 /* 빈 슬롯 스타일 */

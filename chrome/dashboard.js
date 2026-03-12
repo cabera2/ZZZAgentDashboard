@@ -157,35 +157,43 @@ function renderDisks(equipArray) {
         if (disk) {
             diskSlotDiv.className = 'disk-card';
 
+            // 주 속성 정보 추출
             const mainProp = disk.main_properties?.[0];
+            const mainName = mainProp ? mainProp.property_name : '---';
+            const mainValue = mainProp ? mainProp.base : '';
 
-            // 부속성 렌더링
+            // 부 속성 리스트 생성
             const subPropsHtml = (disk.properties || []).map(sub => {
-                // 강화 횟수 (add 필드가 0보다 클 때만 표시)
-                const upgradeHtml = sub.add > 0 ? `<span class="upgrade-count">(+${sub.add})</span>` : '';
+                // 박스 배경색을 글자색과 동일하게 설정 (유효 옵션은 노란색, 나머지는 연보라색)
+                const boxBgColor = sub.valid ? '#ffeb3b' : '#a9b1d6';
+
+                // 플러스(+) 표시 복구 및 동적 스타일 적용
+                const upgradeBoxHtml = sub.add > 0
+                    ? `<span class="upgrade-box" style="background-color: ${boxBgColor};">+${sub.add}</span>`
+                    : '';
 
                 return `
                     <li class="sub-item ${sub.valid ? 'valid' : ''}">
-                        <span class="sub-name">${sub.property_name}</span>
-                        <div class="sub-val-group">
-                            <span class="sub-val">+${sub.base}</span>
-                            ${upgradeHtml}
+                        <div class="sub-name-group">
+                            <span class="sub-name">${sub.property_name}</span>
+                            ${upgradeBoxHtml}
                         </div>
+                        <span class="sub-val">+${sub.base}</span>
                     </li>
                 `;
             }).join('');
 
             diskSlotDiv.innerHTML = `
                 <div class="disk-main-info">
-                    <img src="${disk.icon}" class="disk-icon">
                     <div class="disk-name-main">
                         <span class="disk-name-text">${disk.name.split('[')[0]}</span>
-                        <div class="disk-main-stat">
-                            ${mainProp ? `${mainProp.property_name} ${mainProp.base}` : '---'}
-                        </div>
-                    </div>
-                </div>
+                        <div class="disk-level">Lv.${disk.level || 15}</div> </div>
+                    <img src="${disk.icon}" class="disk-icon"> </div>
                 <ul class="disk-sub-list">
+                    <li class="sub-item main-stat-row">
+                        <span class="sub-name">${mainName}</span>
+                        <span class="sub-val">${mainValue}</span>
+                    </li>
                     ${subPropsHtml}
                 </ul>
             `;

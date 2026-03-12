@@ -1,0 +1,22 @@
+﻿{
+  "manifest_version": 3,
+  "name": "ZZZ Mobile Force",
+  "version": "1.1",
+  "permissions": ["declarativeNetRequest"],
+  "host_permissions": ["https://act.hoyolab.com/*"],
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "ruleset_1",
+      "enabled": true,
+      "path": "rules.json"
+    }]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://act.hoyolab.com/app/zzz-game-record/*.html*"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ]
+}
