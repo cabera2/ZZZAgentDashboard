@@ -173,18 +173,34 @@ function renderStats(propsArray) {
 
     if (!propsArray || !Array.isArray(propsArray)) return;
 
-    // 공식 페이지 스타일의 2열 그리드
-    let html = `<h3>상세 스탯</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px 24px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">`;
+    // 공식 페이지 느낌의 레이아웃 설정
+    let html = `<h3>상세 스탯</h3><div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px 24px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">`;
 
     propsArray.forEach(s => {
-        // [수정] 보내주신 JSON의 실제 필드명: property_name, final
-        const name = s.property_name;
-        const value = s.final;
+        const name = s.property_name || "스탯";
+        const base = s.base || "0";
+        const add = s.add || "0";
+        const finalVal = s.final || "0";
+
+        // 추가 수치(add)가 유효한지 체크
+        const hasAdd = (add !== "0" && add !== "0%" && add !== "0.0%" && add !== "");
 
         html += `
-            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0;">
-                <span style="font-size:12px; color:#a9b1d6;">${name}</span>
-                <span style="font-size:13px; font-weight:bold; color:#fff;">${value}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0;">
+                <span style="font-size:12px; color:#a9b1d6; flex-shrink: 0;">${name}</span>
+                
+                <div style="display:flex; align-items:center; justify-content:flex-end; gap: 10px; flex-grow: 1;">
+                    ${hasAdd ? `
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; font-size:10px; line-height:1.2; font-family:'Courier New', monospace;">
+                            <span style="color:#888;">${base}</span>
+                            <span style="color:#9ece6a;">+${add}</span>
+                        </div>
+                    ` : ''}
+                    
+                    <span style="font-size:14px; font-weight:bold; color:#fff; font-family:'Courier New', monospace; text-align:right; min-width:45px;">
+                        ${finalVal}
+                    </span>
+                </div>
             </div>
         `;
     });
