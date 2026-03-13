@@ -1,63 +1,63 @@
 ﻿(function() {
-    // 1. 모바일 위장
+    // 1. 모바일 환경 위장 (페이지 로드 전 가장 먼저 실행되어야 함!)
     Object.defineProperty(navigator, 'userAgent', { get: () => 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1' });
 
-    // 2. 스타일 주입
-    const style = document.createElement('style');
-    style.textContent = `
-        #zzz-pc-dashboard {
-            width: 900px !important; min-height: 500px !important;
-            background: rgba(0, 50, 0, 0.8) !important;
-            border: 5px solid lime !important;
-            position: fixed; top: 10px; left: 10px; z-index: 100000;
-            padding: 20px; color: white; overflow-y: auto;
-        }
-        /* 복제된 카드 내의 아이콘들이 깨지지 않도록 강제 스타일 부여 */
-        #zzz-pc-dashboard .info-card { 
-            display: block !important; 
-            background: #1b1b1b !important;
-            margin-top: 20px;
-        }
-    `;
-    document.documentElement.appendChild(style);
+    // 2. 실제 요소를 다루는 메인 작업 함수
+    const initIframeDashboard = () => {
+        // 이제 document.body가 확실히 존재합니다!
+        const oldBox = document.getElementById('zzz-pc-dashboard');
+        if (oldBox) oldBox.remove();
 
-    // 3. 대시보드 생성
-    const box = document.createElement('div');
-    box.id = 'zzz-pc-dashboard';
-    box.innerHTML = '<h1>ONLY SKILL TEST (CLONE MODE)</h1><div id="target-slot"></div>';
-    document.body ? document.body.appendChild(box) : document.documentElement.appendChild(box);
+        const iframe = document.createElement('iframe');
+        iframe.id = 'zzz-pc-dashboard';
+        iframe.style.cssText = `
+            position: fixed; top: 20px; left: 20px; 
+            width: 400px; height: 350px; /* 창 크기 영구 고정 */
+            border: 5px solid lime; border-radius: 15px;
+            z-index: 100000; background: #1b1b1b;
+        `;
+        document.body.appendChild(iframe);
 
-    // 4. 스킬 영역 복제 함수
-    const cloneSkill = () => {
-        const slot = document.getElementById('target-slot');
-        // 이미 복제본이 들어있다면 중단
-        if (slot.children.length > 0) return;
+        const idoc = iframe.contentDocument || iframe.contentWindow.document;
 
-        const cards = document.querySelectorAll('.info-card');
-        let skillCard = null;
+        // 메인 페이지의 스타일 복사
+        const styles = document.querySelectorAll('style, link[rel="stylesheet"]');
+        styles.forEach(s => idoc.head.appendChild(s.cloneNode(true)));
 
-        cards.forEach(card => {
-            if (card.textContent.includes('Skills')) {
-                // 아이콘(img 등)이 하나라도 로드되었을 때만 복제 시도
-                if (card.querySelector('img, .skill-icon')) {
+        const customStyle = idoc.createElement('style');
+        customStyle.textContent = `
+            body { padding: 15px; margin: 0; background: #121212; overflow: hidden; } 
+            .info-card { display: block !important; width: 100% !important; margin: 0 !important; }
+        `;
+        idoc.head.appendChild(customStyle);
+
+        // 스킬 영역 복제
+        const cloneSkillToIframe = () => {
+            if (idoc.body.querySelector('.info-card')) return;
+
+            const cards = document.querySelectorAll('.info-card');
+            let skillCard = null;
+
+            cards.forEach(card => {
+                if (card.textContent.includes('Skills') && card.querySelector('img')) {
                     skillCard = card;
                 }
-            }
-        });
+            });
 
-        if (skillCard) {
-            // true를 주어 자식 요소들(아이콘 등)까지 통째로 복제
-            const clone = skillCard.cloneNode(true);
-            slot.appendChild(clone);
-            console.log("💎 스킬 영역 데이터 보존 복제 성공!");
-        }
+            if (skillCard) {
+                idoc.body.appendChild(skillCard.cloneNode(true));
+                console.log("🛡️ iframe 내부로 복제 완료! 이제 vw는 절대 변하지 않습니다.");
+            }
+        };
+
+        setInterval(cloneSkillToIframe, 1000);
     };
 
-    // 데이터 로딩 시간을 고려해 3초 뒤부터 감시 시작
-    setTimeout(() => {
-        const observer = new MutationObserver(cloneSkill);
-        observer.observe(document.body, { childList: true, subtree: true });
-        cloneSkill(); // 초기 실행
-    }, 3000);
-
+    // 3. 브라우저가 body 태그를 다 그릴 때까지 기다렸다가 실행
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initIframeDashboard);
+    } else {
+        // 이미 로드된 상태라면 즉시 실행
+        initIframeDashboard();
+    }
 })();
