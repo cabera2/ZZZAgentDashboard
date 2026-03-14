@@ -33,23 +33,18 @@
         // 이미 복제본이 들어있다면 중단
         if (slot.children.length > 0) return;
 
-        const cards = document.querySelectorAll('.info-card');
-        let skillCard = null;
+        // [수정된 부분] 텍스트 매칭 대신 구조적 위치(.role-extra-infos의 3번째 섹션)로 타겟을 찾습니다.
+        const skillSection = document.querySelector('.role-extra-infos section:nth-of-type(3)');
 
-        cards.forEach(card => {
-            if (card.textContent.includes('Skills')) {
-                // 아이콘(img 등)이 하나라도 로드되었을 때만 복제 시도
-                if (card.querySelector('img, .skill-icon')) {
-                    skillCard = card;
-                }
+        if (skillSection) {
+            const skillCard = skillSection.querySelector('.info-card') || skillSection;
+
+            // 001.js의 기존 조건 유지: 아이콘(img 등)이 로드되었을 때만 복제 시도
+            if (skillCard.querySelector('img, .skill-icon')) {
+                const clone = skillCard.cloneNode(true);
+                slot.appendChild(clone);
+                console.log("💎 구조적 선택자 기반 복제 성공!");
             }
-        });
-
-        if (skillCard) {
-            // true를 주어 자식 요소들(아이콘 등)까지 통째로 복제
-            const clone = skillCard.cloneNode(true);
-            slot.appendChild(clone);
-            console.log("💎 스킬 영역 데이터 보존 복제 성공!");
         }
     };
 
