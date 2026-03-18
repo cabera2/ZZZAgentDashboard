@@ -85,8 +85,9 @@ function renderAgentNav(agents) {
         // 순서 변경: 캐릭터 아이콘이 1층, 프레임들이 그 위(2층)에 올라옴
         wrapper.innerHTML = `
     <img src="${agent.hollow_icon_path}" class="icon-char">
-    <img src="${ZZZ_RESOURCE.BASE}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame">
-    <img src="${ZZZ_RESOURCE.BASE}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame">
+    <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame">
+    <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame">
+   
 `;
 
         wrapper.addEventListener('click', () => {
@@ -164,11 +165,11 @@ function renderSkills(skillsArray) {
     const skillsBox = document.getElementById('skills-info');
     if (!skillsBox || !skillsArray) return;
 
-    // 딕셔너리 키 매칭용 맵 (API 데이터의 순서에 따라 매칭)
-    // 보통 일반, 회피, 특수, 연계, 핵심 순서입니다.
     const skillKeys = ['BASIC', 'DODGE', 'SPECIAL', 'CHAIN', 'CORE', 'ASSIST'];
 
+    // 제목 추가 및 그리드 컨테이너 유지
     skillsBox.innerHTML = `
+        <h3>스킬 정보</h3>
         <div class="skills-grid">
             ${skillsArray.map((skill, index) => {
         const skillKey = skillKeys[index] || 'BASIC';
@@ -178,8 +179,8 @@ function renderSkills(skillsArray) {
                     <div class="skill-item">
                         <div class="skill-icon-wrapper">
                             <img src="${iconUrl}" class="skill-icon">
-                            <span class="skill-level">Lv.${skill.level}</span>
-                        </div
+                            <span class="skill-level">${skill.level || 1}</span>
+                        </div>
                     </div>
                 `;
     }).join('')}
