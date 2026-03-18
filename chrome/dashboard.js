@@ -1,4 +1,23 @@
-﻿let globalAgents = []; // 가져온 에이전트 데이터를 저장할 전역 변수
+﻿const ZZZ_RESOURCE = {
+    BASE: {
+        NAV: "https://act.hoyolab.com/app/zzz-game-record/images/",
+        SKILL: "https://act.hoyoverse.com/gt-ui/assets/icons/"
+    },
+    NAV_FRAME: {
+        UNSELECTED: "card-bg.0e12ef65.png",
+        SELECTED: "card-selected-bg.1059d6ea.png"
+    },
+    SKILLS: {
+        BASIC:   "1f66bafcc1f069c2.png", // 일반 공격
+        DODGE:   "b15382e2428392f2.png", // 회피
+        SPECIAL: "38b9cdcdee285da4.png", // 특수 공격
+        CHAIN:   "11ee8bd83f94a1eb.png", // 콤보/궁극기
+        CORE:    "25a4b80fcfd80526.png", // 핵심 스킬
+        ASSIST:  "40791617886f6731.png"  // 지원 공격
+    }
+};
+
+let globalAgents = []; // 가져온 에이전트 데이터를 저장할 전역 변수
 
 document.getElementById('fetchBtn').addEventListener('click', () => {
     const resultDiv = document.getElementById('result');
@@ -58,9 +77,6 @@ function renderAgentNav(agents) {
     nav.innerHTML = '';
     nav.classList.remove('hidden');
 
-    const BG_URL = "https://act.hoyolab.com/app/zzz-game-record/images/card-bg.0e12ef65.png";
-    const SELECTED_BG_URL = "https://act.hoyolab.com/app/zzz-game-record/images/card-selected-bg.1059d6ea.png";
-
     agents.forEach((agent, index) => {
         const wrapper = document.createElement('div');
         wrapper.className = 'agent-icon-wrapper';
@@ -69,8 +85,8 @@ function renderAgentNav(agents) {
         // 순서 변경: 캐릭터 아이콘이 1층, 프레임들이 그 위(2층)에 올라옴
         wrapper.innerHTML = `
     <img src="${agent.hollow_icon_path}" class="icon-char">
-    <img src="https://act.hoyolab.com/app/zzz-game-record/images/card-bg.0e12ef65.png" class="icon-frame unselected-frame">
-    <img src="https://act.hoyolab.com/app/zzz-game-record/images/card-selected-bg.1059d6ea.png" class="icon-selected-frame selected-frame">
+    <img src="${ZZZ_RESOURCE.BASE}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame">
+    <img src="${ZZZ_RESOURCE.BASE}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame">
 `;
 
         wrapper.addEventListener('click', () => {
@@ -97,6 +113,7 @@ function renderAgentDetail(agent) {
     renderStats(agent.properties);    // 상세 스탯 영역
     renderWeapon(agent.weapon);       // W-엔진 영역
     renderDisks(agent.equip);         // 디스크 영역
+    renderSkills(agent.skills);       //스킬 영역
 }
 
 // [분리] 상세 스탯 렌더링 함수
@@ -141,6 +158,33 @@ function renderWeapon(weapon) {
     } else {
         weaponBox.innerHTML = `<div style="color:#666; font-size:12px; text-align:center;">장착된 W-엔진 없음</div>`;
     }
+}
+
+function renderSkills(skillsArray) {
+    const skillsBox = document.getElementById('skills-info');
+    if (!skillsBox || !skillsArray) return;
+
+    // 딕셔너리 키 매칭용 맵 (API 데이터의 순서에 따라 매칭)
+    // 보통 일반, 회피, 특수, 연계, 핵심 순서입니다.
+    const skillKeys = ['BASIC', 'DODGE', 'SPECIAL', 'CHAIN', 'CORE', 'ASSIST'];
+
+    skillsBox.innerHTML = `
+        <div class="skills-grid">
+            ${skillsArray.map((skill, index) => {
+        const skillKey = skillKeys[index] || 'BASIC';
+        const iconUrl = `${ZZZ_RESOURCE.BASE.SKILL}${ZZZ_RESOURCE.SKILLS[skillKey]}`;
+
+        return `
+                    <div class="skill-item">
+                        <div class="skill-icon-wrapper">
+                            <img src="${iconUrl}" class="skill-icon">
+                            <span class="skill-level">Lv.${skill.level}</span>
+                        </div
+                    </div>
+                `;
+    }).join('')}
+        </div>
+    `;
 }
 
 // [분리] 디스크 정보 렌더링 함수
