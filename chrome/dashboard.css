@@ -17,42 +17,25 @@ body {
 
 /* 상단 컨트롤 및 네비게이션 */
 .header-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
+    display: flex; align-items: center; gap: 10px; margin-bottom: 15px;
 }
 
 #langSelect {
-    padding: 10px;
-    background-color: var(--panel-bg);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
+    padding: 10px; background-color: var(--panel-bg); color: var(--text-main);
+    border: 1px solid var(--border-color); border-radius: 5px;
+    font-weight: bold; cursor: pointer; outline: none;
 }
 
-#langSelect:hover {
-    border-color: var(--text-sub);
-}
+#langSelect:hover { border-color: var(--text-sub); }
 
-/* 기존 버튼 스타일 유지 및 미세 조정 */
 button {
-    padding: 10px 20px;
-    background-color: #fff;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.2s;
+    padding: 10px 20px; background-color: #fff; color: #000;
+    border: none; border-radius: 5px; cursor: pointer;
+    font-weight: bold; transition: background-color 0.2s;
 }
 
-button:hover {
-    background-color: #e0e0e0;
-}
+button:hover { background-color: #e0e0e0; }
+
 #result { margin-left: 15px; font-size: 14px; }
 
 /* 에이전트 목록 (상단 바) */
@@ -62,32 +45,23 @@ button:hover {
 }
 
 .agent-icon-wrapper {
-    position: relative;
-    width: 110px; height: 45px;
+    position: relative; width: 110px; height: 45px;
     flex-shrink: 0; cursor: pointer;
 }
 
 .selected-frame { display: none; }
 .unselected-frame { display: block; }
-
-/* 선택된 상태(.active): 기본 프레임 숨기고 노란 프레임 표시 */
 .agent-icon-wrapper.active .unselected-frame { display: none; }
 .agent-icon-wrapper.active .selected-frame { display: block; }
 
 .icon-frame, .icon-selected-frame {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 20 !important; /* 아이콘보다 높은 숫자 */
-    pointer-events: none; /* 프레임이 클릭을 막지 않도록 설정 */
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 20 !important; pointer-events: none;
 }
 
 .icon-char {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 10 !important; /* 낮은 숫자 */
-    object-fit: contain;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 10 !important; object-fit: contain;
 }
 
 /* 메인 레이아웃 (좌우 분할) */
@@ -95,395 +69,146 @@ button:hover {
     display: flex; gap: 20px; height: calc(100vh - 150px);
 }
 
-/* 좌측 패널 (초상화) */
+/* ===================================
+   공통 박스 스타일
+==================================== */
+.section-box {
+    background-color: var(--panel-bg); padding: 20px; border-radius: 10px;
+}
+.section-box h3 {
+    margin-top: 0; color: var(--text-sub);
+    border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+}
+
+/* ===================================
+   좌측 패널 (가로폭 714px 고정)
+==================================== */
 #left-panel {
-    flex: 1; max-width: 400px;
-    background-color: var(--panel-bg); border-radius: 10px;
-    display: flex; flex-direction: column; overflow: hidden;
-    position: relative;
+    width: 714px; min-width: 714px;
+    background-color: transparent; gap: 15px;
+    display: flex; flex-direction: column;
+}
+
+/* 1. 캐릭터 초상화 박스 */
+.portrait-box {
+    padding: 15px; display: flex; justify-content: center; align-items: center;
 }
 .portrait-container {
-    position: relative; width: 100%; height: 100%;
+    position: relative; width: 684px; height: 356px;
+    border-radius: 4px; overflow: hidden;
 }
-
 #agent-portrait {
-    width: 100%; height: 100%; object-fit: contain;
+    width: 100%; height: 100%; object-fit: cover;
 }
-
-.group-icon {
-    position: absolute; top: 20px; right: 20px;
-    width: 50px; height: 50px; filter: drop-shadow(0 0 5px black);
-}
-
 .agent-title {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
 }
 .agent-title h1 { margin: 0; font-size: 24px; color: white; }
 
-/* 우측 패널 (데이터) */
+/* 2. 무기 및 스킬 박스 공통 여백 조정 */
+.weapon-box, .skills-box { padding: 15px; }
+
+/* W-엔진 레이아웃 */
+.weapon-container { display: flex; gap: 20px; align-items: center; }
+.weapon-icon { width: 156px; height: 156px; object-fit: contain; flex-shrink: 0; }
+.weapon-detail { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.weapon-name-row { border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 5px; margin-bottom: 5px; }
+.weapon-name { display: block; font-size: 18px; font-weight: bold; color: #fff; }
+.weapon-meta { font-size: 13px; color: #888; }
+.weapon-stats-list { display: flex; flex-direction: column; gap: 5px; }
+.weapon-stat-row { display: flex; justify-content: space-between; font-size: 14px; }
+.main-stat { color: #fff; font-weight: 500; }
+.sub-stat { color: #7aa2f7; }
+.stat-label { font-size: 14px; }
+.stat-value { font-family: 'Courier New', monospace; font-weight: bold; }
+
+/* 스킬 영역 레이아웃 (6x1) */
+.skills-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px;
+    justify-items: center; align-items: center; margin-top: 10px;
+}
+.skill-item { display: flex; justify-content: center; align-items: center; }
+.skill-icon-wrapper { position: relative; width: 72px; height: 72px; }
+.skill-icon { width: 100%; height: 100%; object-fit: contain; }
+.skill-level {
+    position: absolute; bottom: -2px; right: -2px;
+    background: #1a1b26; color: #fff; font-size: 12px;
+    font-weight: bold; padding: 2px 6px; border-radius: 4px;
+    border: 1px solid var(--border-color); z-index: 5;
+}
+
+/* ===================================
+   우측 패널 (가변폭, 데이터)
+==================================== */
 #right-panel {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-.section-box {
-    background-color: var(--panel-bg); padding: 20px;
-    border-radius: 10px;
-}
-.section-box h3 { margin-top: 0; color: var(--text-sub); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
-
-/* 디스크 그리드 배치 (이미 있다면 유지, 없다면 추가) */
-#disks-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    flex: 2; display: flex; flex-direction: column; gap: 20px;
+    overflow-y: auto; padding-right: 5px;
 }
 
-/* 새로운 디스크 카드 디자인 */
-.disk-card {
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    padding: 12px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.disk-main-info {
-    display: flex;
-    justify-content: space-between; /* 이름은 왼쪽, 아이콘은 오른쪽 */
-    align-items: flex-start;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.disk-name-main { flex: 1; }
-.disk-level {
-    font-size: 11px;
-    color: #a9b1d6;
-    margin-top: 4px;
-}
-
-.disk-icon {
-    width: 42px;
-    height: 42px;
-    margin-left: 10px;
-}
-
-.disk-name-text { font-size: 11px; color: #7aa2f7; font-weight: bold; display: block; }
-.disk-main-stat { font-size: 12px; color: #f7768e; font-weight: bold; margin-top: 2px; }
-
-.sub-item.main-stat-row {
-    margin-bottom: 6px;
-    padding-bottom: 4px;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-}
-
-.sub-item.main-stat-row .sub-name {
-    color: #fff;
-    font-weight: bold;
-}
-
-.sub-item.main-stat-row .sub-val {
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* 부옵션 리스트 (공식 사이트 스타일) */
-.disk-sub-list {
-    list-style: none;
-    padding: 8px 0 0 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.sub-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px; /* 가독성을 위해 살짝 키움 */
-    color: #a9b1d6;
-    padding: 1px 0;
-}
-
-/* 유효 옵션 강조: 사용자님 지적대로 'valid' 필드 기준 */
-.sub-item.valid {
-    color: #ffeb3b; /* 노란색 강조 */
-    font-weight: bold;
-}
-
-.sub-val { color: inherit; }
-
-/* 강화 횟수 숫자 스타일 */
-.sub-name-group {
-    display: flex;
-    align-items: center;
-    gap: 5px; /* 이름과 박스 사이 간격 */
-}
-
-/* 강화 횟수 사각 박스 스타일 */
-.upgrade-box {
-    display: inline-block;
-    color: #161817 !important;
-    font-size: 9px;
-    font-weight: 800;
-    padding: 0px 4px;
-    border-radius: 4px;
-    margin-left: 6px;
-    line-height: 1.4;
-    vertical-align: middle;
-}
-
-/* 수치는 우측 정렬 유지 */
-.sub-val {
-    color: inherit;
-    text-align: right;
-}
-
-/* 빈 슬롯 스타일 */
-.empty-slot {
-    border: 1px dashed #444;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100px;
-}
-.empty-disk-msg { color: #555; font-size: 12px; }
-
-/* 스탯 요약 그리드 */
-.stats-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-}
-.stat-item { display: flex; flex-direction: column; }
-.stat-label { font-size: 11px; color: var(--text-sub); }
-.stat-value { font-size: 16px; font-weight: bold; color: #fff; }
-
+/* 상세 스탯 영역 */
 #stats-summary {
-    background: rgba(20, 20, 25, 0.8);
-    border: 1px solid #333;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    background: rgba(20, 20, 25, 0.8); border: 1px solid #333; padding: 15px;
 }
-
 #stats-summary h3 {
-    font-size: 14px;
-    color: #f7768e; /* 공식 페이지의 강조색 느낌 */
-    margin-top: 0;
-    margin-bottom: 12px;
-    border-left: 3px solid #f7768e;
-    padding-left: 8px;
+    font-size: 14px; color: #f7768e; margin-top: 0; margin-bottom: 12px;
+    border-bottom: none; border-left: 3px solid #f7768e; padding-left: 8px;
 }
-/* 스탯 그리드 컨테이너 */
 .stats-grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 24px;
-    background: rgba(0,0,0,0.2);
-    padding: 15px;
-    border-radius: 8px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;
+    background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;
 }
-
-/* 개별 스탯 행 */
 .stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    padding: 4px 0;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0;
 }
-
 .stat-name { font-size: 12px; color: #a9b1d6; }
 .stat-values-wrapper { display: flex; align-items: center; gap: 10px; }
-.stat-base-add { display: flex; flex-direction: column; align-items: flex-end; font-size: 10px; line-height: 1.2; font-family: 'Courier New', monospace; }
+.stat-base-add {
+    display: flex; flex-direction: column; align-items: flex-end;
+    font-size: 10px; line-height: 1.2; font-family: 'Courier New', monospace;
+}
 .stat-base { color: #888; }
 .stat-add { color: #9ece6a; }
-.stat-final { font-size: 14px; font-weight: bold; color: #fff; font-family: 'Courier New', monospace; min-width: 45px; text-align: right; }
-
-/* 디스크 그리드 배치 */
-#disks-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+.stat-final {
+    font-size: 14px; font-weight: bold; color: #fff;
+    font-family: 'Courier New', monospace; min-width: 45px; text-align: right;
 }
 
-/* W-엔진 컨테이너 레이아웃 */
-.weapon-container {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+/* 디스크 장착 정보 영역 */
+#disks-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.disk-card {
+    background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
+    padding: 12px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;
 }
+.disk-main-info {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.disk-name-main { flex: 1; }
+.disk-level { font-size: 11px; color: #a9b1d6; margin-top: 4px; }
+.disk-icon { width: 42px; height: 42px; margin-left: 10px; }
+.disk-name-text { font-size: 11px; color: #7aa2f7; font-weight: bold; display: block; }
 
-/* W-엔진 아이콘 (원본 사이즈 유지) */
-.weapon-icon {
-    width: 156px;
-    height: 156px;
-    object-fit: contain;
-    flex-shrink: 0;
+.disk-sub-list {
+    list-style: none; padding: 8px 0 0 0; margin: 0;
+    display: flex; flex-direction: column; gap: 4px;
 }
+.sub-item { display: flex; justify-content: space-between; font-size: 11px; color: #a9b1d6; padding: 1px 0; }
+.sub-item.main-stat-row { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); }
+.sub-item.main-stat-row .sub-name { color: #fff; font-weight: bold; }
+.sub-item.main-stat-row .sub-val { color: #fff; font-size: 14px; font-weight: bold; text-align: right; }
 
-/* 텍스트 정보 영역 */
-.weapon-detail {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.sub-item.valid { color: #ffeb3b; font-weight: bold; }
+.sub-name-group { display: flex; align-items: center; gap: 5px; }
+.upgrade-box {
+    display: inline-block; color: #161817 !important; font-size: 9px; font-weight: 800;
+    padding: 0px 4px; border-radius: 4px; margin-left: 6px; line-height: 1.4; vertical-align: middle;
 }
+.sub-val { color: inherit; text-align: right; }
 
-.weapon-name-row {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 5px;
-    margin-bottom: 5px;
+.empty-slot {
+    border: 1px dashed #444; background: transparent;
+    display: flex; align-items: center; justify-content: center; height: 100px;
 }
-
-.weapon-name {
-    display: block;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-}
-
-.weapon-meta {
-    font-size: 13px;
-    color: #888;
-}
-
-/* 속성(Stats) 리스트 */
-.weapon-stats-list {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.weapon-stat-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-}
-
-/* 기본 속성 강조 */
-.main-stat {
-    color: #fff;
-    font-weight: 500;
-}
-
-/* 고급 속성 강조 */
-.sub-stat {
-    color: #7aa2f7;
-}
-
-.stat-value {
-    font-family: 'Courier New', monospace;
-    font-weight: bold;
-}
-
-/* 1. 좌측 패널 가로폭 고정 (714px) */
-#left-panel {
-    width: 714px;
-    min-width: 714px; /* 화면이 좁아져도 축소되지 않도록 강제 */
-    background-color: transparent;
-    gap: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* 2. 캐릭터 초상화 박스 (패딩 포함 714px, 내부 이미지는 684x356) */
-.portrait-box {
-    padding: 15px; /* 사용자님 계산대로 15px 적용 */
-    background-color: var(--panel-bg);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.portrait-container {
-    position: relative;
-    width: 684px;
-    height: 356px;
-    border-radius: 4px; /* 이미지 모서리를 살짝 둥글게 (선택 사항) */
-    overflow: hidden;
-}
-
-#agent-portrait {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 원본 사이즈 684x356에 딱 맞게 채움 */
-}
-
-/* 초상화 내부 텍스트(이름, 레벨) 위치 조정 */
-.agent-title {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-}
-
-/* 3. 무기 및 스킬 박스 공통 배경 */
-.weapon-box, .skills-box {
-    background-color: var(--panel-bg);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-/* 4. 스킬 영역 (넓어진 공간에 맞춰 최적화) */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 15px;
-    justify-items: center; /* 가로 중앙 정렬 */
-    align-items: center;   /* 세로 중앙 정렬 (이탈 방지) */
-    margin-top: 10px;
-}
-
-.skill-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.skill-icon-wrapper {
-    position: relative;
-    /* 공간이 714px로 넓어졌으므로 아이콘 크기를 공식 UI처럼 시원하게 키웠습니다 */
-    width: 72px;
-    height: 72px;
-}
-
-.skill-icon {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-/* 레벨 뱃지 디자인 */
-.skill-level {
-    position: absolute;
-    bottom: -2px;
-    right: -2px;
-    background: #1a1b26;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    z-index: 5;
-}
-
-/* 오른쪽 패널 높이 조절 (스크롤 최적화) */
-#right-panel {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
+.empty-disk-msg { color: #555; font-size: 12px; }
