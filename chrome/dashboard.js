@@ -21,7 +21,8 @@ let globalAgents = []; // 가져온 에이전트 데이터를 저장할 전역 �
 
 document.getElementById('fetchBtn').addEventListener('click', () => {
     const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = "<b>[1/3]</b> 계정 정보 확인 중...";
+    const selectedLang = document.getElementById('langSelect').value;
+    resultDiv.innerHTML = `<b>[1/3]</b> 계정 정보 가져오는 중 (언어: ${selectedLang})...`;
 
     const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
 
@@ -37,7 +38,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
         const {game_role_id: roleId, region, nickname} = zzzGame;
         resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/3]</b> 목록 가져오는 중...`;
 
-        const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=ko-kr`;
+        const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
 
         chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
             if (!basicRes.success || basicRes.data.retcode !== 0) return resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
@@ -47,7 +48,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
 
             const detailPromises = avatarIds.map(id => {
                 return new Promise((resolve) => {
-                    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}&lang=ko-kr`;
+                    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}&lang=${selectedLang}`;
                     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => resolve(res));
                 });
             });
@@ -147,17 +148,39 @@ function renderWeapon(weapon) {
     if (!weaponBox) return;
 
     if (weapon) {
+        // 기본 속성 (main_properties) 추출
+        const mainPropsHtml = (weapon.main_properties || []).map(p => `
+            <div class="weapon-stat-row main-stat">
+                <span class="stat-label">${p.property_name}</span>
+                <span class="stat-value">${p.base}</span>
+            </div>
+        `).join('');
+
+        // 고급 속성 (properties) 추출
+        const subPropsHtml = (weapon.properties || []).map(p => `
+            <div class="weapon-stat-row sub-stat">
+                <span class="stat-label">${p.property_name}</span>
+                <span class="stat-value">${p.base}</span>
+            </div>
+        `).join('');
+
         weaponBox.innerHTML = `
-            <div class="weapon-display">
-                <img src="${weapon.icon}" class="weapon-icon">
-                <div class="weapon-details">
-                    <div class="weapon-name">${weapon.name}</div>
-                    <div class="weapon-level-star">Lv. ${weapon.level} | 돌파 ${weapon.star}</div>
+            <div class="weapon-container">
+                <img src="${weapon.icon}" class="weapon-icon" alt="${weapon.name}">
+                <div class="weapon-detail">
+                    <div class="weapon-name-row">
+                        <span class="weapon-name">${weapon.name}</span>
+                        <span class="weapon-meta">Lv.${weapon.level} | 돌파 ${weapon.star}</span>
+                    </div>
+                    <div class="weapon-stats-list">
+                        ${mainPropsHtml}
+                        ${subPropsHtml}
+                    </div>
                 </div>
             </div>
         `;
     } else {
-        weaponBox.innerHTML = `<div style="color:#666; font-size:12px; text-align:center;">장착된 W-엔진 없음</div>`;
+        weaponBox.innerHTML = `<div class="empty-msg">장착된 W-엔진이 없습니다.</div>`;
     }
 }
 

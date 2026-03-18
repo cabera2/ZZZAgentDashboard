@@ -16,11 +16,42 @@ body {
 .hidden { display: none !important; }
 
 /* 상단 컨트롤 및 네비게이션 */
-#header-section { margin-bottom: 20px; }
-.header-controls { margin-bottom: 15px; }
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#langSelect {
+    padding: 10px;
+    background-color: var(--panel-bg);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+#langSelect:hover {
+    border-color: var(--text-sub);
+}
+
+/* 기존 버튼 스타일 유지 및 미세 조정 */
 button {
-    padding: 10px 20px; background-color: white; color: black;
-    border: none; border-radius: 5px; cursor: pointer; font-weight: bold;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #e0e0e0;
 }
 #result { margin-left: 15px; font-size: 14px; }
 
@@ -284,42 +315,74 @@ button {
     gap: 10px;
 }
 
-/* W-엔진 스타일 */
-/* 왼쪽 패널용 W-엔진 스타일 */
-.weapon-on-left {
-    background: rgba(0, 0, 0, 0.4);
-    padding: 15px;
-    border-top: 1px solid var(--border-color);
-}
-
-.weapon-display {
+/* W-엔진 컨테이너 레이아웃 */
+.weapon-container {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     align-items: center;
 }
 
+/* W-엔진 아이콘 (원본 사이즈 유지) */
 .weapon-icon {
     width: 156px;
     height: 156px;
-    border-radius: 4px;
-    border: 2px solid #a68d73; /* 등급에 따른 색상은 추후 자동화 가능 */
+    object-fit: contain;
+    flex-shrink: 0;
 }
 
-.weapon-details {
+/* 텍스트 정보 영역 */
+.weapon-detail {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+
+.weapon-name-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .weapon-name {
+    display: block;
+    font-size: 18px;
     font-weight: bold;
     color: #fff;
+}
+
+.weapon-meta {
+    font-size: 13px;
+    color: #888;
+}
+
+/* 속성(Stats) 리스트 */
+.weapon-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.weapon-stat-row {
+    display: flex;
+    justify-content: space-between;
     font-size: 14px;
 }
 
-.weapon-level-star {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 2px;
+/* 기본 속성 강조 */
+.main-stat {
+    color: #fff;
+    font-weight: 500;
+}
+
+/* 고급 속성 강조 */
+.sub-stat {
+    color: #7aa2f7;
+}
+
+.stat-value {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
 }
 
 /* 1. 좌측 패널 가로폭 고정 (714px) */
