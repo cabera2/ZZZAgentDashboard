@@ -8,63 +8,94 @@
         SELECTED: "card-selected-bg.1059d6ea.png"
     },
     SKILLS: {
-        BASIC:   "1f66bafcc1f069c2.png", // 일반 공격
-        DODGE:   "b15382e2428392f2.png", // 회피
-        SPECIAL: "38b9cdcdee285da4.png", // 특수 공격
-        CHAIN:   "11ee8bd83f94a1eb.png", // 콤보/궁극기
-        CORE:    "25a4b80fcfd80526.png", // 핵심 스킬
-        ASSIST:  "40791617886f6731.png"  // 지원 공격
+        BASIC:   "1f66bafcc1f069c2.png",
+        DODGE:   "b15382e2428392f2.png",
+        SPECIAL: "38b9cdcdee285da4.png",
+        CHAIN:   "11ee8bd83f94a1eb.png",
+        CORE:    "25a4b80fcfd80526.png",
+        ASSIST:  "40791617886f6731.png"
     }
 };
 
 let globalAgents = [];
 
+// [추가] 다국어 데이터를 적용하는 함수
+function applyI18nLabels(i18nData) {
+    const mapping = {
+        'ui-title-weapon': 'roles_weapon',             // W-엔진
+        'ui-title-skills': 'roles_detail_skill_title', // 스킬
+        'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
+        'ui-title-disks': 'roles_equipment'            // 디스크
+    };
+
+    for (const [id, key] of Object.entries(mapping)) {
+        const element = document.getElementById(id);
+        if (element && i18nData[key]) {
+            element.textContent = i18nData[key];
+        }
+    }
+}
+
 document.getElementById('fetchBtn').addEventListener('click', () => {
     const resultDiv = document.getElementById('result');
     const selectedLang = document.getElementById('langSelect').value;
-    resultDiv.innerHTML = `<b>[1/3]</b> 계정 정보 가져오는 중 (언어: ${selectedLang})...`;
 
-    const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
+    resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
-    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, (response) => {
-        if (!response || !response.success || response.data.retcode !== 0) {
-            resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
-            return;
+    // 1. UI 다국어 데이터(i18n) 가져오기
+    const i18nUrl = `https://fastcdn.hoyoverse.com/mi18n/nap_global/m20240410hy38foxb7k/m20240410hy38foxb7k-${selectedLang}.json`;
+
+    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: i18nUrl}, (i18nRes) => {
+        if (i18nRes.success) {
+            applyI18nLabels(i18nRes.data);
         }
 
-        const zzzGame = response.data.data.list.find(game => game.game_id === 8);
-        if (!zzzGame) return resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+        resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
 
-        const {game_role_id: roleId, region, nickname} = zzzGame;
-        resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/3]</b> 목록 가져오는 중...`;
-
-        const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
-
-        chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
-            if (!basicRes.success || basicRes.data.retcode !== 0) return resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
-
-            const avatarIds = basicRes.data.data.avatar_list.map(a => a.id);
-            resultDiv.innerHTML = `✅ 에이전트 ${avatarIds.length}명. <br><b>[3/3]</b> 상세 데이터 로드 중...`;
-
-            const detailPromises = avatarIds.map(id => {
-                return new Promise((resolve) => {
-                    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}&lang=${selectedLang}`;
-                    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => resolve(res));
-                });
-            });
-
-            const results = await Promise.all(detailPromises);
-            globalAgents = results
-                .filter(r => r.success && r.data.retcode === 0)
-                .map(r => r.data.data.avatar_list[0]);
-
-            if (globalAgents.length > 0) {
-                resultDiv.innerHTML = `🎉 <b>성공!</b> ${globalAgents.length}명의 데이터를 로드했습니다.`;
-                renderAgentNav(globalAgents);
-                renderAgentDetail(globalAgents[0]);
-            } else {
-                resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
+        // 2. 계정 기본 정보 가져오기
+        const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
+        chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, (response) => {
+            if (!response || !response.success || response.data.retcode !== 0) {
+                resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
+                return;
             }
+
+            const zzzGame = response.data.data.list.find(game => game.game_id === 8);
+            if (!zzzGame) return resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+
+            const {game_role_id: roleId, region, nickname} = zzzGame;
+            resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
+
+            // 3. 에이전트 리스트 가져오기
+            const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
+
+            chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
+                if (!basicRes.success || basicRes.data.retcode !== 0) return resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+
+                const avatarIds = basicRes.data.data.avatar_list.map(a => a.id);
+                resultDiv.innerHTML = `✅ 에이전트 ${avatarIds.length}명. <br><b>[3/4]</b> 상세 데이터 로드 중...`;
+
+                // 4. 에이전트별 상세 정보 가져오기
+                const detailPromises = avatarIds.map(id => {
+                    return new Promise((resolve) => {
+                        const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}&lang=${selectedLang}`;
+                        chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => resolve(res));
+                    });
+                });
+
+                const results = await Promise.all(detailPromises);
+                globalAgents = results
+                    .filter(r => r.success && r.data.retcode === 0)
+                    .map(r => r.data.data.avatar_list[0]);
+
+                if (globalAgents.length > 0) {
+                    resultDiv.innerHTML = `🎉 <b>성공!</b> ${globalAgents.length}명의 데이터를 로드했습니다.`;
+                    renderAgentNav(globalAgents);
+                    renderAgentDetail(globalAgents[0]);
+                } else {
+                    resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
+                }
+            });
         });
     });
 });
