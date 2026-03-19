@@ -1,15 +1,15 @@
 ﻿const ZZZ_RESOURCE = {
     BASE: {
-        NAV: "https://act.hoyolab.com/app/zzz-game-record/images/",
-        SKILL: "https://act.hoyoverse.com/gt-ui/assets/icons/"
+        IMAGES: "https://act.hoyolab.com/app/zzz-game-record/images/",
+        ICONS: "https://act.hoyoverse.com/gt-ui/assets/icons/"
     },
     NAV_FRAME: {
         UNSELECTED: "card-bg.0e12ef65.png",
         SELECTED: "card-selected-bg.1059d6ea.png"
     },
     RANK_ICONS: {
-        'S': 'https://act.hoyoverse.com/gt-ui/assets/icons/23b9017829c0ac2d.png',
-        'A': 'https://act.hoyoverse.com/gt-ui/assets/icons/6828e55edc3aa085.png'
+        'S': '23b9017829c0ac2d.png',
+        'A': '6828e55edc3aa085.png'
     },
     SKILLS: {
         BASIC:   "1f66bafcc1f069c2.png",
@@ -18,6 +18,30 @@
         CHAIN:   "11ee8bd83f94a1eb.png",
         CORE:    "25a4b80fcfd80526.png",
         ASSIST:  "40791617886f6731.png"
+    },
+    // 속성 아이콘 (파일명만 저장)
+    ELEMENT_ICONS: {
+        200: "attribute-physical-icon.a657c07a.png",
+        201: "attribute-fire-icon.aeddecee.png",
+        202: "attribute-ice-icon.5c85742d.png",
+        203: "attribute-electric-icon.ad4c441f.png",
+        205: "attribute-ether-icon.9a1e42a1.png"
+    },
+
+    // 특성 아이콘 (파일명만 저장)
+    PROFESSION_ICONS: {
+        1: "profession-attack-icon.3c2a053f.png",
+        2: "profession-breakthrough-icon.84a7f20a.png",
+        3: "profession-anomaly-icon.cd1b1573.png",
+        4: "profession-support-icon.9cf39df7.png",
+        5: "profession-defensive-icon.9bd60af4.png"
+    },
+
+    // 랭크/희귀도 아이콘 (디스크 랭크 등 공용)
+    RARITY_ICONS: {
+        'S': "rarity-s.57a8823c.png",
+        'A': "rarity-a.2e7c7c47.png",
+        'B': "rarity-b.7e53884c.png"
     }
 };
 
@@ -179,8 +203,8 @@ function renderAgentNav(agents) {
         
         wrapper.innerHTML = `
             <img src="${agent.hollow_icon_path}" class="icon-char" draggable="false">
-            <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame" draggable="false">
-            <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame" draggable="false">
+            <img src="${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame" draggable="false">
+            <img src="${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame" draggable="false">
         `;
 
         wrapper.addEventListener('click', () => {
@@ -204,15 +228,51 @@ function renderAgentDetail(agent) {
     document.getElementById('agent-portrait').src = agent.role_vertical_painting_url || agent.hollow_icon_path;
     document.getElementById('agent-name').innerText = agent.name_mi18n;
     document.getElementById('agent-level').innerText = `Lv. ${agent.level}`;
+
+    const baseImages = ZZZ_RESOURCE.BASE.IMAGES;
+    const baseIcons = ZZZ_RESOURCE.BASE.ICONS;
     
+    // 2. 랭크 아이콘 (S/A/B)
+    const rankIconEl = document.getElementById('agent-rank-icon');
+    if (rankIconEl) {
+        const fileName = ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
+        if (fileName) {
+            rankIconEl.src = baseIcons + fileName;
+            rankIconEl.style.display = 'block';
+        } else {
+            rankIconEl.style.display = 'none';
+        }
+    }
+
+    // 3. 속성 아이콘 (element_type)
+    const elementEl = document.getElementById('agent-element_type');
+    if (elementEl) {
+        const fileName = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
+        if (fileName) {
+            elementEl.src = baseImages + fileName;
+            elementEl.style.display = 'block';
+        } else {
+            elementEl.style.display = 'none';
+        }
+    }
+
+    // 4. 특성 아이콘 (avatar_profession)
+    const professionEl = document.getElementById('agent-profession');
+    if (professionEl) {
+        const fileName = ZZZ_RESOURCE.PROFESSION_ICONS[agent.avatar_profession];
+        if (fileName) {
+            professionEl.src = baseImages + fileName;
+            professionEl.style.display = 'block';
+        } else {
+            professionEl.style.display = 'none';
+        }
+    }
+
+    // 5. 진영 아이콘 (기존 로직 유지 - 얘는 이미 전체 URL일 가능성이 큼)
     const groupIconEl = document.getElementById('agent-group-icon');
     if (groupIconEl) {
-        if (agent.group_icon_path) {
-            groupIconEl.src = agent.group_icon_path;
-            groupIconEl.style.display = 'block'; // 데이터가 있으면 표시
-        } else {
-            groupIconEl.style.display = 'none'; // 혹시 진영 데이터가 없는 캐릭터라면 숨김
-        }
+        groupIconEl.src = agent.camp_icon || "";
+        groupIconEl.style.display = agent.camp_icon ? 'block' : 'none';
     }
     // ========================================
 
@@ -294,7 +354,7 @@ function renderSkills(skillsArray) {
 
     contentBox.innerHTML = skillsArray.map((skill, index) => {
         const skillKey = skillKeys[index] || 'BASIC';
-        const iconUrl = `${ZZZ_RESOURCE.BASE.SKILL}${ZZZ_RESOURCE.SKILLS[skillKey]}`;
+        const iconUrl = `${ZZZ_RESOURCE.BASE.ICONS}${ZZZ_RESOURCE.SKILLS[skillKey]}`;
 
         return `
             <div class="skill-item">
