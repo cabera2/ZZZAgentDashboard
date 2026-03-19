@@ -312,8 +312,14 @@ button:hover { background-color: #e0e0e0; }
 
 .disk-level {
     font-size: 11px;
-    color: #fca311; /* 레벨은 가독성을 위해 강조색 유지 */
-    margin-top: 2px;
+    color: #fff; /* 공식은 흰색 텍스트 위주 */
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3); /* 배경에 살짝 어두운 투명도 */
+    padding: 1px 6px;
+    border-radius: 10px;
+    width: fit-content;
 }
 
 .disk-icon {

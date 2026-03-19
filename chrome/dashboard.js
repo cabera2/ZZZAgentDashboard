@@ -28,6 +28,13 @@
         205: "attribute-ether-icon.9a1e42a1.png"//에테르
     },
 
+    // 강화형 속성 아이콘 (sub_element_type 기준)
+    SUB_ELEMENT_ICONS: {
+        1: "attribute-frost-icon.8de86b8f.png",    // 서리 (얼음 강화)
+        2: "attribute-auricink-icon.bb80b050.png", // 현묵 (에테르 강화)
+        4: "attribute-honededge-icon.5c0ed0be.png" // 서슬 (물리 강화)
+    },
+
     // 특성 아이콘 (파일명만 저장)
     PROFESSION_ICONS: {
         1: "profession-attack-icon.3c2a053f.png",//강공
@@ -251,9 +258,16 @@ function renderAgentDetail(agent) {
     // 3. 속성 아이콘 (element_type)
     const elementEl = document.getElementById('agent-element_type');
     if (elementEl) {
-        const fileName = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
+        // 1. 강화 속성(sub_element_type)이 있는지 먼저 확인
+        let fileName = ZZZ_RESOURCE.SUB_ELEMENT_ICONS[agent.sub_element_type];
+
+        // 2. 강화 속성이 없으면(undefined) 일반 속성(element_type)에서 가져옴
+        if (!fileName) {
+            fileName = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
+        }
+
         if (fileName) {
-            elementEl.src = baseImages + fileName;
+            elementEl.src = ZZZ_RESOURCE.BASE.IMAGES + fileName;
             elementEl.style.display = 'block';
         } else {
             elementEl.style.display = 'none';
@@ -275,8 +289,8 @@ function renderAgentDetail(agent) {
     // 5. 진영 아이콘 (기존 로직 유지 - 얘는 이미 전체 URL일 가능성이 큼)
     const groupIconEl = document.getElementById('agent-group-icon');
     if (groupIconEl) {
-        groupIconEl.src = agent.camp_icon || "";
-        groupIconEl.style.display = agent.camp_icon ? 'block' : 'none';
+        groupIconEl.src = agent.group_icon_path || "";
+        groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
     }
     // ========================================
 
@@ -387,6 +401,12 @@ function renderDisks(equipArray) {
             const mainName = mainProp ? mainProp.property_name : '---';
             const mainValue = mainProp ? mainProp.base : '';
 
+            // 1. 랭크 아이콘 생성 (문자열 그대로 사용)
+            const rankFileName = ZZZ_RESOURCE.RARITY_ICONS[disk.rarity];
+            const rankIconHtml = rankFileName
+                ? `<img src="${ZZZ_RESOURCE.BASE.IMAGES}${rankFileName}" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">`
+                : '';
+
             const subPropsHtml = (disk.properties || []).map(sub => {
                 const boxBgColor = sub.valid ? '#ffeb3b' : '#a9b1d6';
                 const upgradeBoxHtml = sub.add > 0
@@ -404,12 +424,17 @@ function renderDisks(equipArray) {
                 `;
             }).join('');
 
+            // 2. 레이아웃: 공식 홈페이지처럼 레벨 옆에 랭크 아이콘 배치
             diskSlotDiv.innerHTML = `
                 <div class="disk-main-info">
                     <div class="disk-name-main">
                         <span class="disk-name-text">${disk.name}</span>
-                        <div class="disk-level">Lv.${disk.level || "null"}</div> </div>
-                    <img src="${disk.icon}" class="disk-icon"> </div>
+                        <div class="disk-level">
+                            ${rankIconHtml}Lv.${disk.level || "null"}
+                        </div> 
+                    </div>
+                    <img src="${disk.icon}" class="disk-icon"> 
+                </div>
                 <ul class="disk-sub-list">
                     <li class="sub-item main-stat-row">
                         <span class="sub-name">${mainName}</span>
