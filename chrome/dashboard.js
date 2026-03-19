@@ -21,20 +21,21 @@
     },
     // 속성 아이콘 (파일명만 저장)
     ELEMENT_ICONS: {
-        200: "attribute-physical-icon.a657c07a.png",
-        201: "attribute-fire-icon.aeddecee.png",
-        202: "attribute-ice-icon.5c85742d.png",
-        203: "attribute-electric-icon.ad4c441f.png",
-        205: "attribute-ether-icon.9a1e42a1.png"
+        200: "attribute-physical-icon.a657c07a.png",//물리
+        201: "attribute-fire-icon.aeddecee.png",//불
+        202: "attribute-ice-icon.5c85742d.png",//얼음
+        203: "attribute-electric-icon.ad4c441f.png",//전기
+        205: "attribute-ether-icon.9a1e42a1.png"//에테르
     },
 
     // 특성 아이콘 (파일명만 저장)
     PROFESSION_ICONS: {
-        1: "profession-attack-icon.3c2a053f.png",
-        2: "profession-breakthrough-icon.84a7f20a.png",
-        3: "profession-anomaly-icon.cd1b1573.png",
-        4: "profession-support-icon.9cf39df7.png",
-        5: "profession-defensive-icon.9bd60af4.png"
+        1: "profession-attack-icon.3c2a053f.png",//강공
+        2: "profession-breakthrough-icon.84a7f20a.png",//격파
+        3: "profession-anomaly-icon.cd1b1573.png",//이상
+        4: "profession-support-icon.9cf39df7.png",//지원
+        5: "profession-defensive-icon.9bd60af4.png",//방어
+        6: "profession-rupture-icon.4668f112.png"//명파
     },
 
     // 랭크/희귀도 아이콘 (디스크 랭크 등 공용)
@@ -179,6 +180,9 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
                     .filter(r => r.success && r.data.retcode === 0)
                     .map(r => r.data.data.avatar_list[0]);
 
+                // 데이터 확인용
+                console.log("Fetched Agents Data:", globalAgents);
+                
                 if (globalAgents.length > 0) {
                     resultDiv.innerHTML = `🎉 <b>성공!</b> ${globalAgents.length}명의 데이터를 로드했습니다.`;
                     renderAgentNav(globalAgents);
