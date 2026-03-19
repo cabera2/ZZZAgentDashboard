@@ -7,6 +7,10 @@
         UNSELECTED: "card-bg.0e12ef65.png",
         SELECTED: "card-selected-bg.1059d6ea.png"
     },
+    RANK_ICONS: {
+        'S': 'https://act.hoyoverse.com/gt-ui/assets/icons/23b9017829c0ac2d.png',
+        'A': 'https://act.hoyoverse.com/gt-ui/assets/icons/6828e55edc3aa085.png'
+    },
     SKILLS: {
         BASIC:   "1f66bafcc1f069c2.png",
         DODGE:   "b15382e2428392f2.png",
@@ -16,6 +20,69 @@
         ASSIST:  "40791617886f6731.png"
     }
 };
+
+const nav = document.getElementById('agent-nav');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+// 관성 구현을 위한 변수들
+let velX = 0;          // 현재 속도
+let lastX = 0;         // 직전 마우스 위치
+let rafID = null;      // 애니메이션 프레임 ID
+const friction = 0.95; // 마찰력 (1에 가까울수록 오래 미끄러짐)
+
+// 관성 애니메이션 함수
+const beginMomentum = () => {
+    // 속도가 아주 작아질 때까지 반복
+    if (Math.abs(velX) > 0.5) {
+        nav.scrollLeft -= velX;
+        velX *= friction; // 매 프레임마다 속도 감소
+        rafID = requestAnimationFrame(beginMomentum);
+    } else {
+        cancelAnimationFrame(rafID);
+    }
+};
+
+//내비게이션 제어
+nav.addEventListener('mousedown', (e) => {
+    isDown = true;
+    nav.classList.add('active');
+
+    // 클릭 시 진행 중이던 관성 애니메이션 중단
+    cancelAnimationFrame(rafID);
+
+    startX = e.pageX - nav.offsetLeft;
+    scrollLeft = nav.scrollLeft;
+    lastX = e.pageX;
+    velX = 0;
+
+    nav.style.cursor = 'grabbing';
+});
+
+window.addEventListener('mouseup', () => {
+    if (!isDown) return;
+    isDown = false;
+    nav.classList.remove('active');
+    nav.style.cursor = 'grab';
+
+    // 마우스를 떼는 순간 미끄러짐 시작
+    beginMomentum();
+});
+
+window.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+
+    e.preventDefault();
+    const x = e.pageX - nav.offsetLeft;
+
+    // 현재 프레임에서의 속도 계산 (현재 위치 - 직전 위치)
+    velX = e.pageX - lastX;
+    lastX = e.pageX;
+
+    const walk = (x - startX) * 2;
+    nav.scrollLeft = scrollLeft - walk;
+});
 
 let globalAgents = [];
 
@@ -109,11 +176,11 @@ function renderAgentNav(agents) {
         const wrapper = document.createElement('div');
         wrapper.className = 'agent-icon-wrapper';
         if (index === 0) wrapper.classList.add('active');
-
+        
         wrapper.innerHTML = `
-            <img src="${agent.hollow_icon_path}" class="icon-char">
-            <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame">
-            <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame">
+            <img src="${agent.hollow_icon_path}" class="icon-char" draggable="false">
+            <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame" draggable="false">
+            <img src="${ZZZ_RESOURCE.BASE.NAV}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame" draggable="false">
         `;
 
         wrapper.addEventListener('click', () => {
@@ -127,10 +194,27 @@ function renderAgentNav(agents) {
 }
 
 function renderAgentDetail(agent) {
+    if (!agent) return;
+
+    const themeColor = agent.vertical_painting_color || '#24283b';
+    document.body.style.background = `linear-gradient(to bottom, ${themeColor}, #000000)`;
+    document.body.style.backgroundAttachment = 'fixed';
+
     document.getElementById('main-content').classList.remove('hidden');
     document.getElementById('agent-portrait').src = agent.role_vertical_painting_url || agent.hollow_icon_path;
     document.getElementById('agent-name').innerText = agent.name_mi18n;
     document.getElementById('agent-level').innerText = `Lv. ${agent.level}`;
+    
+    const groupIconEl = document.getElementById('agent-group-icon');
+    if (groupIconEl) {
+        if (agent.group_icon_path) {
+            groupIconEl.src = agent.group_icon_path;
+            groupIconEl.style.display = 'block'; // 데이터가 있으면 표시
+        } else {
+            groupIconEl.style.display = 'none'; // 혹시 진영 데이터가 없는 캐릭터라면 숨김
+        }
+    }
+    // ========================================
 
     renderStats(agent.properties);
     renderWeapon(agent.weapon);
@@ -259,8 +343,8 @@ function renderDisks(equipArray) {
             diskSlotDiv.innerHTML = `
                 <div class="disk-main-info">
                     <div class="disk-name-main">
-                        <span class="disk-name-text">${disk.name.split('[')[0]}</span>
-                        <div class="disk-level">Lv.${disk.level || 15}</div> </div>
+                        <span class="disk-name-text">${disk.name}</span>
+                        <div class="disk-level">Lv.${disk.level || "null"}</div> </div>
                     <img src="${disk.icon}" class="disk-icon"> </div>
                 <ul class="disk-sub-list">
                     <li class="sub-item main-stat-row">

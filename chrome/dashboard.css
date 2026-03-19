@@ -1,47 +1,74 @@
 ﻿:root {
-    --bg-color: #1a1b26;
-    --panel-bg: #24283b;
-    --text-main: #c0caf5;
-    --text-sub: #7aa2f7;
-    --border-color: #414868;
-    --highlight: #f7768e;
+    /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
+    --bg-color: #0c0d10;      /* 전체 배경: 더 어둡게 */
+    --panel-bg: #2a2a2a;      /* 카드 본문 배경 (어두운 회색) */
+    --header-bg: #161616;     /* 카드 제목 배경 (거의 검정색) */
+
+    --text-main: #fff;        /* 메인 텍스트: 완전 흰색 */
+    --text-sub: #eee;         /* [변경] 서브 텍스트(제목 등): 밝은 회색 */
+    --border-color: #444;     /* 경계선: 더 어둡게 */
+    --highlight: #f7768e;     /* 포인트 컬러: 유지 */
+    --stat-blue: #7aa2f7;     /* 고급 속성 파란색: 유지 */
 }
 
 body {
     margin: 0; padding: 20px;
     background-color: var(--bg-color); color: var(--text-main);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5; /* 가독성을 위한 행간 추가 */
 }
 
 .hidden { display: none !important; }
 
-/* 상단 컨트롤 및 네비게이션 */
+/* 상단 컨트롤 및 네비게이션 (스타일 유지) */
 .header-controls {
     display: flex; align-items: center; gap: 10px; margin-bottom: 15px;
 }
 
 #langSelect {
-    padding: 10px; background-color: var(--panel-bg); color: var(--text-main);
+    padding: 10px; background-color: #1a1a1a; color: var(--text-main);
     border: 1px solid var(--border-color); border-radius: 5px;
     font-weight: bold; cursor: pointer; outline: none;
 }
-
-#langSelect:hover { border-color: var(--text-sub); }
+#langSelect:hover { border-color: #666; }
 
 button {
     padding: 10px 20px; background-color: #fff; color: #000;
     border: none; border-radius: 5px; cursor: pointer;
     font-weight: bold; transition: background-color 0.2s;
 }
-
 button:hover { background-color: #e0e0e0; }
 
-#result { margin-left: 15px; font-size: 14px; }
+#result { margin-left: 15px; font-size: 14px; color: #888; }
 
-/* 에이전트 목록 (상단 바) */
+/* 에이전트 목록 (상단 바) (스타일 유지) */
 #agent-nav {
-    display: flex; gap: 0; overflow-x: auto; padding: 15px;
-    background-color: rgba(0,0,0,0.3);
+    display: flex;
+    gap: 0;
+    overflow-x: auto; /* 기능은 유지 */
+    margin-bottom: 20px;
+    cursor: grab;
+
+    /* 스크롤바 숨기기 (IE, Edge, Firefox) */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    /* 드래그 시 요소 선택 방지 */
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* 스크롤바 숨기기 (Chrome, Safari, Opera) */
+#agent-nav::-webkit-scrollbar {
+    display: none;
+}
+
+/* 드래그 중일 때 커서 모양 변경 (선택 사항) */
+#agent-nav {
+    cursor: grab;
+}
+#agent-nav:active {
+    cursor: grabbing;
 }
 
 .agent-icon-wrapper {
@@ -66,18 +93,41 @@ button:hover { background-color: #e0e0e0; }
 
 /* 메인 레이아웃 (좌우 분할) */
 #main-content {
-    display: flex; gap: 20px; height: calc(100vh - 150px);
+    display: flex; gap: 20px; /* height 고정 제거: 콘텐츠에 따라 늘어나도록 */
 }
 
 /* ===================================
-   공통 박스 스타일
+   [핵심 수정] 공통 박스 및 제목 스타일
 ==================================== */
+
+/* 1. 전체 카드 박스 */
 .section-box {
-    background-color: var(--panel-bg); padding: 20px; border-radius: 10px;
+    background-color: var(--panel-bg) !important;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border: none; /* 기존 경계선 제거 */
 }
+
+/* 2. 카드 상단 라벨(제목) 영역 */
 .section-box h3 {
-    margin-top: 0; color: var(--text-sub);
-    border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+    background-color: var(--header-bg) !important;
+    color: #eeeeee !important;           /* 라벨 글자: 밝은 회색 */
+    margin: 0 !important;
+    padding: 15px 20px !important;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: none !important;
+    display: block; /* 가득 차게 설정 */
+}
+
+/* 3. 본문 콘텐츠 영역 패딩 설정 */
+#weapon-content,
+#skills-content,
+#disks-container {
+    padding: 20px;
 }
 
 /* ===================================
@@ -89,9 +139,9 @@ button:hover { background-color: #e0e0e0; }
     display: flex; flex-direction: column;
 }
 
-/* 1. 캐릭터 초상화 박스 */
+/* 캐릭터 초상화 박스 (스타일 유지, 여백 미세 조정) */
 .portrait-box {
-    padding: 15px; display: flex; justify-content: center; align-items: center;
+    padding: 15px; align-items: center; /* section-box 패딩 제거로 인한 자체 패딩 */
 }
 .portrait-container {
     position: relative; width: 684px; height: 356px;
@@ -102,40 +152,55 @@ button:hover { background-color: #e0e0e0; }
 }
 .agent-title {
     position: absolute; bottom: 0; left: 0; right: 0; padding: 20px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    background: linear-gradient(transparent, rgba(0,0,0,0.9)); /* 그라데이션 더 진하게 */
 }
-.agent-title h1 { margin: 0; font-size: 24px; color: white; }
+.agent-title h1 { margin: 0; font-size: 28px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+#agent-level { color: #ccc; font-weight: bold; }
 
-/* 2. 무기 및 스킬 박스 공통 여백 조정 */
-.weapon-box, .skills-box { padding: 15px; }
+/* 진영 아이콘 스타일 */
+.agent-group-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 64px;        /* 원본은 220 */
+    height: 64px;
+    object-fit: contain;
+    z-index: 10;        /* 배경이나 그라데이션 위로 올라오도록 설정 */
+    opacity: 0.9;       /* 살짝 투명감을 주어 자연스럽게 (선택 사항) */
+}
 
-/* W-엔진 레이아웃 */
+/* 무기 및 스킬 박스 자체 패딩 제거 (공통스타일 padding:0 따름) */
+.weapon-box, .skills-box { }
+
+/* W-엔진 레이아웃 (세부 스타일 유지) */
 .weapon-container { display: flex; gap: 20px; align-items: center; }
 .weapon-icon { width: 156px; height: 156px; object-fit: contain; flex-shrink: 0; }
 .weapon-detail { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.weapon-name-row { border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 5px; margin-bottom: 5px; }
+.weapon-name-row { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; margin-bottom: 5px; }
 .weapon-name { display: block; font-size: 18px; font-weight: bold; color: #fff; }
-.weapon-meta { font-size: 13px; color: #888; }
-.weapon-stats-list { display: flex; flex-direction: column; gap: 5px; }
+.weapon-meta { font-size: 13px; color: #aaa; }
+.weapon-stats-list { display: flex; flex-direction: column; gap: 6px; }
 .weapon-stat-row { display: flex; justify-content: space-between; font-size: 14px; }
-.main-stat { color: #fff; font-weight: 500; }
-.sub-stat { color: #7aa2f7; }
+.main-stat { color: #fff; font-weight: bold; }
+.sub-stat { color: var(--stat-blue); }
 .stat-label { font-size: 14px; }
 .stat-value { font-family: 'Courier New', monospace; font-weight: bold; }
 
-/* 스킬 영역 레이아웃 (6x1) */
+/* 스킬 영역 레이아웃 (6x1) (세부 스타일 유지) */
 .skills-grid {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px;
-    justify-items: center; align-items: center; margin-top: 10px;
+    justify-items: center; align-items: center;
 }
+/* #skills-content 자체 패딩 부여로 인해 margin-top 제거 */
+
 .skill-item { display: flex; justify-content: center; align-items: center; }
 .skill-icon-wrapper { position: relative; width: 72px; height: 72px; }
 .skill-icon { width: 100%; height: 100%; object-fit: contain; }
 .skill-level {
     position: absolute; bottom: -2px; right: -2px;
-    background: #1a1b26; color: #fff; font-size: 12px;
+    background: #000; color: #fff; font-size: 12px;
     font-weight: bold; padding: 2px 6px; border-radius: 4px;
-    border: 1px solid var(--border-color); z-index: 5;
+    border: 1px solid #444; z-index: 5;
 }
 
 /* ===================================
@@ -143,72 +208,175 @@ button:hover { background-color: #e0e0e0; }
 ==================================== */
 #right-panel {
     flex: 2; display: flex; flex-direction: column; gap: 20px;
-    overflow-y: auto; padding-right: 5px;
+    /* overflow 제거: 페이지 전체 스크롤 사용 */
 }
 
-/* 상세 스탯 영역 */
-#stats-summary {
-    background: rgba(20, 20, 25, 0.8); border: 1px solid #333; padding: 15px;
+/* 1. 스탯 박스 컨테이너 */
+/* 스탯 그리드 컨테이너 - 배경색을 꽉 채우기 위해 패딩 제거 */
+#stats-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 !important;
+    background-color: #232323; /* 기본 배경 */
 }
-#stats-summary h3 {
-    font-size: 14px; color: #f7768e; margin-top: 0; margin-bottom: 12px;
-    border-bottom: none; border-left: 3px solid #f7768e; padding-left: 8px;
-}
-.stats-grid-container {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px;
-    background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;
-}
+
+/* 스탯 줄(Row) 및 교차 배경 적용 */
 .stat-row {
-    display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.05); padding: 4px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    margin: 0;
 }
-.stat-name { font-size: 12px; color: #a9b1d6; }
-.stat-values-wrapper { display: flex; align-items: center; gap: 10px; }
-.stat-base-add {
-    display: flex; flex-direction: column; align-items: flex-end;
-    font-size: 10px; line-height: 1.2; font-family: 'Courier New', monospace;
+
+/* 1번째 줄 세트 (1, 2번 칸) -> 검정 배경 */
+.stat-row:nth-child(4n+1),
+.stat-row:nth-child(4n+2) {
+    background-color: #161616 !important;
 }
-.stat-base { color: #888; }
-.stat-add { color: #9ece6a; }
+
+/* 2번째 줄 세트 (3, 4번 칸) -> 회색 배경 (본문 배경과 동일) */
+.stat-row:nth-child(4n+3),
+.stat-row:nth-child(4n+4) {
+    background-color: #242424 !important;
+}
+
+/* 스탯 내부 텍스트 스타일 미세 조정 */
+.stat-name {
+    font-size: 13px;
+    color: #bbb;
+    font-weight: 500;
+}
+
 .stat-final {
-    font-size: 14px; font-weight: bold; color: #fff;
-    font-family: 'Courier New', monospace; min-width: 45px; text-align: right;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Consolas', 'Courier New', monospace;
 }
 
-/* 디스크 장착 정보 영역 */
-#disks-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.stat-base-add {
+    font-size: 11px;
+    margin-right: 8px;
+    text-align: right;
+}
+
+/* 디스크 장착 정보 영역 (세부 스타일 유지) */
+#disks-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 20px;
+}
+
 .disk-card {
-    background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);
-    padding: 12px; border-radius: 8px; display: flex; flex-direction: column; gap: 8px;
+    background-color: #1a1a1a;    /* 3. 본문 영역 배경 */
+    border: 1px solid #000000;    /* 4. 테두리 선 */
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
-.disk-main-info {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    padding-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-.disk-name-main { flex: 1; }
-.disk-level { font-size: 11px; color: #a9b1d6; margin-top: 4px; }
-.disk-icon { width: 42px; height: 42px; margin-left: 10px; }
-.disk-name-text { font-size: 11px; color: #7aa2f7; font-weight: bold; display: block; }
 
-.disk-sub-list {
-    list-style: none; padding: 8px 0 0 0; margin: 0;
-    display: flex; flex-direction: column; gap: 4px;
+/* 2. 디스크 이름 및 레벨 라벨 영역 */
+.disk-main-info {
+    background-color: #2a2a2a;    /* 라벨 영역 배경 */
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000000;
 }
-.sub-item { display: flex; justify-content: space-between; font-size: 11px; color: #a9b1d6; padding: 1px 0; }
-.sub-item.main-stat-row { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px dashed rgba(255, 255, 255, 0.1); }
+
+.disk-name-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.disk-name-text {
+    font-size: 12px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.disk-level {
+    font-size: 11px;
+    color: #fca311; /* 레벨은 가독성을 위해 강조색 유지 */
+    margin-top: 2px;
+}
+
+.disk-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+/* 디스크 내부 스탯 리스트 */
+.disk-sub-list {
+    list-style: none;
+    padding: 12px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sub-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #bbb;
+}
+
+/* 메인 스탯 강조 */
+.sub-item.main-stat-row {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.sub-item.main-stat-row .sub-name {
+    color: #fff;
+    font-size: 13px;
+}
+
+.sub-item.main-stat-row .sub-val {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* 유효 옵션 강조 (노란색) */
+.sub-item.valid {
+    color: #ffeb3b;
+}
+
+/* 빈 슬롯 스타일 */
+.empty-slot {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px dashed #444;
+    justify-content: center;
+    height: 150px;
+}
+.sub-item { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; padding: 1px 0; }
+.sub-item.main-stat-row { margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px dashed rgba(255, 255, 255, 0.05); }
 .sub-item.main-stat-row .sub-name { color: #fff; font-weight: bold; }
 .sub-item.main-stat-row .sub-val { color: #fff; font-size: 14px; font-weight: bold; text-align: right; }
 
 .sub-item.valid { color: #ffeb3b; font-weight: bold; }
 .sub-name-group { display: flex; align-items: center; gap: 5px; }
 .upgrade-box {
-    display: inline-block; color: #161817 !important; font-size: 9px; font-weight: 800;
+    display: inline-block; color: #000 !important; font-size: 9px; font-weight: 800;
     padding: 0px 4px; border-radius: 4px; margin-left: 6px; line-height: 1.4; vertical-align: middle;
 }
-.sub-val { color: inherit; text-align: right; }
+.sub-val { color: inherit; text-align: right; font-family: 'Courier New', monospace; }
 
 .empty-slot {
-    border: 1px dashed #444; background: transparent;
+    border: 1px dashed #555; background: transparent;
     display: flex; align-items: center; justify-content: center; height: 100px;
 }
 .empty-disk-msg { color: #555; font-size: 12px; }
+
+/* 공통 메시지 스타일 */
+.empty-msg { color: #888; font-size: 14px; text-align: center; padding: 20px 0; }
