@@ -256,9 +256,20 @@ button:hover { background-color: #e0e0e0; }
 }
 
 .stat-base-add {
-    font-size: 11px;
-    margin-right: 8px;
-    text-align: right;
+    display: flex;
+    flex-direction: column; /* base와 add는 위아래로 */
+    align-items: flex-end;  /* 오른쪽 정렬 */
+    margin-right: 10px;     /* final과의 간격 */
+}
+
+.stat-add {
+    color: #9ece6a; /* 추가 수치 색상 복구 */
+    font-size: 10px;
+}
+
+.stat-row > div:last-child {
+    display: flex;
+    align-items: center;
 }
 
 /* 디스크 장착 정보 영역 (세부 스타일 유지) */
