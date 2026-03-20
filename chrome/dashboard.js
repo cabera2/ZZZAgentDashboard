@@ -97,7 +97,7 @@ const ZZZ_RESOURCE = {
         12102: "4883b409fd524b6d.svg", 12103: "4883b409fd524b6d.svg", // 공격력
         13102: "f2a930b4deba8528.svg", 13103: "f2a930b4deba8528.svg", // 방어력
         20103: "09bfc76f660dd0d1.svg", // 치명타 확률
-        21193: "80d52f918714bed4.svg", // 치명타 피해
+        21103: "80d52f918714bed4.svg", // 치명타 피해
         23203: "b5cae085c3f59de9.svg", // 관통 수치
         31203: "c44eb009da6c398b.svg"  // 이상 마스터리
     }
@@ -450,6 +450,7 @@ function renderDisks(equipArray) {
 
         if (disk) {
             diskSlotDiv.className = 'disk-card';
+            // 주 속성(main_properties)에는 아이콘을 붙이지 않습니다.
             const mainProp = disk.main_properties?.[0];
             const mainName = mainProp ? mainProp.property_name : '---';
             const mainValue = mainProp ? mainProp.base : '';
@@ -460,16 +461,20 @@ function renderDisks(equipArray) {
                 ? `<img src="${ZZZ_RESOURCE.BASE.IMAGES}${rankFileName}" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">`
                 : '';
 
+            // 보조 속성(properties) 렌더링 루프
             const subPropsHtml = (disk.properties || []).map(sub => {
                 const color = sub.valid ? UI_SETTING.FONT_COLORS.HIGHLIGHT : UI_SETTING.FONT_COLORS.DEFAULT;
                 const upgradeBoxHtml = sub.add > 0
                     ? `<span class="upgrade-box" style="background-color: ${color};">+${sub.add}</span>`
                     : '';
 
+                // [추가] 헬퍼 함수로 보조 속성의 아이콘 태그를 가져옵니다.
+                const iconHtml = getStatIconHtml(sub.property_id, sub.valid);
+
                 return `
                     <li class="sub-item" style="color: ${color};">
                         <div class="sub-name-group">
-                            <span class="sub-name" style="color: ${color};">${sub.property_name}</span>
+                            <span class="sub-name" style="color: ${color};">${iconHtml}${sub.property_name}</span>
                             ${upgradeBoxHtml}
                         </div>
                         <span class="sub-val">+${sub.base}</span>
@@ -477,7 +482,7 @@ function renderDisks(equipArray) {
                 `;
             }).join('');
 
-            // 2. 레이아웃: 공식 홈페이지처럼 레벨 옆에 랭크 아이콘 배치
+            // 2. 레이아웃 렌더링
             diskSlotDiv.innerHTML = `
                 <div class="disk-main-info">
                     <div class="disk-name-main">
@@ -547,10 +552,20 @@ function updateDiskScore(agent) {
     `;
 }
 
-function getStatIconHtml(statId) {
+function getStatIconHtml(statId, isValid = false) {
     const fileName = ZZZ_RESOURCE.STAT_ICONS[statId];
-    if (!fileName) return ""; // 아이콘이 없으면 빈 문자열
+    if (!fileName) return "";
 
     const fullUrl = `${ZZZ_RESOURCE.BASE.ICONS}${fileName}`;
-    return `<img src="${fullUrl}" class="stat-inline-icon" alt="icon">`;
+
+    // 강조색 또는 기본색 결정
+    const iconColor = isValid ? UI_SETTING.FONT_COLORS.HIGHLIGHT : UI_SETTING.FONT_COLORS.DEFAULT;
+
+    // 공통 레이아웃 클래스(stat-icon-base) + 마스크 클래스(stat-icon-mask)
+    return `
+        <span class="stat-icon-base stat-icon-mask" 
+              style="-webkit-mask-image: url('${fullUrl}'); 
+                     mask-image: url('${fullUrl}'); 
+                     background-color: ${iconColor};">
+        </span>`;
 }
