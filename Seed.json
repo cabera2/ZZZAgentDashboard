@@ -1,0 +1,858 @@
+﻿{
+  "id": 1461,
+  "level": 60,
+  "name_mi18n": "「시드」",
+  "full_name_mi18n": "「시드」",
+  "element_type": 203,
+  "camp_name_mi18n": "방위군·오볼로스 소대",
+  "avatar_profession": 1,
+  "rarity": "S",
+  "group_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/03b5199ee75427ace0a96f9300ec7619.png",
+  "hollow_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/d40cd181ccaa672d06c8301a9917fb95.png",
+  "equip": [
+    {
+      "id": 31041,
+      "level": 15,
+      "name": "딱따구리 일렉트로[1]",
+      "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/383c17797b4a8d2a4c9ef365d2c7e074.png",
+      "rarity": "S",
+      "properties": [
+        {
+          "property_name": "공격력",
+          "property_id": 12102,
+          "base": "3%",
+          "level": 1,
+          "valid": true,
+          "system_id": 121,
+          "add": 0
+        },
+        {
+          "property_name": "치명타 확률",
+          "property_id": 20103,
+          "base": "7.2%",
+          "level": 3,
+          "valid": true,
+          "system_id": 201,
+          "add": 2
+        },
+        {
+          "property_name": "관통 수치",
+          "property_id": 23203,
+          "base": "27",
+          "level": 3,
+          "valid": false,
+          "system_id": 232,
+          "add": 2
+        },
+        {
+          "property_name": "치명타 피해",
+          "property_id": 21103,
+          "base": "9.6%",
+          "level": 2,
+          "valid": true,
+          "system_id": 211,
+          "add": 1
+        }
+      ],
+      "main_properties": [
+        {
+          "property_name": "HP",
+          "property_id": 11103,
+          "base": "2200",
+          "level": 1,
+          "valid": false,
+          "system_id": 111,
+          "add": 0
+        }
+      ],
+      "equip_suit": {
+        "suit_id": 31000,
+        "name": "딱따구리 일렉트로",
+        "own": 2,
+        "desc1": "치명타 확률+8%",
+        "desc2": "<color=#FFFFFF>[일반 공격]</color>, <color=#FFFFFF>[회피 반격]</color> 혹은 <color=#FFFFFF>[강화 특수 스킬]</color>이 적에게 명중하고 치명타 발동 시 착용자에게 각각 1스택의 버프 효과를 제공하며 버프 효과 스택당 착용자의 공격력이 9% 증가한다. 지속 시간: 6초, 각 스킬의 지속 시간은 따로 계산된다."
+      },
+      "equipment_type": 1,
+      "invalid_property_cnt": 2,
+      "all_hit": false
+    },
+    {
+      "id": 33342,
+      "level": 15,
+      "name": "여명의 꽃[2]",
+      "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/b1544d686f1f90728db89c6bffd881be.png",
+      "rarity": "S",
+      "properties": [
+        {
+          "property_name": "치명타 피해",
+          "property_id": 21103,
+          "base": "9.6%",
+          "level": 2,
+          "valid": true,
+          "system_id": 211,
+          "add": 1
+        },
+        {
+          "property_name": "치명타 확률",
+          "property_id": 20103,
+          "base": "4.8%",
+          "level": 2,
+          "valid": true,
+          "system_id": 201,
+          "add": 1
+        },
+        {
+          "property_name": "이상 마스터리",
+          "property_id": 31203,
+          "base": "18",
+          "level": 2,
+          "valid": false,
+          "system_id": 312,
+          "add": 1
+        },
+        {
+          "property_name": "공격력",
+          "property_id": 12102,
+          "base": "9%",
+          "level": 3,
+          "valid": true,
+          "system_id": 121,
+          "add": 2
+        }
+      ],
+      "main_properties": [
+        {
+          "property_name": "공격력",
+          "property_id": 12103,
+          "base": "316",
+          "level": 1,
+          "valid": false,
+          "system_id": 121,
+          "add": 0
+        }
+      ],
+      "equip_suit": {
+        "suit_id": 33300,
+        "name": "여명의 꽃",
+        "own": 4,
+        "desc1": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해+15%",
+        "desc2": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 20% 증가하며, 착용자가 [강공] 캐릭터일 시 <color=#FFFFFF>[강화 특수 스킬]</color> 혹은 <color=#FFFFFF>[궁극기]</color>를 시전하면 <color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 추가로 20% 증가한다. 지속 시간: 25초, 중복 발동 시 지속 시간이 갱신된다."
+      },
+      "equipment_type": 2,
+      "invalid_property_cnt": 1,
+      "all_hit": false
+    },
+    {
+      "id": 33343,
+      "level": 15,
+      "name": "여명의 꽃[3]",
+      "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/b1544d686f1f90728db89c6bffd881be.png",
+      "rarity": "S",
+      "properties": [
+        {
+          "property_name": "공격력",
+          "property_id": 12102,
+          "base": "6%",
+          "level": 2,
+          "valid": true,
+          "system_id": 121,
+          "add": 1
+        },
+        {
+          "property_name": "치명타 확률",
+          "property_id": 20103,
+          "base": "4.8%",
+          "level": 2,
+          "valid": true,
+          "system_id": 201,
+          "add": 1
+        },
+        {
+          "property_name": "방어력",
+          "property_id": 13102,
+          "base": "4.8%",
+          "level": 1,
+          "valid": false,
+          "system_id": 131,
+          "add": 0
+        },
+        {
+          "property_name": "치명타 피해",
+          "property_id": 21103,
+          "base": "14.4%",
+          "level": 3,
+          "valid": true,
+          "system_id": 211,
+          "add": 2
+        }
+      ],
+      "main_properties": [
+        {
+          "property_name": "방어력",
+          "property_id": 13103,
+          "base": "184",
+          "level": 1,
+          "valid": false,
+          "system_id": 131,
+          "add": 0
+        }
+      ],
+      "equip_suit": {
+        "suit_id": 33300,
+        "name": "여명의 꽃",
+        "own": 4,
+        "desc1": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해+15%",
+        "desc2": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 20% 증가하며, 착용자가 [강공] 캐릭터일 시 <color=#FFFFFF>[강화 특수 스킬]</color> 혹은 <color=#FFFFFF>[궁극기]</color>를 시전하면 <color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 추가로 20% 증가한다. 지속 시간: 25초, 중복 발동 시 지속 시간이 갱신된다."
+      },
+      "equipment_type": 3,
+      "invalid_property_cnt": 0,
+      "all_hit": true
+    },
+    {
+      "id": 33344,
+      "level": 15,
+      "name": "여명의 꽃[4]",
+      "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/b1544d686f1f90728db89c6bffd881be.png",
+      "rarity": "S",
+      "properties": [
+        {
+          "property_name": "방어력",
+          "property_id": 13102,
+          "base": "9.6%",
+          "level": 2,
+          "valid": false,
+          "system_id": 131,
+          "add": 1
+        },
+        {
+          "property_name": "이상 마스터리",
+          "property_id": 31203,
+          "base": "9",
+          "level": 1,
+          "valid": false,
+          "system_id": 312,
+          "add": 0
+        },
+        {
+          "property_name": "치명타 피해",
+          "property_id": 21103,
+          "base": "14.4%",
+          "level": 3,
+          "valid": true,
+          "system_id": 211,
+          "add": 2
+        },
+        {
+          "property_name": "관통 수치",
+          "property_id": 23203,
+          "base": "18",
+          "level": 2,
+          "valid": false,
+          "system_id": 232,
+          "add": 1
+        }
+      ],
+      "main_properties": [
+        {
+          "property_name": "치명타 확률",
+          "property_id": 20103,
+          "base": "24%",
+          "level": 1,
+          "valid": false,
+          "system_id": 201,
+          "add": 0
+        }
+      ],
+      "equip_suit": {
+        "suit_id": 33300,
+        "name": "여명의 꽃",
+        "own": 4,
+        "desc1": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해+15%",
+        "desc2": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 20% 증가하며, 착용자가 [강공] 캐릭터일 시 <color=#FFFFFF>[강화 특수 스킬]</color> 혹은 <color=#FFFFFF>[궁극기]</color>를 시전하면 <color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 추가로 20% 증가한다. 지속 시간: 25초, 중복 발동 시 지속 시간이 갱신된다."
+      },
+      "equipment_type": 4,
+      "invalid_property_cnt": 2,
+      "all_hit": false
+    },
+    {
+      "id": 31045,
+      "level": 15,
+      "name": "딱따구리 일렉트로[5]",
+      "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/383c17797b4a8d2a4c9ef365d2c7e074.png",
+      "rarity": "S",
+      "properties": [
+        {
+          "property_name": "공격력",
+          "property_id": 12102,
+          "base": "6%",
+          "level": 2,
+          "valid": true,
+          "system_id": 121,
+          "add": 1
+        },
+        {
+          "property_name": "치명타 피해",
+          "property_id": 21103,
+          "base": "4.8%",
+          "level": 1,
+          "valid": true,
+          "system_id": 211,
+          "add": 0
+        },
+        {
+          "property_name": "방어력",
+          "property_id": 13103,
+          "base": "30",
+          "level": 2,
+          "valid": false,
+          "system_id": 131,
+          "add": 1
+        },
+        {
+          "property_name": "관통 수치",
+          "property_id": 23203,
+          "base": "27",
+          "level": 3,
+          "valid": false,
+          "system_id": 232,
+          "add": 2
+        }
+      ],
+      "main_properties": [
+        {
+          "property_name": "전기 속성 피해 보너스",
+          "property_id": 31803,
+          "base": "30%",
+          "level": 1,
+          "valid": false,
+          "system_id": 318,
+          "add": 0
+        }
+      ],
+      "equip_suit": {
+        "suit_id": 31000,
+        "name": "딱따구리 일렉트로",
+        "own": 2,
+        "desc1": "치명타 확률+8%",
+        "desc2": "<color=#FFFFFF>[일반 공격]</color>, <color=#FFFFFF>[회피 반격]</color> 혹은 <color=#FFFFFF>[강화 특수 스킬]</color>이 적에게 명중하고 치명타 발동 시 착용자에게 각각 1스택의 버프 효과를 제공하며 버프 효과 스택당 착용자의 공격력이 9% 증가한다. 지속 시간: 6초, 각 스킬의 지속 시간은 따로 계산된다."
+      },
+      "equipment_type": 5,
+      "invalid_property_cnt": 3,
+      "all_hit": false
+    },
+    {
+      "id": 33346,
+      "level": 15,
+      "name": "여명의 꽃[6]",
+      "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/b1544d686f1f90728db89c6bffd881be.png",
+      "rarity": "S",
+      "properties": [
+        {
+          "property_name": "관통 수치",
+          "property_id": 23203,
+          "base": "9",
+          "level": 1,
+          "valid": false,
+          "system_id": 232,
+          "add": 0
+        },
+        {
+          "property_name": "치명타 피해",
+          "property_id": 21103,
+          "base": "9.6%",
+          "level": 2,
+          "valid": true,
+          "system_id": 211,
+          "add": 1
+        },
+        {
+          "property_name": "방어력",
+          "property_id": 13102,
+          "base": "14.4%",
+          "level": 3,
+          "valid": false,
+          "system_id": 131,
+          "add": 2
+        },
+        {
+          "property_name": "HP",
+          "property_id": 11103,
+          "base": "224",
+          "level": 2,
+          "valid": false,
+          "system_id": 111,
+          "add": 1
+        }
+      ],
+      "main_properties": [
+        {
+          "property_name": "공격력",
+          "property_id": 12102,
+          "base": "30%",
+          "level": 1,
+          "valid": false,
+          "system_id": 121,
+          "add": 0
+        }
+      ],
+      "equip_suit": {
+        "suit_id": 33300,
+        "name": "여명의 꽃",
+        "own": 4,
+        "desc1": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해+15%",
+        "desc2": "<color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 20% 증가하며, 착용자가 [강공] 캐릭터일 시 <color=#FFFFFF>[강화 특수 스킬]</color> 혹은 <color=#FFFFFF>[궁극기]</color>를 시전하면 <color=#FFFFFF>[일반 공격]</color>으로 주는 피해가 추가로 20% 증가한다. 지속 시간: 25초, 중복 발동 시 지속 시간이 갱신된다."
+      },
+      "equipment_type": 6,
+      "invalid_property_cnt": 3,
+      "all_hit": false
+    }
+  ],
+  "weapon": {
+    "id": 14146,
+    "level": 60,
+    "name": "기계 심장에 내린 씨앗",
+    "star": 1,
+    "icon": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/c1f074b4d60b46fdcf3ef240c7c6cb42.png",
+    "rarity": "S",
+    "properties": [
+      {
+        "property_name": "치명타 확률",
+        "property_id": 20103,
+        "base": "24%",
+        "level": 0,
+        "valid": false,
+        "system_id": 0,
+        "add": 0
+      }
+    ],
+    "main_properties": [
+      {
+        "property_name": "기본 공격력",
+        "property_id": 12101,
+        "base": "713",
+        "level": 0,
+        "valid": false,
+        "system_id": 0,
+        "add": 0
+      }
+    ],
+    "talent_title": "싹 틔운 코어",
+    "talent_content": "치명타 확률이 <color=#2BAD00>15%</color> 증가한다. 착용자가 <color=#FFFFFF>[일반 공격]</color>, <color=#FFFFFF>[강화 특수 스킬]</color>로 피해를 줄 시 각각 1스택의 버프 효과를 획득하며, 버프 효과 스택마다 착용자가 주는 <color=#2EB6FF>전기 속성 피해</color>가 <color=#2BAD00>12.5%</color> 증가한다. 최대 중첩: 2스택, 지속 시간: 40초, 각 스택의 지속 시간은 따로 계산되며, 동일한 공격 한 번에 최대 1회 발동된다. 버프 효과 2스택 보유 시, 착용자의 <color=#FFFFFF>[일반 공격]</color>과 <color=#FFFFFF>[궁극기]</color>로 적에게 주는 피해가 방어력을 <color=#2BAD00>20%</color> 무시한다.",
+    "profession": 1
+  },
+  "properties": [
+    {
+      "property_name": "HP",
+      "property_id": 1,
+      "base": "7673",
+      "add": "2424",
+      "final": "10097"
+    },
+    {
+      "property_name": "공격력",
+      "property_id": 2,
+      "base": "1642",
+      "add": "1202",
+      "final": "2844"
+    },
+    {
+      "property_name": "방어력",
+      "property_id": 3,
+      "base": "612",
+      "add": "390",
+      "final": "1002"
+    },
+    {
+      "property_name": "충격력",
+      "property_id": 4,
+      "base": "",
+      "add": "",
+      "final": "93"
+    },
+    {
+      "property_name": "치명타 확률",
+      "property_id": 5,
+      "base": "",
+      "add": "",
+      "final": "77.8%"
+    },
+    {
+      "property_name": "치명타 피해",
+      "property_id": 6,
+      "base": "",
+      "add": "",
+      "final": "141.2%"
+    },
+    {
+      "property_name": "이상 장악력",
+      "property_id": 7,
+      "base": "",
+      "add": "",
+      "final": "94"
+    },
+    {
+      "property_name": "이상 마스터리",
+      "property_id": 8,
+      "base": "",
+      "add": "",
+      "final": "120"
+    },
+    {
+      "property_name": "관통률",
+      "property_id": 9,
+      "base": "",
+      "add": "",
+      "final": "0.0%"
+    },
+    {
+      "property_name": "에너지 자동 회복",
+      "property_id": 11,
+      "base": "",
+      "add": "",
+      "final": "1.20"
+    },
+    {
+      "property_name": "관통 수치",
+      "property_id": 232,
+      "base": "",
+      "add": "",
+      "final": "81"
+    },
+    {
+      "property_name": "전기 속성 피해 보너스",
+      "property_id": 318,
+      "base": "",
+      "add": "",
+      "final": "30.0%"
+    }
+  ],
+  "skills": [
+    {
+      "level": 12,
+      "skill_type": 0,
+      "items": [
+        {
+          "title": "일반 공격: 국화꽃의 윤무",
+          "text": "<IconMap:Icon_Normal>을 짧게 탭하여 시전:\\n전방을 향해 최대 4단까지 공격을 펼친다. 1~2단은 <color=#F0D12B>물리 피해</color>를 주고, 3~4단은 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n세 번째 물러서기 동작부터 네 번째 공격 시전 전까지의 과정에서 공격을 받으면 자동으로 회피를 발동한다.",
+          "awaken": false
+        },
+        {
+          "title": "일반 공격: 낙화·도륙",
+          "text": "<color=#FFFFFF>[일반 공격]</color> 네 번째, <color=#FFFFFF>[회피 반격]</color>, <color=#FFFFFF>[빠른 지원]</color>, <color=#FFFFFF>[지원 돌격]</color> 후 <IconMap:Icon_Normal>을 홀드 혹은 짧게 탭하여 시전:\\n메카를 소환하고 차지 펀치를 시전해 대량의 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n<color=#FFFFFF>[강철 에너지]</color> 120pt 도달 시 빠르게 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color>을 시전할 기회를 1회 획득하며 <IconMap:Icon_Normal>을 홀드하여 시전할 수 있다. <color=#FFFFFF>[강철 에너지]</color>가 120pt 미만이거나 상술한 방법으로 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color> 1회 시전 후 해당 효과는 사라진다.\\n적 명중 시 <color=#FFFFFF>[강철 에너지]</color>를 누적하지 않는다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        },
+        {
+          "title": "일반 공격: 낙화·붕괴",
+          "text": "「시드」는 <color=#FFFFFF>[강철 에너지]</color>를 보유하며, 자신의 공격이 적에게 명중하면 <color=#FFFFFF>[강철 에너지]</color>를 누적할 수 있다.\\n<color=#FFFFFF>[강철 에너지]</color> 최대치는 150pt이며 초기에 <color=#FFFFFF>[강철 에너지]</color> 60pt를 보유하고, 120pt 도달 시 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color> 혹은 <color=#FFFFFF>[궁극기: 기계식 꽃밭·만개!]</color> 시전 후 <IconMap:Icon_Normal>을 짧게 탭 혹은 홀드하여 <color=#FFFFFF>[강철 에너지]</color>를 60pt 소모해 <color=#FFFFFF>[일반 공격: 낙화·붕괴Ⅰ]</color>를 시전할 수 있다. 또한 자동으로 <color=#FFFFFF>[강철 에너지]</color>를 60pt 소모하여 <color=#FFFFFF>[일반 공격: 낙화·붕괴Ⅱ]</color>를 이어서 시전한다.\\n메카를 조종해 난사 후 강력한 내려찍기로 대량의 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n적 명중 시 <color=#FFFFFF>[강철 에너지]</color>를 누적하지 않는다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        }
+      ],
+      "awaken_state": "AwakenStateNotVisible"
+    },
+    {
+      "level": 12,
+      "skill_type": 1,
+      "items": [
+        {
+          "title": "특수 스킬: 푸른 서리의 영락",
+          "text": "<IconMap:Icon_Special>을 짧게 탭하여 시전:\\n곡선 궤적을 그리는 강철 휠을 던져 <color=#2EB6FF>전기 속성 피해</color>를 준다.",
+          "awaken": false
+        },
+        {
+          "title": "강화 특수 스킬: 강철 꽃잎과 비의 장막",
+          "text": "에너지가 충분한 상태에서 <IconMap:Icon_SpecialReady>을 짧게 탭하여 시전:\\n비행 모드에 진입해 네 방향으로 이동할 수 있으며, 연속으로 탄막을 발사해 적에게 대량의 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n<IconMap:Icon_SpecialReady>을 홀드하면 탄막 발사 시간을 연장하고 지속적으로 에너지를 소모한다.\\n비행하는 동안 <IconMap:Icon_SpecialReady>에서 손을 떼면 <color=#FFFFFF>[강화 특수 스킬: 강철 꽃잎과 비의 장막·이별]</color>을 시전할 수 있다.\\n한 번의 비행에서 에너지를 60pt 사용 시, 자동으로 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color>을 시전한다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        },
+        {
+          "title": "강화 특수 스킬: 강철 꽃잎과 비의 장막·이별",
+          "text": "<color=#FFFFFF>[강화 특수 스킬: 강철 꽃잎과 비의 장막]</color>을 시전하는 동안 <IconMap:Icon_SpecialReady>에서 손을 떼 시전:\\n빠르게 포격해 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n적 명중 시 <color=#FFFFFF>[강철 에너지]</color>를 누적하지 않는다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        }
+      ],
+      "awaken_state": "AwakenStateNotVisible"
+    },
+    {
+      "level": 1,
+      "skill_type": 2,
+      "items": [
+        {
+          "title": "회피: 꽃잎 위를 노닐다",
+          "text": "<IconMap:Icon_Evade>을 짧게 탭하여 시전:\\n빠른 대시로 회피한다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        },
+        {
+          "title": "대시 공격: 전자의 윤무",
+          "text": "회피 시 <IconMap:Icon_Normal>을 짧게 탭하여 시전:\\n전방을 향해 강철 휠을 던져 <color=#F0D12B>물리 피해</color>를 준다.",
+          "awaken": false
+        },
+        {
+          "title": "회피 반격: 갈라진 꽃받침",
+          "text": "<color=#FFFFFF>[극한 회피]</color> 발동 후 <IconMap:Icon_Normal>을 짧게 탭하여 시전:\\n전방의 적에게 연속 레이저를 쏴 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        }
+      ],
+      "awaken_state": "AwakenStateNotVisible"
+    },
+    {
+      "level": 12,
+      "skill_type": 3,
+      "items": [
+        {
+          "title": "콤보 스킬: 서리 꽃잎의 폭풍",
+          "text": "<color=#FFFFFF>[콤보 스킬]</color> 발동 시 해당 캐릭터를 선택해 시전:\\n메카를 소환해 자신을 보호한 후, 전방을 포격하고 대량의 미사일을 발사해 대량의 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        },
+        {
+          "title": "궁극기: 기계식 꽃밭·만개",
+          "text": "데시벨 레벨 <color=#FFFFFF>[Maximum]</color> 달성 시 <IconMap:Icon_UltimateReady>을 짧게 탭하여 시전:\\n직접 메카를 조종해 대량의 미사일과 유성 같은 치명적인 섬광탄을 퍼붓고, 강력하게 내리찍어 대량의 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n스킬 시전 후 <color=#FFFFFF>[강철 에너지]</color>를 60pt 누적한다.\\n적 명중 시 <color=#FFFFFF>[강철 에너지]</color>를 누적하지 않는다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        }
+      ],
+      "awaken_state": "AwakenStateNotVisible"
+    },
+    {
+      "level": 7,
+      "skill_type": 5,
+      "items": [
+        {
+          "title": "핵심 패시브: 꽃사슬의 협약",
+          "text": "「시드」는 초기 공격력이 가장 높은 <color=#FFFFFF>[강공]</color> 파티원을 <color=#FFFFFF>[병기]</color>로 간주한다.\\n<color=#FFFFFF>[병기]</color>가 <color=#FFFFFF>[강화 특수 스킬]</color> 시전 시 「시드」가 <color=#FFFFFF>[강습]</color> 상태를 획득하며, 「시드」의 공격력 <color=#2BAD00>1000pt</color> 및 치명타 피해 <color=#2BAD00>30%</color>가 증가한다. 「시드」가 <color=#FFFFFF>[강화 특수 스킬]</color> 시전 시 <color=#FFFFFF>[병기]</color>가 <color=#FFFFFF>[정공]</color> 상태를 획득하며, <color=#FFFFFF>[병기]</color>의 공격력 <color=#2BAD00>1000pt</color> 및 치명타 피해 <color=#2BAD00>30%</color>가 증가한다.\\n<color=#FFFFFF>[정공]</color>과 <color=#FFFFFF>[강습]</color>이 동시에 존재 시 「시드」와 <color=#FFFFFF>[병기]</color>가 동시에 <color=#FFFFFF>[포위]</color> 상태를 획득하고 주는 피해가 <color=#2BAD00>25%</color> 증가한다.\\n<color=#FFFFFF>[강습]</color>, <color=#FFFFFF>[정공]</color>, <color=#FFFFFF>[포위]</color>의 버프 효과는 캐릭터가 현재 조작 중인 캐릭터일 때 적용되며, 캐릭터 교체 시 해당 버프 효과는 캐릭터가 전장에서 퇴장하거나 버프 효과가 3초 유지된 후 사라진다. 캐릭터를 현재 조작 중인 캐릭터로 교체할 시 버프 효과가 다시 적용된다.\\n전장 진입 시 <color=#FFFFFF>[병기]</color>가 존재하면, 「시드」는 즉시 <color=#FFFFFF>[강습]</color> 및 <color=#FFFFFF>[포위]</color> 상태를 획득하며, <color=#FFFFFF>[병기]</color>는 즉시 <color=#FFFFFF>[정공]</color> 및 <color=#FFFFFF>[포위]</color> 상태를 획득한다.\\n<color=#FFFFFF>[정공]</color> 및 <color=#FFFFFF>[강습]</color> 상태 지속 시간: 40초, 중복 획득 시 지속 시간이 갱신된다.\\n<color=#FFFFFF>[병기]</color>가 조작 중인 캐릭터로서 에너지를 소모하거나 「시드」가 에너지를 소모할 시, 소모한 에너지 1pt마다 「시드」가 <color=#FFFFFF>[강철 에너지]</color>를 0.5pt 회복한다.",
+          "awaken": false
+        },
+        {
+          "title": "추가 능력: 급습 작전",
+          "text": "파티 내 다른 <color=#FFFFFF>[강공]</color> 캐릭터 존재 시 발동:\\n「시드」가 조작 중인 캐릭터로서 피해를 줄 시 <color=#FFFFFF>[병기]</color>가 에너지를 2pt 회복한다. 1초 동안 최대 1회 발동한다.\\n「시드」의 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color>, <color=#FFFFFF>[일반 공격: 낙화·붕괴]</color> 및 <color=#FFFFFF>[궁극기: 기계식 꽃밭·만개]</color>로 주는 피해가 30% 증가하고, 적의 <color=#2EB6FF>전기 속성 피해 저항</color>을 25% 무시한다.",
+          "awaken": false
+        }
+      ],
+      "awaken_state": "AwakenStateNotVisible"
+    },
+    {
+      "level": 11,
+      "skill_type": 6,
+      "items": [
+        {
+          "title": "빠른 지원: 꽃비 집중 사격",
+          "text": "현재 조작 중인 캐릭터가 넉업되면 <IconMap:Icon_Switch>을 짧게 탭하여 시전:\\n전방의 적에게 연속 레이저를 쏴 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        },
+        {
+          "title": "패링 지원: 어린 꽃의 배리어",
+          "text": "출전 캐릭터 피격 직전에 <IconMap:Icon_Switch>을 짧게 탭하여 시전:\\n적의 공격을 패링하고 대량의 그로기 수치를 누적한다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        },
+        {
+          "title": "지원 돌격: 붉은 코어의 폭렬",
+          "text": "<color=#FFFFFF>[패링 지원]</color> 시전 후 <IconMap:Icon_Normal>을 짧게 탭하여 시전:\\n전방의 적에게 연속 부유포 공격을 시전해 <color=#2EB6FF>전기 속성 피해</color>를 준다.\\n스킬을 시전하는 동안 무적 효과를 보유한다.",
+          "awaken": false
+        }
+      ],
+      "awaken_state": "AwakenStateNotVisible"
+    }
+  ],
+  "rank": 0,
+  "ranks": [
+    {
+      "id": 1,
+      "name": "「동면기」",
+      "desc": "「시드」의 <color=#FFFFFF>[강철 에너지]</color>가 100pt에 도달할 시 <color=#FFFFFF>[일반 공격: 낙화·붕괴]</color>를 시전할 수 있으며, 소모하는 <color=#FFFFFF>[강철 에너지]</color> 총합이 100pt까지 감소한다.\\n빠르게 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color>을 시전할 기회 1회를 획득하는 데 필요한 <color=#FFFFFF>[강철 에너지]</color>가 100pt까지 감소한다.\\n전장 진입/<color=#FFFFFF>[궁극기]</color> 시전 시 추가로 <color=#FFFFFF>[강철 에너지]</color>를 40/20pt 누적한다.\\n<color=#FFFFFF>[일반 공격: 낙화·붕괴]</color>로 주는 치명타 피해가 30% 증가한다.",
+      "pos": 1,
+      "is_unlocked": false
+    },
+    {
+      "id": 2,
+      "name": "「흡광법」",
+      "desc": "에이전트의 <color=#FFFFFF>[포위]</color> 상태 버프 효과 적용 시, 해당 에이전트가 주는 피해가 방어력의 20%를 무시한다.\\n<color=#FFFFFF>[강화 특수 스킬: 강철 꽃잎과 비의 장막]</color> 시전 시, 60pt의 에너지를 누적 소모 후, 계속 에너지를 소모해 스킬을 지속할 수 있으며, 버튼에서 손을 떼거나 120pt의 에너지를 누적 소모할 때까지 지속된다.\\n<color=#FFFFFF>[강화 특수 스킬: 강철 꽃잎과 비의 장막]</color>에서 소모한 에너지 5pt당 이어서 시전되는 <color=#FFFFFF>[일반 공격: 낙화·도륙]</color>으로 주는 피해가 5% 증가한다.",
+      "pos": 2,
+      "is_unlocked": false
+    },
+    {
+      "id": 3,
+      "name": "「발아설」",
+      "desc": "<color=#FFFFFF>[일반 공격]</color>, <color=#FFFFFF>[회피]</color>, <color=#FFFFFF>[지원 스킬]</color>, <color=#FFFFFF>[특수 스킬]</color>, <color=#FFFFFF>[콤보 스킬]</color>의 스킬 레벨+2",
+      "pos": 3,
+      "is_unlocked": false
+    },
+    {
+      "id": 4,
+      "name": "「방향조」",
+      "desc": "「시드」의 <color=#FFFFFF>[포위]</color> 상태 버프 효과 적용 시, 데시벨 획득 효율이 10% 증가하고, <color=#FFFFFF>[궁극기]</color>로 주는 피해가 20% 증가한다.",
+      "pos": 4,
+      "is_unlocked": false
+    },
+    {
+      "id": 5,
+      "name": "「개화기」",
+      "desc": "<color=#FFFFFF>[일반 공격]</color>, <color=#FFFFFF>[회피]</color>, <color=#FFFFFF>[지원 스킬]</color>, <color=#FFFFFF>[특수 스킬]</color>, <color=#FFFFFF>[콤보 스킬]</color>의 스킬 레벨+2",
+      "pos": 5,
+      "is_unlocked": false
+    },
+    {
+      "id": 6,
+      "name": "「유심론」",
+      "desc": "「시드」의 치명타 피해가 50% 증가한다.\\n<color=#FFFFFF>[일반 공격: 낙화·도륙]</color> 시전 시 추가로 레이저를 3발 발사하며, 1발마다 공격력의 165%만큼 피해를 준다. 3초 동안 최대 1회 발동한다.",
+      "pos": 6,
+      "is_unlocked": false
+    }
+  ],
+  "role_vertical_painting_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_vertical_painting/role_vertical_painting_1461.png",
+  "equip_plan_info": {
+    "type": 1,
+    "game_default": {
+      "property_list": [
+        {
+          "id": 2,
+          "name": "공격력",
+          "full_name": "공격력",
+          "system_id": 2,
+          "is_select": false
+        },
+        {
+          "id": 5,
+          "name": "치명타 확률",
+          "full_name": "치명타 확률",
+          "system_id": 5,
+          "is_select": false
+        },
+        {
+          "id": 6,
+          "name": "치명타 피해",
+          "full_name": "치명타 피해",
+          "system_id": 6,
+          "is_select": false
+        }
+      ]
+    },
+    "cultivate_info": {
+      "name": "【厳選厳しめ】目指せ最強シード",
+      "plan_id": "15866",
+      "is_delete": false,
+      "old_plan": false
+    },
+    "custom_info": {
+      "property_list": [
+        {
+          "id": 11103,
+          "name": "HP",
+          "full_name": "HP",
+          "system_id": 111,
+          "is_select": false
+        },
+        {
+          "id": 11102,
+          "name": "HP",
+          "full_name": "HP 백분율",
+          "system_id": 111,
+          "is_select": false
+        },
+        {
+          "id": 12103,
+          "name": "공격력",
+          "full_name": "공격력",
+          "system_id": 121,
+          "is_select": false
+        },
+        {
+          "id": 12102,
+          "name": "공격력",
+          "full_name": "공격력 백분율",
+          "system_id": 121,
+          "is_select": false
+        },
+        {
+          "id": 13103,
+          "name": "방어력",
+          "full_name": "방어력",
+          "system_id": 131,
+          "is_select": false
+        },
+        {
+          "id": 13102,
+          "name": "방어력",
+          "full_name": "방어력 백분율",
+          "system_id": 131,
+          "is_select": false
+        },
+        {
+          "id": 20103,
+          "name": "치명타 확률",
+          "full_name": "치명타 확률",
+          "system_id": 201,
+          "is_select": false
+        },
+        {
+          "id": 21103,
+          "name": "치명타 피해",
+          "full_name": "치명타 피해",
+          "system_id": 211,
+          "is_select": false
+        },
+        {
+          "id": 31203,
+          "name": "이상 마스터리",
+          "full_name": "이상 마스터리",
+          "system_id": 312,
+          "is_select": false
+        },
+        {
+          "id": 23203,
+          "name": "관통 수치",
+          "full_name": "관통 수치",
+          "system_id": 232,
+          "is_select": false
+        }
+      ]
+    },
+    "valid_property_cnt": 28,
+    "plan_only_special_property": false,
+    "equip_rating": "ER_S_Plus",
+    "plan_effective_property_list": [
+      {
+        "id": 12102,
+        "name": "공격력",
+        "full_name": "공격력 백분율",
+        "system_id": 121,
+        "is_select": false
+      },
+      {
+        "id": 20103,
+        "name": "치명타 확률",
+        "full_name": "치명타 확률",
+        "system_id": 201,
+        "is_select": false
+      },
+      {
+        "id": 21103,
+        "name": "치명타 피해",
+        "full_name": "치명타 피해",
+        "system_id": 211,
+        "is_select": false
+      }
+    ],
+    "equip_rating_score": 80.43
+  },
+  "us_full_name": "Seed",
+  "vertical_painting_color": "#aed5dd",
+  "sub_element_type": 0,
+  "skin_list": [
+    {
+      "skin_id": 3114610,
+      "skin_name": "「시드」·만발한 꽃",
+      "skin_vertical_painting_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_vertical_painting/role_vertical_painting_1461.png",
+      "skin_square_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_square_avatar/role_square_avatar_1461.png",
+      "skin_hollow_icon_path": "https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_u5fdgd/d40cd181ccaa672d06c8301a9917fb95.png",
+      "skin_vertical_painting_color": "#aed5dd",
+      "unlocked": true,
+      "rarity": "S",
+      "is_original": true
+    }
+  ],
+  "role_square_url": "https://act-webstatic.hoyoverse.com/game_record/zzzv2/role_square_avatar/role_square_avatar_1461.png",
+  "awaken_state": "AwakenStateNotVisible",
+  "skill_awaken": {
+    "has_awaken_system": false,
+    "awaken_level": 0,
+    "awaken_max_level": 0,
+    "skill_awaken_items": []
+  }
+}
