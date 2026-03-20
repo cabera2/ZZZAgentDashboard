@@ -442,3 +442,19 @@ button:hover { background-color: #e0e0e0; }
 
 /* 공통 메시지 스타일 */
 .empty-msg { color: #888; font-size: 14px; text-align: center; padding: 20px 0; }
+
+/* 아이콘 공통 스타일 */
+.stat-inline-icon {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+    margin-right: 4px;
+    /* 흰색 계열 SVG가 배경에 잘 보이도록 미세한 그림자 추가 가능 */
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+}
+
+/* 상세 스탯 행 정렬 보정 */
+.stat-row {
+    display: flex;
+    align-items: center;
+}

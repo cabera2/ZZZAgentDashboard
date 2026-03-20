@@ -69,6 +69,37 @@ const ZZZ_RESOURCE = {
         'S': "rarity-s.57a8823c.png",
         'A': "rarity-a.2e7c7c47.png",
         'B': "rarity-b.7e53884c.png"
+    },
+
+    STAT_ICONS: {
+        // 에이전트 상세 속성 (단축 ID)
+        1: "317ce2a47d66fd3e.svg",   // HP
+        2: "4883b409fd524b6d.svg",   // 공격력
+        3: "f2a930b4deba8528.svg",   // 방어력
+        4: "ae8b5440f710fad8.svg",   // 충격력
+        5: "09bfc76f660dd0d1.svg",   // 치명타 확률
+        6: "80d52f918714bed4.svg",   // 치명타 피해
+        7: "2d4c15cee5a66ebe.svg",   // 이상 장악력
+        8: "c44eb009da6c398b.svg",   // 이상 마스터리
+        9: "1b15470e75018348.svg",   // 관통률
+        11: "f26955cea8f29f4f.svg",  // 에너지 자동 회복
+        19: "b765786bd239a9a8.svg",  // 관입력
+        20: "2079bc3eeededc26.svg",  // 기운 자동 누적
+        232: "b5cae085c3f59de9.svg", // 관통 수치
+        315: "2bc246d1451fa4ce.png", // 물리 피해
+        316: "a4040e05ea38849b.png", // 불 속성 피해
+        317: "d2c575830f549349.png", // 얼음 속성 피해
+        318: "2baf620986a19284.png", // 전기 속성 피해
+        319: "544076112a8f3460.png", // 에테르 피해
+
+        // 디스크 보조 속성 (5자리 ID)
+        11102: "317ce2a47d66fd3e.svg", 11103: "317ce2a47d66fd3e.svg", // HP
+        12102: "4883b409fd524b6d.svg", 12103: "4883b409fd524b6d.svg", // 공격력
+        13102: "f2a930b4deba8528.svg", 13103: "f2a930b4deba8528.svg", // 방어력
+        20103: "09bfc76f660dd0d1.svg", // 치명타 확률
+        21193: "80d52f918714bed4.svg", // 치명타 피해
+        23203: "b5cae085c3f59de9.svg", // 관통 수치
+        31203: "c44eb009da6c398b.svg"  // 이상 마스터리
     }
 };
 
@@ -328,9 +359,11 @@ function renderStats(propsArray) {
 
     statsContent.innerHTML = propsArray.map(s => {
         const hasAdd = (s.add !== "0" && s.add !== "0%" && s.add !== "0.0%" && s.add !== "");
+        const iconHtml = getStatIconHtml(s.property_id);
+
         return `
             <div class="stat-row">
-                <span class="stat-name">${s.property_name || "스탯"}</span>
+                <span class="stat-name">${iconHtml}${s.property_name || "스탯"}</span> 
                 <div class="stat-values-wrapper">
                     ${hasAdd ? `
                         <div class="stat-base-add">
@@ -512,4 +545,12 @@ function updateDiskScore(agent) {
             ${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}
         </div>
     `;
+}
+
+function getStatIconHtml(statId) {
+    const fileName = ZZZ_RESOURCE.STAT_ICONS[statId];
+    if (!fileName) return ""; // 아이콘이 없으면 빈 문자열
+
+    const fullUrl = `${ZZZ_RESOURCE.BASE.ICONS}${fileName}`;
+    return `<img src="${fullUrl}" class="stat-inline-icon" alt="icon">`;
 }
