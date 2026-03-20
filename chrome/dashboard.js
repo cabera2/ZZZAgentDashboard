@@ -469,7 +469,7 @@ function renderDisks(equipArray) {
                     : '';
 
                 // [추가] 헬퍼 함수로 보조 속성의 아이콘 태그를 가져옵니다.
-                const iconHtml = getStatIconHtml(sub.property_id, sub.valid);
+                const iconHtml = getStatIconHtml(sub.property_id, color);
 
                 return `
                     <li class="sub-item" style="color: ${color};">
@@ -509,12 +509,12 @@ function renderDisks(equipArray) {
     }
 }
 
-// 디스크 점수 박스 업데이트 함수
 function updateDiskScore(agent) {
     const scoreContainer = document.getElementById('disk-score-container');
     if (!scoreContainer) return;
 
     const planInfo = agent.equip_plan_info;
+    // 데이터가 없거나 유효성 정보가 없으면 숨김
     if (!planInfo || planInfo.valid_property_cnt === undefined) {
         scoreContainer.classList.add('hidden');
         return;
@@ -523,10 +523,27 @@ function updateDiskScore(agent) {
     scoreContainer.classList.remove('hidden');
 
     const score = planInfo.valid_property_cnt;
-    const targetStatName = planInfo.property_name || "";
     const rank = planInfo.equip_rating || 'ER_Default';
 
-    // 다국어 텍스트 처리
+    /**
+     * 유효 속성 소스 결정
+     * 현재는 '기본 추천(game_default)'을 사용합니다.
+     * 향후 다른 패턴(plan_effective_property_list, custom_info) 확장이 필요할 경우
+     * 이 변수에 할당되는 객체만 변경하면 됩니다.
+     */
+    const activePlanSource = planInfo.game_default;
+    const recommendProps = (activePlanSource && activePlanSource.property_list)
+        ? activePlanSource.property_list
+        : [];
+
+    // 추천 스탯 태그 HTML 생성
+    const validStatsHtml = recommendProps.map(prop => {
+        // ZZZ_RESOURCE.STAT_ICONS의 키값(12103 등)과 일치하는 prop.id를 사용합니다.
+        const iconHtml = getStatIconHtml(prop.id, UI_SETTING.FONT_COLORS.DEFAULT);
+        return `<span class="stat-tag">${iconHtml}${prop.name}</span>`;
+    }).join('');
+
+    // 다국어 제목 처리
     let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";
     if (window.i18nData && window.i18nData.roles_random_attributes_hit_num) {
         titleText = window.i18nData.roles_random_attributes_hit_num;
@@ -534,17 +551,19 @@ function updateDiskScore(agent) {
     const highlightedScore = `<span style="color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}; font-weight: bold;">${score}</span>`;
     const localizedTitle = titleText.replace('{num}', highlightedScore);
 
-    // 랭크 이미지 URL 생성 (ER_Default거나 값이 없으면 빈 문자열)
+    // 랭크 이미지 설정
     let rankIconUrl = '';
     if (rank !== 'ER_Default' && ZZZ_RESOURCE.DISK_RANK_ICONS[rank]) {
         rankIconUrl = `${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.DISK_RANK_ICONS[rank]}`;
     }
 
-    // HTML 조립
+    // HTML 최종 렌더링
     scoreContainer.innerHTML = `
         <div class="score-info-side">
             <div class="score-title">${localizedTitle}</div>
-            <div class="score-target-stat">${targetStatName}</div>
+            <div class="score-target-stats-wrapper">
+                ${validStatsHtml}
+            </div>
         </div>
         <div class="score-rank-side">
             ${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}
@@ -552,20 +571,28 @@ function updateDiskScore(agent) {
     `;
 }
 
-function getStatIconHtml(statId, isValid = false) {
+function getStatIconHtml(statId, iconColor = '#ffffff') {
     const fileName = ZZZ_RESOURCE.STAT_ICONS[statId];
     if (!fileName) return "";
 
     const fullUrl = `${ZZZ_RESOURCE.BASE.ICONS}${fileName}`;
+    const isSvg = fileName.toLowerCase().endsWith('.svg');
 
-    // 강조색 또는 기본색 결정
-    const iconColor = isValid ? UI_SETTING.FONT_COLORS.HIGHLIGHT : UI_SETTING.FONT_COLORS.DEFAULT;
-
-    // 공통 레이아웃 클래스(stat-icon-base) + 마스크 클래스(stat-icon-mask)
-    return `
-        <span class="stat-icon-base stat-icon-mask" 
-              style="-webkit-mask-image: url('${fullUrl}'); 
-                     mask-image: url('${fullUrl}'); 
-                     background-color: ${iconColor};">
-        </span>`;
+    if (isSvg) {
+        // SVG인 경우: 마스크 방식을 사용하여 색상을 입힘
+        return `
+            <span class="stat-icon-base stat-icon-mask" 
+                  style="-webkit-mask-image: url('${fullUrl}'); 
+                         mask-image: url('${fullUrl}'); 
+                         background-color: ${iconColor};">
+            </span>`;
+    } else {
+        // PNG 등 일반 이미지인 경우: img 태그를 사용하여 원본 색상을 유지
+        // 필요에 따라 class로 크기만 조절 (stat-icon-base 활용)
+        return `
+            <img src="${fullUrl}" 
+                 class="stat-icon-base" 
+                 alt="stat-icon" 
+                 style="vertical-align: middle;">`;
+    }
 }
