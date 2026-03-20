@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ZZZ 아이콘 실시간 추출기</title>
+    <style>
+        body { background-color: #1a1a1b; color: #eee; font-family: sans-serif; padding: 20px; }
+        .control-panel {
+            background: #2a2a2a; padding: 20px; border-radius: 10px;
+            border: 2px dashed #f1ad3d; margin-bottom: 20px; text-align: center;
+        }
+        #fileInput { margin-top: 10px; color: #fff; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .item {
+            background: #2a2a2a; border: 1px solid #444; padding: 12px;
+            display: flex; align-items: center; border-radius: 8px;
+        }
+        .item img { width: 36px; height: 36px; margin-right: 12px; background: #000; padding: 4px; border-radius: 4px; }
+        .info { display: flex; flex-direction: column; }
+        .index { font-size: 10px; color: #f1ad3d; font-weight: bold; }
+        .filename { font-size: 11px; color: #afafaf; word-break: break-all; font-family: monospace; }
+        .count { margin-top: 10px; font-weight: bold; color: #f1ad3d; }
+    </style>
+</head>
+<body>
+<h1>ZZZ 아이콘 실시간 추출기</h1>
+<div class="control-panel">
+    <p>전송해주셨던 <strong>temp.txt</strong> 파일을 아래에 넣어주세요.</p>
+    <input type="file" id="fileInput" accept=".txt">
+    <div id="status" class="count"></div>
+</div>
+
+<div id="icon-grid" class="grid"></div>
+
+<script>
+    const baseUrl = "https://act.hoyoverse.com/gt-ui/assets/icons/";
+    const fileInput = document.getElementById('fileInput');
+    const grid = document.getElementById('icon-grid');
+    const status = document.getElementById('status');
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const content = e.target.result;
+
+            // 정규식: ~/assets/icons/ 뒤에 오는 파일명(영문소문자, 숫자, 점 포함) 추출
+            const regex = /~\/assets\/icons\/([a-z0-9\.]+)/g;
+            let matches = [];
+            let match;
+
+            while ((match = regex.exec(content)) !== null) {
+                matches.push(match[1]);
+            }
+
+            // 중복 제거 (필요하다면 사용, 원본 순서대로 보고 싶으면 생략 가능)
+            const uniqueFiles = [...new Set(matches)];
+
+            renderIcons(uniqueFiles);
+        };
+        reader.readAsText(file);
+    });
+
+    function renderIcons(files) {
+        grid.innerHTML = '';
+        status.innerText = `총 ${files.length}개의 아이콘을 찾았습니다.`;
+
+        files.forEach((file, index) => {
+            const div = document.createElement('div');
+            div.className = 'item';
+            div.innerHTML = `
+                    <img src="${baseUrl}${file}" alt="icon" onerror="this.src='https://via.placeholder.com/36?text=?'">
+                    <div class="info">
+                        <span class="index">#${index + 1}</span>
+                        <span class="filename">${file}</span>
+                    </div>
+                `;
+            grid.appendChild(div);
+        });
+    }
+</script>
+</body>
+</html>

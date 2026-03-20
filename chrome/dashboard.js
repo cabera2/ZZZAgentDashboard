@@ -1,4 +1,10 @@
-﻿const ZZZ_RESOURCE = {
+﻿const UI_SETTING = {
+    FONT_COLORS: {
+        DEFAULT: '#afafaf',
+        HIGHLIGHT: '#f1ad3d'
+    }
+};
+const ZZZ_RESOURCE = {
     BASE: {
         IMAGES: "https://act.hoyolab.com/app/zzz-game-record/images/",
         ICONS: "https://act.hoyoverse.com/gt-ui/assets/icons/"
@@ -44,8 +50,21 @@
         5: "profession-defensive-icon.9bd60af4.png",//방어
         6: "profession-rupture-icon.4668f112.png"//명파
     },
+    
+    // 디스크 점수 등급 아이콘
+    DISK_RANK_ICONS: {
+        "ER_B": "b.6428930f.png",
+        "ER_A": "a.94d50077.png",
+        "ER_S": "s.1b99e936.png",
+        "ER_S_Plus": "s_plus.8426d3ac.png",
+        "ER_SS": "ss.9aefb415.png",
+        "ER_SS_Plus": "ss_plus.6a01e298.png",
+        "ER_SSS": "sss.c792a8a7.png",
+        "ER_SSS_Plus": "sss_plus.6a303d10.png",
+        "ER_SSS_Plus_Crown": "sss_plus_crown.e0a88067.png"
+    },
 
-    // 랭크/희귀도 아이콘 (디스크 랭크 등 공용)
+    // 디스크 레어도
     RARITY_ICONS: {
         'S': "rarity-s.57a8823c.png",
         'A': "rarity-a.2e7c7c47.png",
@@ -124,7 +143,8 @@ function applyI18nLabels(i18nData) {
         'ui-title-weapon': 'roles_weapon',             // W-엔진
         'ui-title-skills': 'roles_detail_skill_title', // 스킬
         'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
-        'ui-title-disks': 'roles_equipment'            // 디스크
+        'ui-title-disks': 'roles_equipment',            // 디스크
+        
     };
 
     for (const [id, key] of Object.entries(mapping)) {
@@ -146,6 +166,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
 
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: i18nUrl}, (i18nRes) => {
         if (i18nRes.success) {
+            window.i18nData = i18nRes.data;
             applyI18nLabels(i18nRes.data);
         }
 
@@ -298,6 +319,7 @@ function renderAgentDetail(agent) {
     renderWeapon(agent.weapon);
     renderDisks(agent.equip);
     renderSkills(agent.skills);
+    updateDiskScore(agent)
 }
 
 function renderStats(propsArray) {
@@ -323,7 +345,6 @@ function renderStats(propsArray) {
     }).join('');
 }
 
-// [수정됨] 내부 content 영역만 채움
 function renderWeapon(weapon) {
     const contentBox = document.getElementById('weapon-content');
     if (!contentBox) return;
@@ -363,7 +384,6 @@ function renderWeapon(weapon) {
     }
 }
 
-// [수정됨] 내부 content 영역만 채움
 function renderSkills(skillsArray) {
     const contentBox = document.getElementById('skills-content');
     if (!contentBox || !skillsArray) return;
@@ -408,15 +428,15 @@ function renderDisks(equipArray) {
                 : '';
 
             const subPropsHtml = (disk.properties || []).map(sub => {
-                const boxBgColor = sub.valid ? '#ffeb3b' : '#a9b1d6';
+                const color = sub.valid ? UI_SETTING.FONT_COLORS.HIGHLIGHT : UI_SETTING.FONT_COLORS.DEFAULT;
                 const upgradeBoxHtml = sub.add > 0
-                    ? `<span class="upgrade-box" style="background-color: ${boxBgColor};">+${sub.add}</span>`
+                    ? `<span class="upgrade-box" style="background-color: ${color};">+${sub.add}</span>`
                     : '';
 
                 return `
-                    <li class="sub-item ${sub.valid ? 'valid' : ''}">
+                    <li class="sub-item" style="color: ${color};">
                         <div class="sub-name-group">
-                            <span class="sub-name">${sub.property_name}</span>
+                            <span class="sub-name" style="color: ${color};">${sub.property_name}</span>
                             ${upgradeBoxHtml}
                         </div>
                         <span class="sub-val">+${sub.base}</span>
@@ -449,4 +469,47 @@ function renderDisks(equipArray) {
         }
         disksContainer.appendChild(diskSlotDiv);
     }
+}
+
+// 디스크 점수 박스 업데이트 함수
+function updateDiskScore(agent) {
+    const scoreContainer = document.getElementById('disk-score-container');
+    if (!scoreContainer) return;
+
+    const planInfo = agent.equip_plan_info;
+    if (!planInfo || planInfo.valid_property_cnt === undefined) {
+        scoreContainer.classList.add('hidden');
+        return;
+    }
+
+    scoreContainer.classList.remove('hidden');
+
+    const score = planInfo.valid_property_cnt;
+    const targetStatName = planInfo.property_name || "";
+    const rank = planInfo.equip_rating || 'ER_Default';
+
+    // 다국어 텍스트 처리
+    let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";
+    if (window.i18nData && window.i18nData.roles_random_attributes_hit_num) {
+        titleText = window.i18nData.roles_random_attributes_hit_num;
+    }
+    const highlightedScore = `<span style="color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}; font-weight: bold;">${score}</span>`;
+    const localizedTitle = titleText.replace('{num}', highlightedScore);
+
+    // 랭크 이미지 URL 생성 (ER_Default거나 값이 없으면 빈 문자열)
+    let rankIconUrl = '';
+    if (rank !== 'ER_Default' && ZZZ_RESOURCE.DISK_RANK_ICONS[rank]) {
+        rankIconUrl = `${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.DISK_RANK_ICONS[rank]}`;
+    }
+
+    // HTML 조립
+    scoreContainer.innerHTML = `
+        <div class="score-info-side">
+            <div class="score-title">${localizedTitle}</div>
+            <div class="score-target-stat">${targetStatName}</div>
+        </div>
+        <div class="score-rank-side">
+            ${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}
+        </div>
+    `;
 }
