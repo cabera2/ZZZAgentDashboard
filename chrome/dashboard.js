@@ -280,22 +280,45 @@ function renderAgentNav(agents) {
     });
 }
 
+/**
+ * 에이전트 상세 정보 렌더링
+ */
 function renderAgentDetail(agent) {
     if (!agent) return;
 
+    // 메인 컨텐츠 표시
+    document.getElementById('main-content').classList.remove('hidden');
+
+    // [함수 분리] 포트레이트 영역 처리 호출
+    updatePortrait(agent);
+
+    // 나머지 섹션 렌더링 (기존 로직 유지)
+    renderStats(agent.properties);
+    renderWeapon(agent.weapon);
+    renderDisks(agent.equip);
+    renderSkills(agent.skills);
+    updateDiskScore(agent.equip_plan_info);
+}
+/**
+ * 포트레이트 섹션 렌더링 전담 함수
+ */
+function updatePortrait(agent) {
+    if (!agent) return;
+
+    const baseImages = ZZZ_RESOURCE.BASE.IMAGES;
+    const baseIcons = ZZZ_RESOURCE.BASE.ICONS;
+
+    // 1. 배경색 설정
     const themeColor = agent.vertical_painting_color || '#24283b';
     document.body.style.background = `linear-gradient(to bottom, ${themeColor}, #000000)`;
     document.body.style.backgroundAttachment = 'fixed';
 
-    document.getElementById('main-content').classList.remove('hidden');
+    // 2. 캐릭터 이미지 및 텍스트
     document.getElementById('agent-portrait').src = agent.role_vertical_painting_url || agent.hollow_icon_path;
     document.getElementById('agent-name').innerText = agent.name_mi18n;
     document.getElementById('agent-level').innerText = `Lv. ${agent.level}`;
 
-    const baseImages = ZZZ_RESOURCE.BASE.IMAGES;
-    const baseIcons = ZZZ_RESOURCE.BASE.ICONS;
-    
-    // 2. 랭크 아이콘 (S/A/B)
+    // 3. 랭크 아이콘 (S/A/B)
     const rankIconEl = document.getElementById('agent-rank-icon');
     if (rankIconEl) {
         const fileName = ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
@@ -307,17 +330,13 @@ function renderAgentDetail(agent) {
         }
     }
 
-    // 3. 속성 아이콘 (element_type)
+    // 4. 속성 아이콘 (element_type / sub_element_type)
     const elementEl = document.getElementById('agent-element_type');
     if (elementEl) {
-        // 1. 강화 속성(sub_element_type)이 있는지 먼저 확인
         let fileName = ZZZ_RESOURCE.SUB_ELEMENT_ICONS[agent.sub_element_type];
-
-        // 2. 강화 속성이 없으면(undefined) 일반 속성(element_type)에서 가져옴
         if (!fileName) {
             fileName = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
         }
-
         if (fileName) {
             elementEl.src = ZZZ_RESOURCE.BASE.IMAGES + fileName;
             elementEl.style.display = 'block';
@@ -326,7 +345,7 @@ function renderAgentDetail(agent) {
         }
     }
 
-    // 4. 특성 아이콘 (avatar_profession)
+    // 5. 특성 아이콘 (avatar_profession)
     const professionEl = document.getElementById('agent-profession');
     if (professionEl) {
         const fileName = ZZZ_RESOURCE.PROFESSION_ICONS[agent.avatar_profession];
@@ -338,19 +357,12 @@ function renderAgentDetail(agent) {
         }
     }
 
-    // 5. 진영 아이콘 (기존 로직 유지 - 얘는 이미 전체 URL일 가능성이 큼)
+    // 6. 진영 아이콘
     const groupIconEl = document.getElementById('agent-group-icon');
     if (groupIconEl) {
         groupIconEl.src = agent.group_icon_path || "";
         groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
     }
-    // ========================================
-
-    renderStats(agent.properties);
-    renderWeapon(agent.weapon);
-    renderDisks(agent.equip);
-    renderSkills(agent.skills);
-    updateDiskScore(agent)
 }
 
 function renderStats(propsArray) {
@@ -509,11 +521,10 @@ function renderDisks(equipArray) {
     }
 }
 
-function updateDiskScore(agent) {
+function updateDiskScore(planInfo) {
     const scoreContainer = document.getElementById('disk-score-container');
     if (!scoreContainer) return;
-
-    const planInfo = agent.equip_plan_info;
+    
     // 데이터가 없거나 유효성 정보가 없으면 숨김
     if (!planInfo || planInfo.valid_property_cnt === undefined) {
         scoreContainer.classList.add('hidden');

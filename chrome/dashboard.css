@@ -63,10 +63,6 @@ button:hover { background-color: #e0e0e0; }
     display: none;
 }
 
-/* 드래그 중일 때 커서 모양 변경 (선택 사항) */
-#agent-nav {
-    cursor: grab;
-}
 #agent-nav:active {
     cursor: grabbing;
 }
@@ -428,7 +424,6 @@ button:hover { background-color: #e0e0e0; }
     gap: 6px;
 }
 .sub-item { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; padding: 1px 0; }
-.sub-item.main-stat-row { padding: 1px 0;}
 .sub-item.main-stat-row .sub-name { color: #fff; font-weight: bold; }
 .sub-item.main-stat-row .sub-val { color: #fff; font-size: 14px; font-weight: bold; text-align: right; }
 .sub-name-group { display: flex; align-items: center; gap: 5px; }
