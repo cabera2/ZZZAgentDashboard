@@ -13,11 +13,6 @@ const ZZZ_RESOURCE = {
         UNSELECTED: "card-bg.0e12ef65.png",
         SELECTED: "card-selected-bg.1059d6ea.png"
     },
-    UI: {
-        BASE_INFO_BORDER: "base-info-border-bg.09b1b6a9.png",
-        DETAIL_TITLE_ICON: "detail-title-icon.12f90997.png",
-        ICON_WHITE_BLACK_GRIDS: "icon-white-black-grids.cb4a1704.png"
-    },
     RANK_ICONS: {
         'S': '23b9017829c0ac2d.png',
         'A': '6828e55edc3aa085.png'
@@ -371,13 +366,6 @@ function updatePortrait(agent) {
     if (groupIconEl) {
         groupIconEl.src = agent.group_icon_path || "";
         groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
-    }
-
-    // 7. [신규 추가] 프레임 이미지 조합 및 적용
-    const frameOverlay = document.getElementById('portrait-frame');
-    if (frameOverlay) {
-        // BASE.IMAGES와 UI.BASE_INFO_BORDER를 합쳐서 배경으로 설정
-        frameOverlay.style.backgroundImage = `url('${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.UI.BASE_INFO_BORDER}')`;
     }
 }
 

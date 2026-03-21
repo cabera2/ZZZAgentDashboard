@@ -1,4 +1,8 @@
 ﻿:root {
+    --url-frame-bg: url('https://act.hoyolab.com/app/zzz-game-record/images/base-info-border-bg.09b1b6a9.png');
+    --url-title-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/detail-title-icon.12f90997.png');
+    --url-grid-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/icon-white-black-grids.cb4a1704.png');
+    
     /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
     --bg-color: #0c0d10;      /* 전체 배경: 더 어둡게 */
     --panel-bg: #2a2a2a;      /* 카드 본문 배경 (어두운 회색) */
@@ -153,7 +157,7 @@ button:hover { background-color: #e0e0e0; }
     left: 0;
     width: 100%;
     height: 100%;
-    /* 100% 100%를 사용하여 원본 비율과 상관없이 715x500 꽉 채움 */
+    background-image: var(--url-frame-bg);
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
