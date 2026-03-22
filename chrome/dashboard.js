@@ -1,7 +1,9 @@
 ﻿const UI_SETTING = {
     FONT_COLORS: {
         DEFAULT: '#afafaf',
-        HIGHLIGHT: '#f1ad3d'
+        HIGHLIGHT: '#f1ad3d',
+        CINEMA_INACTIVE: '#606060',
+        CINEMA_ACTIVE: '#fff060'
     }
 };
 const ZZZ_RESOURCE = {
@@ -367,6 +369,22 @@ function updatePortrait(agent) {
         groupIconEl.src = agent.group_icon_path || "";
         groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
     }
+    
+    // 7. 형상 시네마
+    for (let i = 1; i <= 6; i++){
+        const cinemaEl = document.getElementById(`cinema${i}`);
+        if(cinemaEl) {
+            if (i <= agent.rank) {
+                cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
+            }
+            else {
+                cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_INACTIVE
+            }
+        }
+    }
+    document.documentElement.style.setProperty('--awaken-enable', agent.skill_awaken.has_awaken_system ?'block':'none');
+    document.getElementById(`awaken-level`).innerText = agent.skill_awaken.awaken_level;
+    document.getElementById(`awaken-max-level`).innerText = agent.skill_awaken.awaken_max_level;
 }
 
 function renderStats(propsArray) {

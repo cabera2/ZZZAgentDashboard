@@ -2,6 +2,12 @@
     --url-frame-bg: url('https://act.hoyolab.com/app/zzz-game-record/images/base-info-border-bg.09b1b6a9.png');
     --url-title-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/detail-title-icon.12f90997.png');
     --url-grid-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/icon-white-black-grids.cb4a1704.png');
+    --url-cinema1: url('https://act.hoyoverse.com/gt-ui/assets/icons/401332efd0b741a3.svg');
+    --url-cinema2: url('https://act.hoyoverse.com/gt-ui/assets/icons/3eaedfe01c3dbaca.svg');
+    --url-cinema3: url('https://act.hoyoverse.com/gt-ui/assets/icons/44d5d7cbc4a42194.svg');
+    --url-cinema4: url('https://act.hoyoverse.com/gt-ui/assets/icons/c38e275d1752227c.svg');
+    --url-cinema5: url('https://act.hoyoverse.com/gt-ui/assets/icons/e38ac6870459d7ff.svg');
+    --url-cinema6: url('https://act.hoyoverse.com/gt-ui/assets/icons/55832216257906d4.svg');
     
     /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
     --bg-color: #0c0d10;      /* 전체 배경: 더 어둡게 */
@@ -13,6 +19,8 @@
     --border-color: #444;     /* 경계선: 더 어둡게 */
     --highlight: #f7768e;     /* 포인트 컬러: 유지 */
     --stat-blue: #7aa2f7;     /* 고급 속성 파란색: 유지 */
+    
+    --awaken-enable: none;
 }
 
 body {
@@ -112,14 +120,27 @@ button:hover { background-color: #e0e0e0; }
 
 /* 2. 카드 상단 라벨(제목) 영역 */
 .section-box h3 {
-    background-color: var(--header-bg) !important;
     color: #eeeeee !important;           /* 라벨 글자: 밝은 회색 */
     margin: 0 !important;
-    padding: 15px 20px !important;
     font-size: 16px;
     font-weight: bold;
     border-bottom: none !important;
     display: block; /* 가득 차게 설정 */
+}
+.section-box-title{
+    position: relative;
+    padding: 15px 20px !important;
+    background-color: var(--header-bg) !important;
+    display: flex; align-items: center; gap: 10px;
+}
+.title-deco{
+    content: var(--url-title-deco);
+    width: 47px; height: 28px;
+}
+.grid-deco{
+    content: var(--url-grid-deco);
+    position: absolute;
+    right: 20px;
 }
 
 /* 3. 본문 콘텐츠 영역 패딩 설정 */
@@ -190,11 +211,34 @@ button:hover { background-color: #e0e0e0; }
     bottom: 0;
     left: 0; 
     right: 0; 
-    padding: 30px;
+    padding: 20px;
     z-index: 6;
 }
 .agent-title h1 { margin: 0; font-size: 28px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-#agent-level { color: #ccc; font-weight: bold; }
+#level-container {
+    display: inline-flex; 
+    background-color: #161817; 
+    align-items: center; 
+    padding: 0 16px; 
+    border-radius:9999px; 
+    margin-top: 10px;
+    
+    color: #ccc; 
+    font-weight: bold; 
+    font-size: 24px;
+}
+/*#level-container span{*/
+/*    transform: translateY(-16px);*/
+/*}*/
+
+.cinema-indicator{
+    background-color: #606060; 
+    width: 32px; 
+    height: 32px
+}
+.awaken-ui{
+    display: var(--awaken-enable);
+}
 
 /* 진영 아이콘 스타일 */
 .agent-group-icon {

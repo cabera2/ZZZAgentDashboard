@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ZZZ 데이터 대시보드</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link href="dashboard.css" rel="stylesheet">
 </head>
 <body>
 <div id="app">
@@ -29,55 +29,113 @@
             <button id="fetchBtn">ZZZ 계정 정보 가져오기</button>
             <span id="result">대기 중...</span>
         </div>
-        <nav id="agent-nav" class="hidden"></nav>
+        <nav class="hidden" id="agent-nav"></nav>
     </header>
 
-    <main id="main-content" class="hidden">
+    <main class="hidden" id="main-content">
         <aside id="left-panel">
             <div class="section-box portrait-box">
                 <div class="portrait-container">
-                    <div id="portrait-bg-color" class="portrait-bg-layer"></div>
-                    <img id="agent-portrait" src="" alt="Agent Portrait">
+                    <div class="portrait-bg-layer" id="portrait-bg-color"></div>
+                    <img alt="Agent Portrait" id="agent-portrait" src="">
                 </div>
-                <div id="portrait-frame" class="portrait-frame-overlay"></div>
+                <div class="portrait-frame-overlay" id="portrait-frame"></div>
                 <div class="agent-title">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <img id="agent-rank-icon" src="" style="width: 36px; height: 36px; display: none;">
                         <h1 id="agent-name" style="margin: 0;">-</h1>
                         <img id="agent-element_type" src="" style="width: 36px; height: 36px; display: none;">
                         <img id="agent-profession" src="" style="width: 36px; height: 36px; display: none;">
-                        <img id="agent-group-icon" class="agent-group-icon" src="">
+                        <img class="agent-group-icon" id="agent-group-icon" src="">
                     </div>
-                    <span id="agent-level">Lv. -</span>
+                    <div id="level-container">
+                        <span id="agent-level" style="color: #e8e8e8">Lv. -</span>
+                        <img src="https://act.hoyolab.com/app/zzz-game-record/images/icon-deco-level.1e805a4a.png" style="height: 45px">
+                        <span class="cinema-indicator" id="cinema1"
+                              style="-webkit-mask-image: var(--url-cinema1); 
+                         mask-image: var(--url-cinema1);"></span>
+                        <span class="cinema-indicator" id="cinema2"
+                              style="-webkit-mask-image: var(--url-cinema2); 
+                         mask-image: var(--url-cinema2);"></span>
+                        <span class="cinema-indicator" id="cinema3"
+                              style="-webkit-mask-image: var(--url-cinema3); 
+                         mask-image: var(--url-cinema3);"></span>
+                        <span class="cinema-indicator" id="cinema4"
+                              style="-webkit-mask-image: var(--url-cinema4); 
+                         mask-image: var(--url-cinema4);"></span>
+                        <span class="cinema-indicator" id="cinema5"
+                              style="-webkit-mask-image: var(--url-cinema5); 
+                         mask-image: var(--url-cinema5);"></span>
+                        <span class="cinema-indicator" id="cinema6"
+                              style="-webkit-mask-image: var(--url-cinema6); 
+                         mask-image: var(--url-cinema6); "></span>
+                        <img class= "awaken-ui" src="https://act.hoyolab.com/app/zzz-game-record/images/icon-deco-level.1e805a4a.png" id="awaken-slash" style="height: 45px">
+                        <span class= "awaken-ui"
+                              style="
+                              width: 32px;
+                              height: 32px;
+                              -webkit-mask-image: url('./awakenLabel.svg'); 
+                              mask-image: url('./awakenLabel.svg'); 
+                              -webkit-mask-size: contain;
+                              mask-size: contain;
+                              -webkit-mask-repeat: no-repeat;
+                              mask-repeat: no-repeat;
+                              -webkit-mask-position: center;
+                              mask-position: center;
+                         background-color: #d9dbdd"></span>
+                        <span class= "awaken-ui" id="awaken-level" style="color: #aeaeae">0</span>
+                        <span class= "awaken-ui" style="color: #7f8080">/</span>
+                        <span class= "awaken-ui" id="awaken-max-level">0</span>
+                    </div>
+
                 </div>
             </div>
 
             <div class="section-box weapon-box">
-                <h3 id="ui-title-weapon">W-엔진 정보</h3>
+                <div class="section-box-title">
+                    <h3 id="ui-title-weapon">W-엔진 정보</h3>
+                    <img class="title-deco" src="">
+                    <img class="grid-deco" src="">
+                </div>
                 <div id="weapon-content"></div>
             </div>
 
             <div class="section-box skills-box">
-                <h3 id="ui-title-skills">스킬 정보</h3>
-                <div id="skills-content" class="skills-grid"></div>
+                <div class="section-box-title">
+                    <h3 id="ui-title-skills">스킬 정보</h3>
+                    <img class="title-deco" src="">
+                    <img class="grid-deco" src="">
+                </div>
+                <div class="skills-grid" id="skills-content"></div>
             </div>
         </aside>
 
         <section id="right-panel">
-            <div id="stats-summary" class="section-box">
-                <h3 id="ui-title-stats">상세 스탯</h3>
-                <div id="stats-content" class="stats-grid-container"></div>
+            <div class="section-box" id="stats-summary">
+                <div class="section-box-title">
+                    <h3 id="ui-title-stats">상세 스탯</h3>
+                    <img class="title-deco">
+                    <img class="grid-deco" src="">
+                </div>
+                <div class="stats-grid-container" id="stats-content"></div>
             </div>
 
             <div class="section-box disks-box">
-                <h3 id="ui-title-disks">디스크 (장착 정보)</h3>
-                <div id="disk-score-container"> <div class="score-info-side">
-                    <div class="score-title">디스크에 유효한 서브 스탯 명중 횟수: <span style="color: #fca311;">13회</span></div>
-                    <div class="score-target-stat">공격력 백분율</div>
+                <div class="section-box-title">
+                    <h3 id="ui-title-disks">디스크 (장착 정보)</h3>
+                    <img class="title-deco" src="">
+                    <img class="grid-deco" src="">
                 </div>
+                <div id="disk-score-container">
+                    <div class="score-info-side">
+                        <div class="score-title">디스크에 유효한 서브 스탯 명중 횟수: <span style="color: #fca311;">13회</span></div>
+                        <div class="score-target-stat">공격력 백분율</div>
+                    </div>
                     <div class="score-rank-side">
                         <div class="total-score-text">13</div>
-                        <div style="width: 60px; height: 60px; background: #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px;">S</div>
+                        <div style="width: 60px; height: 60px; background: #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px;">
+                            S
+                        </div>
                     </div>
                 </div>
                 <div id="disks-container"></div>
