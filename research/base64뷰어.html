@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ZZZ 리소스 추출기 (Base64 to PNG)</title>
+    <style>
+        body { background-color: #1a1a1a; color: #eee; font-family: sans-serif; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        textarea {
+            width: 100%; height: 200px; background: #2a2a2a; color: #88ff88;
+            border: 1px solid #444; padding: 10px; font-family: monospace; border-radius: 8px;
+        }
+        button {
+            margin-top: 10px; padding: 10px 20px; background: #fff060; border: none;
+            border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 16px;
+        }
+        button:hover { background: #e6d750; }
+        #result-grid {
+            margin-top: 30px; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;
+        }
+        .image-card {
+            background: #333; padding: 15px; border-radius: 12px; text-align: center;
+            border: 1px solid #444; position: relative;
+        }
+        .image-card img {
+            max-width: 100%; height: auto; background-image: 
+                linear-gradient(45deg, #444 25%, transparent 25%), 
+                linear-gradient(-45deg, #444 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #444 75%),
+                linear-gradient(-45deg, transparent 75%, #444 75%);
+            background-size: 10px 10px; background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+            border-radius: 4px; margin-bottom: 10px;
+        }
+        .download-btn {
+            display: block; width: 100%; padding: 8px; background: #555;
+            color: white; text-decoration: none; border-radius: 4px; font-size: 12px;
+        }
+        .download-btn:hover { background: #666; }
+        .info { font-size: 12px; color: #aaa; margin-top: 5px; word-break: break-all; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ZZZ Base64 이미지 추출기</h1>
+        <p>JS 코드 뭉치를 아래에 붙여넣으세요. (data:image/... 형태를 자동으로 찾아냅니다)</p>
+        <textarea id="raw-input" placeholder="이곳에 코드를 붙여넣으세요..."></textarea>
+        <button onclick="extractImages()">이미지 추출하기 ✨</button>
+
+        <div id="result-grid"></div>
+    </div>
+
+    <script>
+        function extractImages() {
+            const input = document.getElementById('raw-input').value;
+            const grid = document.getElementById('result-grid');
+            grid.innerHTML = ''; // 이전 결과 초기화
+
+            // Base64 패턴을 찾는 정규식 (png, jpg, svg, gif 대응)
+            const regex = /data:image\/(png|jpg|jpeg|svg\+xml|gif);base64,[A-Za-z0-9+/=]+/g;
+            const matches = input.match(regex);
+
+            if (!matches) {
+                alert('추출할 수 있는 Base64 이미지를 찾지 못했습니다.');
+                return;
+            }
+
+            // 중복 제거 (Set 사용)
+            const uniqueMatches = [...new Set(matches)];
+
+            uniqueMatches.forEach((dataUri, index) => {
+                const extension = dataUri.split(';')[0].split('/')[1].replace('+xml', '');
+                const fileName = `zzz_extracted_${index + 1}.${extension}`;
+
+                const card = document.createElement('div');
+                card.className = 'image-card';
+                
+                card.innerHTML = `
+                    <img src="${dataUri}" alt="Extracted Image">
+                    <div class="info">파일 형식: ${extension.toUpperCase()}</div>
+                    <a href="${dataUri}" download="${fileName}" class="download-btn">PNG로 다운로드</a>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
