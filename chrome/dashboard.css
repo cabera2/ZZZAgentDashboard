@@ -110,7 +110,7 @@ button:hover { background-color: #e0e0e0; }
 /* 1. 전체 카드 박스 */
 .section-box {
     background-color: var(--panel-bg);
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -256,7 +256,14 @@ button:hover { background-color: #e0e0e0; }
 .weapon-container { display: flex; gap: 20px; align-items: center; }
 .weapon-icon { width: 156px; height: 156px; object-fit: contain; flex-shrink: 0; }
 .weapon-detail { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.weapon-name-row { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding-bottom: 8px; margin-bottom: 5px; }
+.weapon-name-row { 
+    padding-bottom: 8px; 
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    gap: 10px;
+}
 .weapon-name { display: block; font-size: 18px; font-weight: bold; color: #fff; }
 .weapon-meta { font-size: 13px; color: #aaa; }
 .weapon-stats-list { display: flex; flex-direction: column; gap: 6px; }

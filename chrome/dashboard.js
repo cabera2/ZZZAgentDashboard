@@ -445,8 +445,13 @@ function renderWeapon(weapon) {
                 <img src="${weapon.icon}" class="weapon-icon" alt="${weapon.name}">
                 <div class="weapon-detail">
                     <div class="weapon-name-row">
-                        <span class="weapon-name">${weapon.name}</span>
-                        <span class="weapon-meta">Lv.${weapon.level} | 돌파 ${weapon.star}</span>
+                        <span class="weapon-name">${weapon.name}</span> 
+                        <span class="weapon-meta"
+                        style="background-color: #9d9d9d; 
+                        color: #000;
+                        border-radius: 5px;
+                        padding: 5px">Lv.${weapon.level}</span>
+                        <img src="./assets/WEngineStar${weapon.star}.png" style="height: 25px">
                     </div>
                     <div class="weapon-stats-list">
                         ${mainPropsHtml}
