@@ -11,6 +11,9 @@ const ZZZ_RESOURCE = {
         IMAGES: "https://act.hoyolab.com/app/zzz-game-record/images/",
         ICONS: "https://act.hoyoverse.com/gt-ui/assets/icons/"
     },
+    UI: {
+        ICON_STAR: "https://act.hoyolab.com/app/zzz-game-record/images/icon-star.acd293ed.png"
+    },
     NAV_FRAME: {
         UNSELECTED: "card-bg.0e12ef65.png",
         SELECTED: "card-selected-bg.1059d6ea.png"
@@ -419,14 +422,20 @@ function renderWeapon(weapon) {
     if (weapon) {
         const mainPropsHtml = (weapon.main_properties || []).map(p => `
             <div class="weapon-stat-row main-stat">
-                <span class="stat-label">${p.property_name}</span>
+                <div>
+                    <img class="stat-label" src = "${ZZZ_RESOURCE.UI.ICON_STAR}">
+                    <span>${p.property_name}</span>
+                </div>
                 <span class="stat-value">${p.base}</span>
             </div>
         `).join('');
 
         const subPropsHtml = (weapon.properties || []).map(p => `
             <div class="weapon-stat-row sub-stat">
-                <span class="stat-label">${p.property_name}</span>
+                <div>
+                    <img class="stat-label" src = "${ZZZ_RESOURCE.UI.ICON_STAR}">
+                    <span>${p.property_name}</span>
+                </div>
                 <span class="stat-value">${p.base}</span>
             </div>
         `).join('');

@@ -18,7 +18,6 @@
     --text-sub: #eee;         /* [변경] 서브 텍스트(제목 등): 밝은 회색 */
     --border-color: #444;     /* 경계선: 더 어둡게 */
     --highlight: #f7768e;     /* 포인트 컬러: 유지 */
-    --stat-blue: #7aa2f7;     /* 고급 속성 파란색: 유지 */
     
     --awaken-enable: none;
 }
@@ -261,10 +260,20 @@ button:hover { background-color: #e0e0e0; }
 .weapon-name { display: block; font-size: 18px; font-weight: bold; color: #fff; }
 .weapon-meta { font-size: 13px; color: #aaa; }
 .weapon-stats-list { display: flex; flex-direction: column; gap: 6px; }
-.weapon-stat-row { display: flex; justify-content: space-between; font-size: 14px; }
-.main-stat { color: #fff; font-weight: bold; }
-.sub-stat { color: var(--stat-blue); }
-.stat-label { font-size: 14px; }
+.weapon-stat-row {
+    display: flex;
+    justify-content: space-between; 
+    font-size: 14px;
+    background-color: var(--header-bg);
+    padding: 10px;
+    border-radius:9999px;
+}
+/*.main-stat { color: #fff; font-weight: bold; }*/
+/*.sub-stat { color: var(--stat-blue); }*/
+.stat-label { 
+    font-size: 14px;
+    vertical-align: middle;
+}
 .stat-value { font-family: 'Courier New', monospace; font-weight: bold; }
 
 /* 스킬 영역 레이아웃 (6x1) (세부 스타일 유지) */
