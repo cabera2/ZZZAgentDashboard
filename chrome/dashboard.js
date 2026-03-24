@@ -22,14 +22,6 @@ const ZZZ_RESOURCE = {
         'S': '23b9017829c0ac2d.png',
         'A': '6828e55edc3aa085.png'
     },
-    SKILLS: {
-        BASIC:   "1f66bafcc1f069c2.png",
-        DODGE:   "b15382e2428392f2.png",
-        SPECIAL: "38b9cdcdee285da4.png",
-        CHAIN:   "11ee8bd83f94a1eb.png",
-        CORE:    "25a4b80fcfd80526.png",
-        ASSIST:  "40791617886f6731.png"
-    },
     // 속성 아이콘 (파일명만 저장)
     ELEMENT_ICONS: {
         200: "attribute-physical-icon.a657c07a.png",//물리
@@ -469,21 +461,10 @@ function renderSkills(skillsArray) {
     const contentBox = document.getElementById('skills-content');
     if (!contentBox || !skillsArray) return;
 
-    const skillKeys = ['BASIC', 'DODGE', 'SPECIAL', 'CHAIN', 'CORE', 'ASSIST'];
-
-    contentBox.innerHTML = skillsArray.map((skill, index) => {
-        const skillKey = skillKeys[index] || 'BASIC';
-        const iconUrl = `${ZZZ_RESOURCE.BASE.ICONS}${ZZZ_RESOURCE.SKILLS[skillKey]}`;
-
-        return `
-            <div class="skill-item">
-                <div class="skill-icon-wrapper">
-                    <img src="${iconUrl}" class="skill-icon">
-                    <span class="skill-level">${skill.level || 1}</span>
-                </div>
-            </div>
-        `;
-    }).join('');
+    skillsArray.forEach(skill => {
+        const iconEl = document.getElementById(`skillType${skill.skill_type}`);
+        if (iconEl) iconEl.textContent = skill.level;
+    });
 }
 
 function renderDisks(equipArray) {
