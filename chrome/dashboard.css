@@ -1,4 +1,6 @@
-﻿:root {
+﻿@import url('https://fonts.cdnfonts.com/css/impact');
+
+:root {
     --url-frame-bg: url('https://act.hoyolab.com/app/zzz-game-record/images/base-info-border-bg.09b1b6a9.png');
     --url-title-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/detail-title-icon.12f90997.png');
     --url-grid-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/icon-white-black-grids.cb4a1704.png');
@@ -196,10 +198,6 @@ button:hover { background-color: #e0e0e0; }
     height: 100%;
     opacity: 0.75;
     z-index: 1; /* 가장 아래쪽 */
-}
-@font-face {
-    font-family: 'Impact';
-    src : url(https://fonts.cdnfonts.com/css/impact)
 }
 .marquee-container {
     position: absolute;
