@@ -1,0 +1,40 @@
+zh-tw
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-tw.woff2
+REEJI-CloudChaoCuHeiGBT
+https://www.onlinewebfonts.com/download/6eea69fac282d68fd5ef7cdcaa70f5a6
+https://db.onlinewebfonts.com/t/6eea69fac282d68fd5ef7cdcaa70f5a6.woff
+https://db.onlinewebfonts.com/t/6eea69fac282d68fd5ef7cdcaa70f5a6.woff2
+
+vi-vn
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-vn.woff2
+TT Hoves Pro Compact Bold
+
+en-us
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-us.woff2
+inpin hongmengti
+
+ja-jp
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-jp.otf
+MOT-Ro GSan Serif StdN
+
+de-de
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-de.woff2
+Tilt Warp Regular
+
+ko-kr
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-kr.woff2
+S-Core Dream 9 Black
+https://noonnu.cc/font_page/223
+https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-9Black.woff
+
+th-th
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-th.woff2
+Kanit Bold
+
+fr-fr, pt-pt, es-es
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-fr.woff2
+Mont
+
+default: 
+https://act.hoyolab.com/app/zzz-game-record/fonts/zzz-default.woff2
+yinpinhongmengtijianfan
