@@ -210,6 +210,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
 
             const zzzGame = response.data.data.list.find(game => game.game_id === 8);
             if (!zzzGame) return resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+            console.log("Fetched User Data:", zzzGame);
 
             const {game_role_id: roleId, region, nickname} = zzzGame;
             resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
