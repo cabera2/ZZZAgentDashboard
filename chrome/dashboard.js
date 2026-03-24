@@ -313,7 +313,11 @@ function updatePortrait(agent) {
     if(portraitBgEl) {
         portraitBgEl.style.background = themeColor;
     }
-
+    const spans = document.querySelectorAll('span.marquee-text');
+    spans.forEach(span => {
+        span.innerText = agent.us_full_name.toUpperCase();
+    });
+    
     // 2. 캐릭터 이미지 및 텍스트
     document.getElementById('agent-portrait').src = agent.role_vertical_painting_url || agent.hollow_icon_path;
     document.getElementById('agent-name').innerText = agent.name_mi18n;
