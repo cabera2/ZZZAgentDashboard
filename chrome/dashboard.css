@@ -189,7 +189,7 @@ button:hover {
 }
 
 .section-box-title {
-    font-family: var(--zzz-font);
+    font-family: var(--zzz-font), sans-serif;
     position: relative;
     padding: 15px 20px !important;
     background-color: var(--header-bg) !important;

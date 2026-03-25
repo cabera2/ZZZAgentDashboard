@@ -101,8 +101,8 @@ const ZZZ_RESOURCE = {
 };
 const zzzFont = {
     "ko-kr": 'Escoredream, sans-serif',
-    "de-de": '"Tilt Warp", sans-serif;',
-    "th-th": '"Kanit", sans-serif;'
+    "de-de": '"Tilt Warp", sans-serif',
+    "th-th": '"Kanit", sans-serif'
 }
 const contentFont = {
     "zh-cn": '"Helvetica neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Arial","sans-serif"',
@@ -208,7 +208,6 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
     console.log(`title font: ${zzzFont[selectedLang]}`);
     document.documentElement.style.setProperty('--zzz-font', zzzFont[selectedLang] || font);
     
-
     resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
     // 1. UI 다국어 데이터(i18n) 가져오기
