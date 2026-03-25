@@ -163,10 +163,9 @@ button:hover {
     display: flex;
     gap: 20px; /* height 고정 제거: 콘텐츠에 따라 늘어나도록 */
 }
-
-/* ===================================
-   [핵심 수정] 공통 박스 및 제목 스타일
-==================================== */
+.zzz-font-display{
+    font-family: var(--zzz-font), sans-serif;
+}
 
 /* 1. 전체 카드 박스 */
 .section-box {
@@ -182,14 +181,13 @@ button:hover {
 .section-box h3 {
     color: #eeeeee !important; /* 라벨 글자: 밝은 회색 */
     margin: 0 !important;
-    font-size: 16px;
     font-weight: bold;
     border-bottom: none !important;
-    display: block; /* 가득 차게 설정 */
 }
 
 .section-box-title {
     font-family: var(--zzz-font), sans-serif;
+    font-size: 16px;
     position: relative;
     padding: 15px 20px !important;
     background-color: var(--header-bg) !important;
