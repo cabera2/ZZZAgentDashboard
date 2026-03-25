@@ -27,7 +27,6 @@
 body {
     margin: 0; padding: 20px;
     background-color: var(--bg-color); color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5; /* 가독성을 위한 행간 추가 */
 }
 
@@ -310,7 +309,6 @@ button:hover { background-color: #e0e0e0; }
     font-size: 14px;
     vertical-align: middle;
 }
-.stat-value { font-family: 'Courier New', monospace; font-weight: bold; }
 
 /* 스킬 영역 레이아웃 (6x1) (세부 스타일 유지) */
 .skills-grid {
@@ -378,7 +376,6 @@ button:hover { background-color: #e0e0e0; }
     font-size: 15px;
     font-weight: bold;
     color: #fff;
-    font-family: 'Consolas', 'Courier New', monospace;
 }
 
 .stat-base-add {
@@ -562,7 +559,7 @@ button:hover { background-color: #e0e0e0; }
     display: inline-block; color: #000 !important; font-size: 9px; font-weight: 800;
     padding: 0px 4px; border-radius: 4px; margin-left: 6px; line-height: 1.4; vertical-align: middle;
 }
-.sub-val { text-align: right; font-family: 'Courier New', monospace; }
+.sub-val { text-align: right }
 
 .empty-slot {
     border: 1px dashed #555; background: transparent;
