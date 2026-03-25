@@ -47,7 +47,7 @@ const ZZZ_RESOURCE = {
         5: "profession-defensive-icon.9bd60af4.png",//방어
         6: "profession-rupture-icon.4668f112.png"//명파
     },
-    
+
     // 디스크 점수 등급 아이콘
     DISK_RANK_ICONS: {
         "ER_B": "b.6428930f.png",
@@ -99,34 +99,21 @@ const ZZZ_RESOURCE = {
         31203: "c44eb009da6c398b.svg"  // 이상 마스터리
     }
 };
-const langFont = {
-    "zh-cn":{
-        contentFont: '"Helvetica neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Arial","sans-serif"'
-    },
-    "zh-tw":{
-        contentFont: '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"'
-    },
-    "ko-kr": {
-        contentFont: '"nanum gothic","나눔 고딕","Malgun Gothic","맑은 고딕","돋움",sans-serif'
-    },
-    "es-es": {
-        contentFont: 'Helvetica,Arial,sans-serif'
-    },
-    "th-th": {
-        contentFont: 'kanit,Tahoma,Helvetica,Arial,Geneva,sans-serif'
-    },
-    "ru-ru": {
-        contentFont: '"Adelle Cyrillic","Dctz38",Arial,Helvetica,sans-serif'
-    },
-    "ja-jp": {
-        contentFont: '"YuGothic", "Meiryo", sans-serif'
-    },
-    "de-de": {
-        contentFont: '"Calibri","Arial"'
-    },
-    "default":{
-        contentFont: '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"'
-    }
+const zzzFont = {
+    "ko-kr": 'Escoredream, sans-serif',
+    "de-de": '"Tilt Warp", sans-serif;',
+    "th-th": '"Kanit", sans-serif;'
+}
+const contentFont = {
+    "zh-cn": '"Helvetica neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Arial","sans-serif"',
+    "zh-tw": '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"',
+    "ko-kr": '"nanum gothic","나눔 고딕","Malgun Gothic","맑은 고딕","돋움",sans-serif',
+    "es-es": 'Helvetica,Arial,sans-serif',
+    "th-th": 'kanit,Tahoma,Helvetica,Arial,Geneva,sans-serif',
+    "ru-ru": '"Adelle Cyrillic","Dctz38",Arial,Helvetica,sans-serif',
+    "ja-jp": '"YuGothic", "Meiryo", sans-serif',
+    "de-de": '"Calibri","Arial"',
+    "default": '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"'
 };
 
 const nav = document.getElementById('agent-nav');
@@ -193,13 +180,14 @@ window.addEventListener('mousemove', (e) => {
 });
 
 let globalAgents = [];
+
 function applyI18nLabels(i18nData) {
     const mapping = {
         'ui-title-weapon': 'roles_weapon',             // W-엔진
         'ui-title-skills': 'roles_detail_skill_title', // 스킬
         'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
         'ui-title-disks': 'roles_equipment',            // 디스크
-        
+
     };
 
     for (const [id, key] of Object.entries(mapping)) {
@@ -213,8 +201,13 @@ function applyI18nLabels(i18nData) {
 document.getElementById('fetchBtn').addEventListener('click', () => {
     const resultDiv = document.getElementById('result');
     const selectedLang = document.getElementById('langSelect').value;
+
+    // 폰트 준비
+    const font = contentFont[selectedLang] || contentFont["default"];
+    document.body.style.fontFamily = font;
+    console.log(`title font: ${zzzFont[selectedLang]}`);
+    document.documentElement.style.setProperty('--zzz-font', zzzFont[selectedLang] || font);
     
-    document.body.style.fontFamily = langFont[selectedLang].contentFont || langFont["default"].contentFont;
 
     resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
@@ -268,7 +261,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
 
                 // 데이터 확인용
                 console.log("Fetched Agents Data:", globalAgents);
-                
+
                 if (globalAgents.length > 0) {
                     resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
                     renderAgentNav(globalAgents);
@@ -290,7 +283,7 @@ function renderAgentNav(agents) {
         const wrapper = document.createElement('div');
         wrapper.className = 'agent-icon-wrapper';
         if (index === 0) wrapper.classList.add('active');
-        
+
         wrapper.innerHTML = `
             <img src="${agent.hollow_icon_path}" class="icon-char" draggable="false">
             <img src="${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame" draggable="false">
@@ -326,6 +319,7 @@ function renderAgentDetail(agent) {
     renderSkills(agent.skills);
     updateDiskScore(agent.equip_plan_info);
 }
+
 /**
  * 포트레이트 섹션 렌더링 전담 함수
  */
@@ -340,14 +334,14 @@ function updatePortrait(agent) {
     document.body.style.background = `linear-gradient(to bottom, ${themeColor}, #000000)`;
     document.body.style.backgroundAttachment = 'fixed';
     const portraitBgEl = document.getElementById('portrait-bg-color');
-    if(portraitBgEl) {
+    if (portraitBgEl) {
         portraitBgEl.style.background = themeColor;
     }
     const spans = document.querySelectorAll('span.marquee-text');
     spans.forEach(span => {
         span.innerText = agent.us_full_name.toUpperCase();
     });
-    
+
     // 2. 캐릭터 이미지 및 텍스트
     document.getElementById('agent-portrait').src = agent.role_vertical_painting_url || agent.hollow_icon_path;
     document.getElementById('agent-name').innerText = agent.name_mi18n;
@@ -398,20 +392,19 @@ function updatePortrait(agent) {
         groupIconEl.src = agent.group_icon_path || "";
         groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
     }
-    
+
     // 7. 형상 시네마
-    for (let i = 1; i <= 6; i++){
+    for (let i = 1; i <= 6; i++) {
         const cinemaEl = document.getElementById(`cinema${i}`);
-        if(cinemaEl) {
+        if (cinemaEl) {
             if (i <= agent.rank) {
                 cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
-            }
-            else {
+            } else {
                 cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_INACTIVE
             }
         }
     }
-    document.documentElement.style.setProperty('--awaken-enable', agent.skill_awaken.has_awaken_system ?'block':'none');
+    document.documentElement.style.setProperty('--awaken-enable', agent.skill_awaken.has_awaken_system ? 'block' : 'none');
     document.getElementById(`awaken-level`).innerText = agent.skill_awaken.awaken_level;
     document.getElementById(`awaken-max-level`).innerText = agent.skill_awaken.awaken_max_level;
 }
@@ -575,7 +568,7 @@ function renderDisks(equipArray) {
 function updateDiskScore(planInfo) {
     const scoreContainer = document.getElementById('disk-score-container');
     if (!scoreContainer) return;
-    
+
     // 데이터가 없거나 유효성 정보가 없으면 숨김
     if (!planInfo || planInfo.valid_property_cnt === undefined) {
         scoreContainer.classList.add('hidden');

@@ -1,4 +1,11 @@
 ﻿@import url('https://fonts.cdnfonts.com/css/impact');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@700&family=Tilt+Warp&display=swap');
+@font-face {
+    font-family: 'Escoredream';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-9Black.woff') format('woff');
+    font-weight: 900;
+    font-display: swap;
+}
 
 :root {
     --url-frame-bg: url('https://act.hoyolab.com/app/zzz-game-record/images/base-info-border-bg.09b1b6a9.png');
@@ -10,48 +17,76 @@
     --url-cinema4: url('https://act.hoyoverse.com/gt-ui/assets/icons/c38e275d1752227c.svg');
     --url-cinema5: url('https://act.hoyoverse.com/gt-ui/assets/icons/e38ac6870459d7ff.svg');
     --url-cinema6: url('https://act.hoyoverse.com/gt-ui/assets/icons/55832216257906d4.svg');
-    
-    /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
-    --bg-color: #0c0d10;      /* 전체 배경: 더 어둡게 */
-    --panel-bg: #2a2a2a;      /* 카드 본문 배경 (어두운 회색) */
-    --header-bg: #161616;     /* 카드 제목 배경 (거의 검정색) */
 
-    --text-main: #fff;        /* 메인 텍스트: 완전 흰색 */
-    --text-sub: #eee;         /* [변경] 서브 텍스트(제목 등): 밝은 회색 */
-    --border-color: #444;     /* 경계선: 더 어둡게 */
-    --highlight: #f7768e;     /* 포인트 컬러: 유지 */
-    
+    /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
+    --bg-color: #0c0d10; /* 전체 배경: 더 어둡게 */
+    --panel-bg: #2a2a2a; /* 카드 본문 배경 (어두운 회색) */
+    --header-bg: #161616; /* 카드 제목 배경 (거의 검정색) */
+
+    --text-main: #fff; /* 메인 텍스트: 완전 흰색 */
+    --text-sub: #eee; /* [변경] 서브 텍스트(제목 등): 밝은 회색 */
+    --border-color: #444; /* 경계선: 더 어둡게 */
+    --highlight: #f7768e; /* 포인트 컬러: 유지 */
+
     --awaken-enable: none;
+    --zzz-font: sans-serif;
 }
 
 body {
-    margin: 0; padding: 20px;
-    background-color: var(--bg-color); color: var(--text-main);
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
     line-height: 1.5; /* 가독성을 위한 행간 추가 */
 }
 
-.hidden { display: none !important; }
+.hidden {
+    display: none !important;
+}
 
 /* 상단 컨트롤 및 네비게이션 (스타일 유지) */
 .header-controls {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 #langSelect {
-    padding: 10px; background-color: #1a1a1a; color: var(--text-main);
-    border: 1px solid var(--border-color); border-radius: 5px;
-    font-weight: bold; cursor: pointer; outline: none;
+    padding: 10px;
+    background-color: #1a1a1a;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
 }
-#langSelect:hover { border-color: #666; }
+
+#langSelect:hover {
+    border-color: #666;
+}
 
 button {
-    padding: 10px 20px; background-color: #fff; color: #000;
-    border: none; border-radius: 5px; cursor: pointer;
-    font-weight: bold; transition: background-color 0.2s;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
 }
-button:hover { background-color: #e0e0e0; }
 
-#result { margin-left: 15px; font-size: 14px; color: #888; }
+button:hover {
+    background-color: #e0e0e0;
+}
+
+#result {
+    margin-left: 15px;
+    font-size: 14px;
+    color: #888;
+}
 
 /* 에이전트 목록 (상단 바) (스타일 유지) */
 #agent-nav {
@@ -80,28 +115,53 @@ button:hover { background-color: #e0e0e0; }
 }
 
 .agent-icon-wrapper {
-    position: relative; width: 110px; height: 45px;
-    flex-shrink: 0; cursor: pointer;
+    position: relative;
+    width: 110px;
+    height: 45px;
+    flex-shrink: 0;
+    cursor: pointer;
 }
 
-.selected-frame { display: none; }
-.unselected-frame { display: block; }
-.agent-icon-wrapper.active .unselected-frame { display: none; }
-.agent-icon-wrapper.active .selected-frame { display: block; }
+.selected-frame {
+    display: none;
+}
+
+.unselected-frame {
+    display: block;
+}
+
+.agent-icon-wrapper.active .unselected-frame {
+    display: none;
+}
+
+.agent-icon-wrapper.active .selected-frame {
+    display: block;
+}
 
 .icon-frame, .icon-selected-frame {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 20 !important; pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20 !important;
+    pointer-events: none;
 }
 
 .icon-char {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 10 !important; object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10 !important;
+    object-fit: contain;
 }
 
 /* 메인 레이아웃 (좌우 분할) */
 #main-content {
-    display: flex; gap: 20px; /* height 고정 제거: 콘텐츠에 따라 늘어나도록 */
+    display: flex;
+    gap: 20px; /* height 고정 제거: 콘텐츠에 따라 늘어나도록 */
 }
 
 /* ===================================
@@ -120,24 +180,31 @@ button:hover { background-color: #e0e0e0; }
 
 /* 2. 카드 상단 라벨(제목) 영역 */
 .section-box h3 {
-    color: #eeeeee !important;           /* 라벨 글자: 밝은 회색 */
+    color: #eeeeee !important; /* 라벨 글자: 밝은 회색 */
     margin: 0 !important;
     font-size: 16px;
     font-weight: bold;
     border-bottom: none !important;
     display: block; /* 가득 차게 설정 */
 }
-.section-box-title{
+
+.section-box-title {
+    font-family: var(--zzz-font);
     position: relative;
     padding: 15px 20px !important;
     background-color: var(--header-bg) !important;
-    display: flex; align-items: center; gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
-.title-deco{
+
+.title-deco {
     content: var(--url-title-deco);
-    width: 47px; height: 28px;
+    width: 47px;
+    height: 28px;
 }
-.grid-deco{
+
+.grid-deco {
     content: var(--url-grid-deco);
     position: absolute;
     right: 20px;
@@ -154,9 +221,12 @@ button:hover { background-color: #e0e0e0; }
    좌측 패널 (가로폭 714px 고정)
 ==================================== */
 #left-panel {
-    width: 714px; min-width: 714px;
-    background-color: transparent; gap: 10px;
-    display: flex; flex-direction: column;
+    width: 714px;
+    min-width: 714px;
+    background-color: transparent;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* 캐릭터 초상화 박스 (스타일 유지, 여백 미세 조정) */
@@ -165,13 +235,15 @@ button:hover { background-color: #e0e0e0; }
     height: 500px;
     position: relative;
     overflow: hidden; /* 영역 밖으로 나가는 이미지 차단 */
-    background-color: transparent; !important;
-    border: none !important;     /* 프레임이 테두리 역할을 하므로 기존 테두리 제거 */
+    background-color: transparent;
+!important;
+    border: none !important; /* 프레임이 테두리 역할을 하므로 기존 테두리 제거 */
     box-shadow: none !important;
     align-items: center;
     padding: 15px;
     box-sizing: border-box;
 }
+
 .portrait-frame-overlay {
     position: absolute;
     top: 0;
@@ -185,10 +257,15 @@ button:hover { background-color: #e0e0e0; }
     z-index: 5; /* 다른 요소들 위로 덮음 */
     pointer-events: none; /* 프레임 때문에 클릭이 막히지 않도록 방지 */
 }
+
 .portrait-container {
-    position: relative; width: 684px; height: 356px;
-    border-radius: 4px; overflow: hidden;
+    position: relative;
+    width: 684px;
+    height: 356px;
+    border-radius: 4px;
+    overflow: hidden;
 }
+
 .portrait-bg-layer {
     position: absolute;
     top: 0;
@@ -198,6 +275,7 @@ button:hover { background-color: #e0e0e0; }
     opacity: 0.75;
     z-index: 1; /* 가장 아래쪽 */
 }
+
 .marquee-container {
     position: absolute;
     top: 0;
@@ -211,12 +289,14 @@ button:hover { background-color: #e0e0e0; }
     white-space: nowrap; /* 글자가 밑으로 줄바꿈되지 않게 한 줄로 고정 */
     opacity: 25%;
 }
-.marquee-text{
-    font-size: 300px; 
+
+.marquee-text {
+    font-size: 300px;
     font-family: 'Impact', sans-serif;
     font-style: italic;
     animation: flowingText 15s linear infinite;
 }
+
 @keyframes flowingText {
     0% {
         transform: translateX(0); /* 시작 상태 (padding 때문에 오른쪽 끝에 있음) */
@@ -233,37 +313,47 @@ button:hover { background-color: #e0e0e0; }
     object-fit: cover;
     z-index: 3;
 }
+
 .agent-title {
     position: absolute;
     bottom: 0;
-    left: 0; 
-    right: 0; 
+    left: 0;
+    right: 0;
     padding: 20px;
     z-index: 6;
 }
-.agent-title h1 { margin: 0; font-size: 28px; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+
+.agent-title h1 {
+    margin: 0;
+    font-size: 28px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 #level-container {
-    display: inline-flex; 
-    background-color: #161817; 
-    align-items: center; 
-    padding: 0 16px; 
-    border-radius:9999px; 
+    display: inline-flex;
+    background-color: #161817;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 9999px;
     margin-top: 10px;
-    
-    color: #ccc; 
-    font-weight: bold; 
+
+    color: #ccc;
+    font-weight: bold;
     font-size: 24px;
 }
+
 /*#level-container span{*/
 /*    transform: translateY(-16px);*/
 /*}*/
 
-.cinema-indicator{
-    background-color: #606060; 
-    width: 32px; 
+.cinema-indicator {
+    background-color: #606060;
+    width: 32px;
     height: 32px
 }
-.awaken-ui{
+
+.awaken-ui {
     display: var(--awaken-enable);
 }
 
@@ -272,66 +362,130 @@ button:hover { background-color: #e0e0e0; }
     position: absolute;
     bottom: 20px;
     right: 30px;
-    width: 96px;        /* 원본은 220 */
+    width: 96px; /* 원본은 220 */
     height: 96px;
     object-fit: contain;
 }
 
 /* 무기 및 스킬 박스 자체 패딩 제거 (공통스타일 padding:0 따름) */
-.weapon-box, .skills-box { }
+.weapon-box, .skills-box {
+}
 
 /* W-엔진 레이아웃 (세부 스타일 유지) */
-.weapon-container { display: flex; gap: 20px; align-items: center; }
-.weapon-icon { width: 156px; height: 156px; object-fit: contain; flex-shrink: 0; }
-.weapon-detail { flex: 1; display: flex; flex-direction: column; gap: 10px; }
-.weapon-name-row { 
-    padding-bottom: 8px; 
+.weapon-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.weapon-icon {
+    width: 156px;
+    height: 156px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.weapon-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.weapon-name-row {
+    padding-bottom: 8px;
     margin-bottom: 5px;
     display: flex;
     align-items: center;
     font-weight: bold;
     gap: 10px;
 }
-.weapon-name { display: block; font-size: 18px; font-weight: bold; color: #fff; }
-.weapon-meta { font-size: 13px; color: #aaa; }
-.weapon-stats-list { display: flex; flex-direction: column; gap: 6px; }
+
+.weapon-name {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.weapon-meta {
+    font-size: 13px;
+    color: #aaa;
+}
+
+.weapon-stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
 .weapon-stat-row {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     font-size: 14px;
     background-color: var(--header-bg);
     padding: 10px;
-    border-radius:9999px;
+    border-radius: 9999px;
 }
+
 /*.main-stat { color: #fff; font-weight: bold; }*/
 /*.sub-stat { color: var(--stat-blue); }*/
-.stat-label { 
+.stat-label {
     font-size: 14px;
     vertical-align: middle;
 }
 
 /* 스킬 영역 레이아웃 (6x1) (세부 스타일 유지) */
 .skills-grid {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px;
-    justify-items: center; align-items: center;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    justify-items: center;
+    align-items: center;
 }
+
 /* #skills-content 자체 패딩 부여로 인해 margin-top 제거 */
 
-.skill-item { display: flex; justify-content: center; align-items: center; }
-.skill-icon-wrapper { position: relative; width: 72px; height: 72px; }
-.skill-icon { width: 100%; height: 100%; object-fit: contain; }
+.skill-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.skill-icon-wrapper {
+    position: relative;
+    width: 72px;
+    height: 72px;
+}
+
+.skill-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .skill-level {
-    position: absolute; bottom: -2px; right: -2px;
-    background: #000; color: #fff; font-size: 12px;
-    font-weight: bold; padding: 2px 6px; border-radius: 4px;
-    border: 1px solid #444; z-index: 5;
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    z-index: 5;
 }
 
 /* ===================================
    우측 패널 (가변폭, 데이터)
 ==================================== */
 #right-panel {
-    flex: 2; display: flex; flex-direction: column; gap: 10px;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     /* overflow 제거: 페이지 전체 스크롤 사용 */
 }
 
@@ -391,6 +545,7 @@ button:hover { background-color: #e0e0e0; }
     /* 텍스트가 줄바꿈되지 않도록 방지 */
     white-space: nowrap;
 }
+
 .stat-values-wrapper {
     position: relative; /* 중요: 이 속성이 있어야 base-add가 엉뚱한 곳으로 날아가지 않음 */
     display: flex;
@@ -496,8 +651,8 @@ button:hover { background-color: #e0e0e0; }
 }
 
 .disk-card {
-    background-color: #1a1a1a;    /* 3. 본문 영역 배경 */
-    border: 1px solid #000000;    /* 4. 테두리 선 */
+    background-color: #1a1a1a; /* 3. 본문 영역 배경 */
+    border: 1px solid #000000; /* 4. 테두리 선 */
     border-radius: 8px;
     overflow: hidden;
     display: flex;
@@ -506,7 +661,7 @@ button:hover { background-color: #e0e0e0; }
 
 /* 2. 디스크 이름 및 레벨 라벨 영역 */
 .disk-main-info {
-    background-color: #2a2a2a;    /* 라벨 영역 배경 */
+    background-color: #2a2a2a; /* 라벨 영역 배경 */
     padding: 10px 12px;
     display: flex;
     justify-content: space-between;
@@ -551,24 +706,70 @@ button:hover { background-color: #e0e0e0; }
     flex-direction: column;
     gap: 6px;
 }
-.sub-item { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; padding: 1px 0; }
-.sub-item.main-stat-row .sub-name { color: #fff; font-weight: bold; }
-.sub-item.main-stat-row .sub-val { color: #fff; font-size: 14px; font-weight: bold; text-align: right; }
-.sub-name-group { display: flex; align-items: center; gap: 5px; }
-.upgrade-box {
-    display: inline-block; color: #000 !important; font-size: 9px; font-weight: 800;
-    padding: 0px 4px; border-radius: 4px; margin-left: 6px; line-height: 1.4; vertical-align: middle;
+
+.sub-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    padding: 1px 0;
 }
-.sub-val { text-align: right }
+
+.sub-item.main-stat-row .sub-name {
+    color: #fff;
+    font-weight: bold;
+}
+
+.sub-item.main-stat-row .sub-val {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.sub-name-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.upgrade-box {
+    display: inline-block;
+    color: #000 !important;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 0px 4px;
+    border-radius: 4px;
+    margin-left: 6px;
+    line-height: 1.4;
+    vertical-align: middle;
+}
+
+.sub-val {
+    text-align: right
+}
 
 .empty-slot {
-    border: 1px dashed #555; background: transparent;
-    display: flex; align-items: center; justify-content: center; height: 100px;
+    border: 1px dashed #555;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
 }
-.empty-disk-msg { color: #555; font-size: 12px; }
+
+.empty-disk-msg {
+    color: #555;
+    font-size: 12px;
+}
 
 /* 공통 메시지 스타일 */
-.empty-msg { color: #888; font-size: 14px; text-align: center; padding: 20px 0; }
+.empty-msg {
+    color: #888;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px 0;
+}
 
 .stat-icon-base {
     display: inline-block;
