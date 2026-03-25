@@ -99,6 +99,35 @@ const ZZZ_RESOURCE = {
         31203: "c44eb009da6c398b.svg"  // 이상 마스터리
     }
 };
+const langFont = {
+    "zh-cn":{
+        contentFont: '"Helvetica neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Arial","sans-serif"'
+    },
+    "zh-tw":{
+        contentFont: '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"'
+    },
+    "ko-kr": {
+        contentFont: '"nanum gothic","나눔 고딕","Malgun Gothic","맑은 고딕","돋움",sans-serif'
+    },
+    "es-es": {
+        contentFont: 'Helvetica,Arial,sans-serif'
+    },
+    "th-th": {
+        contentFont: 'kanit,Tahoma,Helvetica,Arial,Geneva,sans-serif'
+    },
+    "ru-ru": {
+        contentFont: '"Adelle Cyrillic","Dctz38",Arial,Helvetica,sans-serif'
+    },
+    "ja-jp": {
+        contentFont: '"YuGothic", "Meiryo", sans-serif'
+    },
+    "de-de": {
+        contentFont: '"Calibri","Arial"'
+    },
+    "default":{
+        contentFont: '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"'
+    }
+};
 
 const nav = document.getElementById('agent-nav');
 let isDown = false;
@@ -164,8 +193,6 @@ window.addEventListener('mousemove', (e) => {
 });
 
 let globalAgents = [];
-
-// [추가] 다국어 데이터를 적용하는 함수
 function applyI18nLabels(i18nData) {
     const mapping = {
         'ui-title-weapon': 'roles_weapon',             // W-엔진
@@ -186,6 +213,8 @@ function applyI18nLabels(i18nData) {
 document.getElementById('fetchBtn').addEventListener('click', () => {
     const resultDiv = document.getElementById('result');
     const selectedLang = document.getElementById('langSelect').value;
+    
+    document.body.style.fontFamily = langFont[selectedLang].contentFont || langFont["default"].contentFont;
 
     resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
@@ -212,7 +241,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
             if (!zzzGame) return resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
             console.log("Fetched User Data:", zzzGame);
 
-            const {game_role_id: roleId, region, nickname} = zzzGame;
+            const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
             resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
 
             // 3. 에이전트 리스트 가져오기
@@ -241,7 +270,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
                 console.log("Fetched Agents Data:", globalAgents);
                 
                 if (globalAgents.length > 0) {
-                    resultDiv.innerHTML = `🎉 <b>성공!</b> ${globalAgents.length}명의 데이터를 로드했습니다.`;
+                    resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
                     renderAgentNav(globalAgents);
                     renderAgentDetail(globalAgents[0]);
                 } else {
