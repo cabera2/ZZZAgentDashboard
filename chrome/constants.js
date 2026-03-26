@@ -110,12 +110,12 @@ export const ZZZ_RESOURCE = {
         31203: "c44eb009da6c398b.svg"  // 이상 마스터리
     }
 };
-export const zzzFont = {
+export const ZZZ_FONT = {
     "ko-kr": 'Escoredream, sans-serif',
     "de-de": '"Tilt Warp", sans-serif',
     "th-th": '"Kanit", sans-serif'
 }
-export const contentFont = {
+export const CONTENT_FONT = {
     "zh-cn": '"Helvetica neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei UI","Microsoft YaHei","Arial","sans-serif"',
     "zh-tw": '"Helvetica neue","PingFang TC","Hiragino Sans TC","Microsoft JhengHei UI","Microsoft JhengHei","Arial","sans-serif"',
     "ko-kr": '"nanum gothic","나눔 고딕","Malgun Gothic","맑은 고딕","돋움",sans-serif',

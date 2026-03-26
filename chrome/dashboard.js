@@ -1,4 +1,5 @@
-﻿import {UI_SETTING, ZZZ_RESOURCE, zzzFont, contentFont} from './constants.js';
+﻿import {UI_SETTING, ZZZ_RESOURCE, ZZZ_FONT, CONTENT_FONT} from './constants.js';
+import {getDiskScoreGradient, getStatIconHtml} from './utils.js';
 
 const nav = document.getElementById('agent-nav');
 let isDown = false;
@@ -87,10 +88,10 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
     const selectedLang = document.getElementById('langSelect').value;
 
     // 폰트 준비
-    const font = contentFont[selectedLang] || contentFont["default"];
+    const font = CONTENT_FONT[selectedLang] || CONTENT_FONT["default"];
     document.body.style.fontFamily = font;
-    console.log(`title font: ${zzzFont[selectedLang]}`);
-    document.documentElement.style.setProperty('--zzz-font', zzzFont[selectedLang] || font);
+    console.log(`title font: ${ZZZ_FONT[selectedLang]}`);
+    document.documentElement.style.setProperty('--zzz-font', ZZZ_FONT[selectedLang] || font);
     
     resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
@@ -491,11 +492,14 @@ function updateDiskScore(planInfo) {
 
     // 랭크 이미지 설정
     let rankIconUrl = '';
+    let bgColor = '#1b1b1b';
     if (rank !== 'ER_Default' && ZZZ_RESOURCE.DISK_RANK_ICONS[rank]) {
         rankIconUrl = `${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.DISK_RANK_ICONS[rank]}`;
+        bgColor = getDiskScoreGradient(rank)
     }
 
     // HTML 최종 렌더링
+    scoreContainer.style.background = bgColor;
     scoreContainer.innerHTML = `
         <div class="score-info-side">
             <div class="score-title zzz-font-display">${localizedTitle}</div>
@@ -507,30 +511,4 @@ function updateDiskScore(planInfo) {
             ${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}
         </div>
     `;
-}
-
-function getStatIconHtml(statId, iconColor = '#ffffff') {
-    const fileName = ZZZ_RESOURCE.STAT_ICONS[statId];
-    if (!fileName) return "";
-
-    const fullUrl = `${ZZZ_RESOURCE.BASE.ICONS}${fileName}`;
-    const isSvg = fileName.toLowerCase().endsWith('.svg');
-
-    if (isSvg) {
-        // SVG인 경우: 마스크 방식을 사용하여 색상을 입힘
-        return `
-            <span class="stat-icon-base stat-icon-mask" 
-                  style="-webkit-mask-image: url('${fullUrl}'); 
-                         mask-image: url('${fullUrl}'); 
-                         background-color: ${iconColor};">
-            </span>`;
-    } else {
-        // PNG 등 일반 이미지인 경우: img 태그를 사용하여 원본 색상을 유지
-        // 필요에 따라 class로 크기만 조절 (stat-icon-base 활용)
-        return `
-            <img src="${fullUrl}" 
-                 class="stat-icon-base" 
-                 alt="stat-icon" 
-                 style="vertical-align: middle;">`;
-    }
 }
