@@ -501,6 +501,11 @@ function updateDiskScore(planInfo) {
     // HTML 최종 렌더링
     scoreContainer.style.background = bgColor;
     scoreContainer.innerHTML = `
+        <img style="
+        object-fit: contain;
+        position: absolute;
+        top: 0; right: 0;" 
+        src="https://act.hoyolab.com/app/zzz-game-record/images/deco-bg.7128f6e6.png">
         <div class="score-info-side">
             <div class="score-title zzz-font-display">${localizedTitle}</div>
             <div class="score-target-stats-wrapper">

@@ -578,6 +578,7 @@ button:hover {
     background: #1b1b1b;
     border: 1px solid #333;
     border-radius: 12px;
+    box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.25);
 
     /* 1. 상하 여백 20px, 좌우 여백 24px */
     padding: 5px 24px;
@@ -589,6 +590,7 @@ button:hover {
     align-items: center; /* 텍스트와 이미지를 세로 중앙에 맞춤 */
 
     overflow: hidden;
+    position: relative;
 }
 
 /* 왼쪽 텍스트 그룹 */
