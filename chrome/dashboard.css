@@ -548,6 +548,7 @@ button:hover {
 }
 
 .stat-values-wrapper {
+    font-family: var(--zzz-font), sans-serif;
     position: relative; /* 중요: 이 속성이 있어야 base-add가 엉뚱한 곳으로 날아가지 않음 */
     display: flex;
     align-items: center;

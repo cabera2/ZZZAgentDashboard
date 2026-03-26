@@ -614,7 +614,7 @@ function updateDiskScore(planInfo) {
     // HTML 최종 렌더링
     scoreContainer.innerHTML = `
         <div class="score-info-side">
-            <div class="score-title">${localizedTitle}</div>
+            <div class="score-title zzz-font-display">${localizedTitle}</div>
             <div class="score-target-stats-wrapper">
                 ${validStatsHtml}
             </div>
