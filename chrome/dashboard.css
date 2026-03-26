@@ -33,8 +33,11 @@
 }
 
 body {
-    margin: 0;
+    margin: auto;
+    
     padding: 20px;
+    width: 1500px;
+    
     background-color: var(--bg-color);
     color: var(--text-main);
     line-height: 1.5; /* 가독성을 위한 행간 추가 */
