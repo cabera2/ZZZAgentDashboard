@@ -275,6 +275,7 @@ function updatePortrait(agent) {
     if (groupIconEl) {
         groupIconEl.src = agent.group_icon_path || "";
         groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
+        groupIconEl.title = agent.camp_name_mi18n || "";
     }
 
     // 7. 형상 시네마
@@ -465,15 +466,10 @@ function updateDiskScore(planInfo) {
     const rank = planInfo.equip_rating || 'ER_Default';
 
     /**
-     * 유효 속성 소스 결정
-     * 현재는 '기본 추천(game_default)'을 사용합니다.
-     * 향후 다른 패턴(plan_effective_property_list, custom_info) 확장이 필요할 경우
-     * 이 변수에 할당되는 객체만 변경하면 됩니다.
+     * 유효 속성 소스
      */
-    const activePlanSource = planInfo.game_default;
-    const recommendProps = (activePlanSource && activePlanSource.property_list)
-        ? activePlanSource.property_list
-        : [];
+    //const activePlanSource = planInfo.game_default;
+    const recommendProps = planInfo.plan_effective_property_list;
 
     // 추천 스탯 태그 HTML 생성
     const validStatsHtml = recommendProps.map(prop => {
@@ -484,11 +480,33 @@ function updateDiskScore(planInfo) {
 
     // 다국어 제목 처리
     let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";
-    if (window.i18nData && window.i18nData.roles_random_attributes_hit_num) {
-        titleText = window.i18nData.roles_random_attributes_hit_num;
+    let planSourceLabel = "스탯 추천 방안 출처: {source}"
+    if(window.i18nData){
+        if (window.i18nData.roles_random_attributes_hit_num) {
+            titleText = window.i18nData.roles_random_attributes_hit_num;
+        }
+        const highlightedScore = `<span style="color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}; font-weight: bold;">${score}</span>`;
+        titleText = titleText.replace('{num}', highlightedScore);
+
+        // 스탯 방안 정보
+        let planSourceContext;
+        switch (planInfo.type) {
+            default:
+            case 1:
+                planSourceContext = window.i18nData.roles_game_default_source//게임 내 기본 추천 스탯
+                break;
+            case 2:
+                planSourceContext = window.i18nData.roles_guide_plan_source//육성 가이드 방안
+                break;
+            case 3:
+                planSourceContext = window.i18nData.roles_custom_source//유효한 사용자 정의 서브 스탯
+                break;
+        }
+
+        if (window.i18nData.roles_plan_source){
+            planSourceLabel = window.i18nData.roles_plan_source.replace('{source}', planSourceContext);
+        }
     }
-    const highlightedScore = `<span style="color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}; font-weight: bold;">${score}</span>`;
-    const localizedTitle = titleText.replace('{num}', highlightedScore);
 
     // 랭크 이미지 설정
     let rankIconUrl = '';
@@ -507,7 +525,8 @@ function updateDiskScore(planInfo) {
         top: 0; right: 0;" 
         src="https://act.hoyolab.com/app/zzz-game-record/images/deco-bg.7128f6e6.png">
         <div class="score-info-side">
-            <div class="score-title zzz-font-display">${localizedTitle}</div>
+            <div class="score-title zzz-font-display">${titleText}</div>
+            <span class="plan-source">${planSourceLabel}</span>
             <div class="score-target-stats-wrapper">
                 ${validStatsHtml}
             </div>
