@@ -7,6 +7,7 @@ const EL = {
     resultDiv: document.getElementById('result'),
     langSelect: document.getElementById('langSelect'),
     mainContent: document.getElementById('main-content'),
+    statsContent: document.getElementById('stats-content'),
     portraitSection:{
         portraitBgEl: document.getElementById('portrait-bg-color'),
         agentPortrait: document.getElementById('agent-portrait'),
@@ -26,6 +27,21 @@ const EL = {
             5: document.getElementById('cinema5'),
             6: document.getElementById('cinema6'),
         }
+    },
+    skillIcons:{
+        0: document.getElementById('skillType0'),
+        1: document.getElementById('skillType1'),
+        2: document.getElementById('skillType2'),
+        3: document.getElementById('skillType3'),
+        5: document.getElementById('skillType5'),
+        6: document.getElementById('skillType6'),
+    },
+    discSection: {
+        scoreContainer: document.getElementById('disk-score-container'),
+        scoreTitle: document.getElementById('score-title'),
+        planSource: document.getElementById('plan-source'),
+        scoreTargetStatsWrapper: document.getElementById('score-target-stats-wrapper'),
+        scoreRankSide: document.getElementById('score-rank-side'),
     }
 }
 
@@ -99,7 +115,6 @@ function applyI18nLabels(i18nData) {
         'ui-title-skills': 'roles_detail_skill_title', // 스킬
         'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
         'ui-title-disks': 'roles_equipment',            // 디스크
-
     };
 
     for (const [id, key] of Object.entries(mapping)) {
@@ -315,10 +330,9 @@ function updatePortrait(agent) {
 }
 
 function renderStats(propsArray) {
-    const statsContent = document.getElementById('stats-content');
-    if (!statsContent || !propsArray) return;
+    if (!EL.statsContent || !propsArray) return;
 
-    statsContent.innerHTML = propsArray.map(s => {
+    EL.statsContent.innerHTML = propsArray.map(s => {
         const hasAdd = (s.add !== "0" && s.add !== "0%" && s.add !== "0.0%" && s.add !== "");
         const iconHtml = getStatIconHtml(s.property_id);
 
@@ -390,11 +404,10 @@ function renderWeapon(weapon) {
 }
 
 function renderSkills(skillsArray) {
-    const contentBox = document.getElementById('skills-content');
-    if (!contentBox || !skillsArray) return;
+    if (!skillsArray) return;
 
     skillsArray.forEach(skill => {
-        const iconEl = document.getElementById(`skillType${skill.skill_type}`);
+        const iconEl = EL.skillIcons[skill.skill_type];
         if (iconEl) iconEl.textContent = skill.level;
     });
 }
@@ -471,7 +484,7 @@ function renderDisks(equipArray) {
 }
 
 function updateDiskScore(planInfo) {
-    const scoreContainer = document.getElementById('disk-score-container');
+    const scoreContainer = EL.discSection.scoreContainer;
     if (!scoreContainer) return;
 
     // 데이터가 없거나 유효성 정보가 없으면 숨김
@@ -538,9 +551,9 @@ function updateDiskScore(planInfo) {
 
     // HTML 최종 렌더링
     scoreContainer.style.background = bgColor;
-    document.getElementById("score-title").innerHTML = titleText;
-    document.getElementById("plan-source").innerText = planSourceLabel;
-    document.getElementById("score-target-stats-wrapper").innerHTML = validStatsHtml;
-    document.getElementById("score-rank-side").innerHTML = 
+    EL.discSection.scoreTitle.innerHTML = titleText;
+    EL.discSection.planSource.innerText = planSourceLabel;
+    EL.discSection.scoreTargetStatsWrapper.innerHTML = validStatsHtml;
+    EL.discSection.scoreRankSide.innerHTML = 
         `${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}`
 }
