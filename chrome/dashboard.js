@@ -29,12 +29,20 @@ const EL = {
         }
     },
     skillIcons:{
-        0: document.getElementById('skillType0'),
-        1: document.getElementById('skillType1'),
-        2: document.getElementById('skillType2'),
-        3: document.getElementById('skillType3'),
-        5: document.getElementById('skillType5'),
-        6: document.getElementById('skillType6'),
+        0: document.getElementById('skillIconType0'),
+        1: document.getElementById('skillIconType1'),
+        2: document.getElementById('skillIconType2'),
+        3: document.getElementById('skillIconType3'),
+        5: document.getElementById('skillIconType5'),
+        6: document.getElementById('skillIconType6'),
+    },
+    skillLevels:{
+        0: document.getElementById('skillLevelType0'),
+        1: document.getElementById('skillLevelType1'),
+        2: document.getElementById('skillLevelType2'),
+        3: document.getElementById('skillLevelType3'),
+        5: document.getElementById('skillLevelType5'),
+        6: document.getElementById('skillLevelType6'),
     },
     weaponSection:{
         weaponIcon: document.getElementById('weapon-icon'),
@@ -49,6 +57,7 @@ const EL = {
         planSource: document.getElementById('plan-source'),
         scoreTargetStatsWrapper: document.getElementById('score-target-stats-wrapper'),
         scoreRankSide: document.getElementById('score-rank-side'),
+        discItemTemplate: document.getElementById('disk-item-template'),
     }
 }
 
@@ -205,6 +214,9 @@ EL.fetchBtn.addEventListener('click', () => {
         });
     });
 });
+EL.skillIcons[0].addEventListener('click', () => {
+    console.log('skill clicked');
+})
 
 function renderAgentNav(agents) {
     EL.nav.innerHTML = '';
@@ -400,7 +412,7 @@ function renderSkills(skillsArray) {
     if (!skillsArray) return;
 
     skillsArray.forEach(skill => {
-        const iconEl = EL.skillIcons[skill.skill_type];
+        const iconEl = EL.skillLevels[skill.skill_type];
         if (iconEl) iconEl.textContent = skill.level;
     });
 }
@@ -450,24 +462,16 @@ function renderDisks(equipArray) {
             }).join('');
 
             // 2. 레이아웃 렌더링
-            diskSlotDiv.innerHTML = `
-                <div class="disk-main-info">
-                    <div class="disk-name-main">
-                        <span class="disk-name-text">${disk.name}</span>
-                        <div class="disk-level">
-                            ${rankIconHtml}Lv.${disk.level ?? "null"}
-                        </div> 
-                    </div>
-                    <img src="${disk.icon}" class="disk-icon"> 
-                </div>
-                <ul class="disk-sub-list">
-                    <li class="sub-item main-stat-row">
-                        <span class="sub-name">${mainName}</span>
-                        <span class="sub-val">${mainValue}</span>
-                    </li>
-                    ${subPropsHtml}
-                </ul>
-            `;
+            const clone = EL.discSection.discItemTemplate.content.cloneNode(true);
+            clone.querySelector('.disk-name-text').innerText = disk.name;
+            clone.querySelector('.disk-level').innerHTML = `${rankIconHtml}Lv.${disk.level ?? "null"}`;
+            clone.querySelector('.disk-icon').src = `${disk.icon}`;
+            clone.querySelector('.sub-item').innerHTML = `
+            <span class="sub-name">${mainName}</span>
+            <span class="sub-val">${mainValue}</span>`
+            clone.querySelector('.disk-sub-list').insertAdjacentHTML('beforeend', subPropsHtml);
+            diskSlotDiv.appendChild(clone);
+            
         } else {
             diskSlotDiv.className = 'disk-card empty-slot';
             diskSlotDiv.innerHTML = `<div class="empty-disk-msg">${i}번 슬롯 비어있음</div>`;
@@ -549,4 +553,7 @@ function updateDiskScore(planInfo) {
     EL.discSection.scoreTargetStatsWrapper.innerHTML = validStatsHtml;
     EL.discSection.scoreRankSide.innerHTML = 
         `${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}`
+}
+function openModal(content){
+    
 }

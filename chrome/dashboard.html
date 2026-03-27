@@ -141,28 +141,28 @@
                 </div>
                 <div class="skills-grid" id="skills-content">
                     <div class="skill-icon-wrapper">
-                        <img class="skill-icon" src="https://act.hoyoverse.com/gt-ui/assets/icons/1f66bafcc1f069c2.png">
-                        <span class="skill-level" id="skillType0">0</span>
+                        <img class="skill-icon" id="skillIconType0" src="https://act.hoyoverse.com/gt-ui/assets/icons/1f66bafcc1f069c2.png">
+                        <span class="skill-level" id="skillLevelType0">0</span>
                     </div>
                     <div class="skill-icon-wrapper">
-                        <img class="skill-icon" src="https://act.hoyoverse.com/gt-ui/assets/icons/b15382e2428392f2.png">
-                        <span class="skill-level" id="skillType2">0</span>
+                        <img class="skill-icon" id="skillIconType2" src="https://act.hoyoverse.com/gt-ui/assets/icons/b15382e2428392f2.png">
+                        <span class="skill-level" id="skillLevelType2">0</span>
                     </div>
                     <div class="skill-icon-wrapper">
-                        <img class="skill-icon" src="https://act.hoyoverse.com/gt-ui/assets/icons/38b9cdcdee285da4.png">
-                        <span class="skill-level" id="skillType6">0</span>
+                        <img class="skill-icon" id="skillIconType6" src="https://act.hoyoverse.com/gt-ui/assets/icons/38b9cdcdee285da4.png">
+                        <span class="skill-level" id="skillLevelType6">0</span>
                     </div>
                     <div class="skill-icon-wrapper">
-                        <img class="skill-icon" src="https://act.hoyoverse.com/gt-ui/assets/icons/11ee8bd83f94a1eb.png">
-                        <span class="skill-level" id="skillType1">0</span>
+                        <img class="skill-icon" id="skillIconType1" src="https://act.hoyoverse.com/gt-ui/assets/icons/11ee8bd83f94a1eb.png">
+                        <span class="skill-level" id="skillLevelType1">0</span>
                     </div>
                     <div class="skill-icon-wrapper">
-                        <img class="skill-icon" src="https://act.hoyoverse.com/gt-ui/assets/icons/25a4b80fcfd80526.png">
-                        <span class="skill-level" id="skillType3">0</span>
+                        <img class="skill-icon" id="skillIconType3" src="https://act.hoyoverse.com/gt-ui/assets/icons/25a4b80fcfd80526.png">
+                        <span class="skill-level" id="skillLevelType3">0</span>
                     </div>
                     <div class="skill-icon-wrapper">
-                        <img class="skill-icon" src="https://act.hoyoverse.com/gt-ui/assets/icons/40791617886f6731.png">
-                        <span class="skill-level" id="skillType5">0</span>
+                        <img class="skill-icon" id="skillIconType5" src="https://act.hoyoverse.com/gt-ui/assets/icons/40791617886f6731.png">
+                        <span class="skill-level" id="skillLevelType5">0</span>
                     </div>
                 </div>
             </div>
@@ -204,5 +204,29 @@
         </section>
     </main>
 </div>
+<div id="modal-overlay">
+    <div id="modal-content">
+        <span class="modal-close-btn">&times;</span>
+        <div id="modal-body">
+            <h2 style="margin-top: 0;">모달 제목</h2>
+            <p>이곳에 스킬 설명이나 W엔진 정보가 들어갑니다.</p>
+        </div>
+    </div>
+</div>
+<template id="disk-item-template">
+    <div class="disk-main-info">
+        <div class="disk-name-main">
+            <span class="disk-name-text"></span>
+            <div class="disk-level"></div>
+        </div>
+        <img class="disk-icon">
+    </div>
+    <ul class="disk-sub-list">
+        <li class="sub-item main-stat-row">
+            <span class="sub-name"></span>
+            <span class="sub-val"></span>
+        </li>
+    </ul>
+</template>
 </body>
 </html>

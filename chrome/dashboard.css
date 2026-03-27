@@ -34,6 +34,43 @@
     --zzz-font: sans-serif;
 }
 
+/* 모달 창 */
+#modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* 검은색 70% 투명도 */
+    display: flex;             /* 내부 요소를 중앙 정렬하기 위함 */
+    justify-content: center;   /* 가로 중앙 */
+    align-items: center;       /* 세로 중앙 */
+    z-index: 9999;            /* 모든 요소보다 위에 표시 */
+    /* display: none;  <-- 나중에 자바스크립트로 제어할 때 사용 */
+}
+
+/* 2. 흰색 사각형 모달창 */
+#modal-content {
+    background-color: white;
+    width: 400px;
+    min-height: 200px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    color: black;             /* 대시보드가 어두운 테마라면 글자색 지정 필요 */
+    position: relative;
+}
+
+/* 3. 닫기 버튼 (임시) */
+.modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 body {
     margin: auto;
     
