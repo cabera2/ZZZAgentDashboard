@@ -2,7 +2,31 @@
 import {getDiskScoreGradient, getStatIconHtml} from './utils.js';
 
 const EL = {
-    nav: document.getElementById('agent-nav')
+    fetchBtn: document.getElementById('fetchBtn'),
+    nav: document.getElementById('agent-nav'),
+    resultDiv: document.getElementById('result'),
+    langSelect: document.getElementById('langSelect'),
+    mainContent: document.getElementById('main-content'),
+    portraitSection:{
+        portraitBgEl: document.getElementById('portrait-bg-color'),
+        agentPortrait: document.getElementById('agent-portrait'),
+        agentName: document.getElementById('agent-name'),
+        agentLevel: document.getElementById('agent-level'),
+        agentRankIcon: document.getElementById('agent-rank-icon'),
+        agentElementType: document.getElementById('agent-element-type'),
+        agentProfession: document.getElementById('agent-profession'),
+        agentGroupIcon: document.getElementById('agent-group-icon'),
+        awakenLevel: document.getElementById('awaken-level'),
+        awakenMaxLevel: document.getElementById('awaken-max-level'),
+        cinema:{
+            1: document.getElementById('cinema1'),
+            2: document.getElementById('cinema2'),
+            3: document.getElementById('cinema3'),
+            4: document.getElementById('cinema4'),
+            5: document.getElementById('cinema5'),
+            6: document.getElementById('cinema6'),
+        }
+    }
 }
 
 let isDown = false;
@@ -86,17 +110,16 @@ function applyI18nLabels(i18nData) {
     }
 }
 
-document.getElementById('fetchBtn').addEventListener('click', () => {
-    const resultDiv = document.getElementById('result');
-    const selectedLang = document.getElementById('langSelect').value;
+EL.fetchBtn.addEventListener('click', () => {
+    const selectedLang = EL.langSelect.value;
 
     // 폰트 준비
     const font = CONTENT_FONT[selectedLang] || CONTENT_FONT["default"];
     document.body.style.fontFamily = font;
     console.log(`title font: ${ZZZ_FONT[selectedLang]}`);
     document.documentElement.style.setProperty('--zzz-font', ZZZ_FONT[selectedLang] || font);
-    
-    resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
+
+    EL.resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
     // 1. UI 다국어 데이터(i18n) 가져오기
     const i18nUrl = `https://fastcdn.hoyoverse.com/mi18n/nap_global/m20240410hy38foxb7k/m20240410hy38foxb7k-${selectedLang}.json`;
@@ -107,22 +130,22 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
             applyI18nLabels(i18nRes.data);
         }
 
-        resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
+        EL.resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
 
         // 2. 계정 기본 정보 가져오기
         const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
         chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, (response) => {
             if (!response || !response.success || response.data.retcode !== 0) {
-                resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
+                EL.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
                 return;
             }
 
             const zzzGame = response.data.data.list.find(game => game.game_id === 8);
-            if (!zzzGame) return resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+            if (!zzzGame) return EL.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
             console.log("Fetched User Data:", zzzGame);
 
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
-            resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
+            EL.resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
 
             // 3. 에이전트 리스트 가져오기
             const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
@@ -131,7 +154,7 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
                 if (!basicRes.success || basicRes.data.retcode !== 0) return resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
 
                 const avatarIds = basicRes.data.data.avatar_list.map(a => a.id);
-                resultDiv.innerHTML = `✅ 에이전트 ${avatarIds.length}명. <br><b>[3/4]</b> 상세 데이터 로드 중...`;
+                EL.resultDiv.innerHTML = `✅ 에이전트 ${avatarIds.length}명. <br><b>[3/4]</b> 상세 데이터 로드 중...`;
 
                 // 4. 에이전트별 상세 정보 가져오기
                 const detailPromises = avatarIds.map(id => {
@@ -150,11 +173,11 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
                 console.log("Fetched Agents Data:", globalAgents);
 
                 if (globalAgents.length > 0) {
-                    resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
+                    EL.resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
                     renderAgentNav(globalAgents);
                     renderAgentDetail(globalAgents[0]);
                 } else {
-                    resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
+                    EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
                 }
             });
         });
@@ -193,7 +216,7 @@ function renderAgentDetail(agent) {
     if (!agent) return;
 
     // 메인 컨텐츠 표시
-    document.getElementById('main-content').classList.remove('hidden');
+    EL.mainContent.classList.remove('hidden');
 
     // [함수 분리] 포트레이트 영역 처리 호출
     updatePortrait(agent);
@@ -211,7 +234,7 @@ function renderAgentDetail(agent) {
  */
 function updatePortrait(agent) {
     if (!agent) return;
-
+    const section = EL.portraitSection;
     const baseImages = ZZZ_RESOURCE.BASE.IMAGES;
     const baseIcons = ZZZ_RESOURCE.BASE.ICONS;
 
@@ -219,9 +242,8 @@ function updatePortrait(agent) {
     const themeColor = agent.vertical_painting_color || '#24283b';
     document.body.style.background = `linear-gradient(to bottom, ${themeColor}, #000000)`;
     document.body.style.backgroundAttachment = 'fixed';
-    const portraitBgEl = document.getElementById('portrait-bg-color');
-    if (portraitBgEl) {
-        portraitBgEl.style.background = themeColor;
+    if (section.portraitBgEl) {
+        section.portraitBgEl.style.background = themeColor;
     }
     const spans = document.querySelectorAll('span.marquee-text');
     spans.forEach(span => {
@@ -229,60 +251,56 @@ function updatePortrait(agent) {
     });
 
     // 2. 캐릭터 이미지 및 텍스트
-    document.getElementById('agent-portrait').src = agent.role_vertical_painting_url || agent.hollow_icon_path;
-    document.getElementById('agent-name').innerText = agent.name_mi18n;
-    document.getElementById('agent-level').innerText = `Lv. ${agent.level}`;
+    section.agentPortrait.src = agent.role_vertical_painting_url || agent.hollow_icon_path;
+    section.agentName.innerText = agent.name_mi18n;
+    section.agentLevel.innerText = `Lv. ${agent.level}`;
 
     // 3. 랭크 아이콘 (S/A/B)
-    const rankIconEl = document.getElementById('agent-rank-icon');
-    if (rankIconEl) {
+    if (section.agentRankIcon) {
         const fileName = ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
         if (fileName) {
-            rankIconEl.src = baseIcons + fileName;
-            rankIconEl.style.display = 'block';
+            section.agentRankIcon.src = baseIcons + fileName;
+            section.agentRankIcon.style.display = 'block';
         } else {
-            rankIconEl.style.display = 'none';
+            section.agentRankIcon.style.display = 'none';
         }
     }
 
     // 4. 속성 아이콘 (element_type / sub_element_type)
-    const elementEl = document.getElementById('agent-element_type');
-    if (elementEl) {
+    if (section.agentElementType) {
         let fileName = ZZZ_RESOURCE.SUB_ELEMENT_ICONS[agent.sub_element_type];
         if (!fileName) {
             fileName = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
         }
         if (fileName) {
-            elementEl.src = ZZZ_RESOURCE.BASE.IMAGES + fileName;
-            elementEl.style.display = 'block';
+            section.agentElementType.src = ZZZ_RESOURCE.BASE.IMAGES + fileName;
+            section.agentElementType.style.display = 'block';
         } else {
-            elementEl.style.display = 'none';
+            section.agentElementType.style.display = 'none';
         }
     }
 
     // 5. 특성 아이콘 (avatar_profession)
-    const professionEl = document.getElementById('agent-profession');
-    if (professionEl) {
+    if (section.agentProfession) {
         const fileName = ZZZ_RESOURCE.PROFESSION_ICONS[agent.avatar_profession];
         if (fileName) {
-            professionEl.src = baseImages + fileName;
-            professionEl.style.display = 'block';
+            section.agentProfession.src = baseImages + fileName;
+            section.agentProfession.style.display = 'block';
         } else {
-            professionEl.style.display = 'none';
+            section.agentProfession.style.display = 'none';
         }
     }
 
     // 6. 진영 아이콘
-    const groupIconEl = document.getElementById('agent-group-icon');
-    if (groupIconEl) {
-        groupIconEl.src = agent.group_icon_path || "";
-        groupIconEl.style.display = agent.group_icon_path ? 'block' : 'none';
-        groupIconEl.title = agent.camp_name_mi18n || "";
+    if (section.agentGroupIcon) {
+        section.agentGroupIcon.src = agent.group_icon_path || "";
+        section.agentGroupIcon.style.display = agent.group_icon_path ? 'block' : 'none';
+        section.agentGroupIcon.title = agent.camp_name_mi18n || "";
     }
 
     // 7. 형상 시네마
     for (let i = 1; i <= 6; i++) {
-        const cinemaEl = document.getElementById(`cinema${i}`);
+        const cinemaEl = section.cinema[i];
         if (cinemaEl) {
             if (i <= agent.rank) {
                 cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
@@ -292,8 +310,8 @@ function updatePortrait(agent) {
         }
     }
     document.documentElement.style.setProperty('--awaken-enable', agent.skill_awaken.has_awaken_system ? 'block' : 'none');
-    document.getElementById(`awaken-level`).innerText = agent.skill_awaken.awaken_level;
-    document.getElementById(`awaken-max-level`).innerText = agent.skill_awaken.awaken_max_level;
+    section.awakenLevel.innerText = agent.skill_awaken.awaken_level;
+    section.awakenMaxLevel.innerText = agent.skill_awaken.awaken_max_level;
 }
 
 function renderStats(propsArray) {
