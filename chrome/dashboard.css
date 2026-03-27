@@ -11,6 +11,8 @@
     --url-frame-bg: url('https://act.hoyolab.com/app/zzz-game-record/images/base-info-border-bg.09b1b6a9.png');
     --url-title-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/detail-title-icon.12f90997.png');
     --url-grid-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/icon-white-black-grids.cb4a1704.png');
+    /*--url-icon-deco-level: url('https://act.hoyolab.com/app/zzz-game-record/images/icon-deco-level.1e805a4a.png');*/
+    --url-disc-score-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/deco-bg.7128f6e6.png');
     --url-cinema1: url('https://act.hoyoverse.com/gt-ui/assets/icons/401332efd0b741a3.svg');
     --url-cinema2: url('https://act.hoyoverse.com/gt-ui/assets/icons/3eaedfe01c3dbaca.svg');
     --url-cinema3: url('https://act.hoyoverse.com/gt-ui/assets/icons/44d5d7cbc4a42194.svg');
@@ -213,8 +215,7 @@ button:hover {
 
 /* 3. 본문 콘텐츠 영역 패딩 설정 */
 #weapon-content,
-#skills-content,
-#disks-container {
+#skills-content {
     padding: 20px;
 }
 
@@ -617,6 +618,12 @@ button:hover {
     padding: 4px 10px;
     border-radius: 4px;
     width: fit-content;
+}
+#disk-score-deco{
+    content: var(--url-disc-score-deco);
+    object-fit: contain; 
+    position: absolute; 
+    top: 0; right: 0;
 }
 
 /* 유효 속성 태그 그룹 컨테이너 */
