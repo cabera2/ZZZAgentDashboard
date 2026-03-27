@@ -163,21 +163,19 @@
 
             <div class="section-box disks-box">
                 <div class="section-box-title">
-                    <h3 id="ui-title-disks">디스크 (장착 정보)</h3>
+                    <h3 id="ui-title-disks">디스크</h3>
                     <img class="title-deco" src="">
                     <img class="grid-deco" src="">
                 </div>
                 <div id="disk-score-container">
+                    <img style="object-fit: contain; position: absolute; top: 0; right: 0;"
+                         src="https://act.hoyolab.com/app/zzz-game-record/images/deco-bg.7128f6e6.png">
                     <div class="score-info-side">
-                        <div class="score-title zzz-font-display">디스크에 유효한 서브 스탯 명중 횟수: <span style="color: #fca311;">13회</span></div>
-                        <div class="score-target-stat">공격력 백분율</div>
+                        <div id = "score-title" class="zzz-font-display">DISK SCORE</div>
+                        <span id="plan-source">PLAN SOURCE</span>
+                        <div id="score-target-stats-wrapper"></div>
                     </div>
-                    <div class="score-rank-side">
-                        <div class="total-score-text">13</div>
-                        <div style="width: 60px; height: 60px; background: #444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px;">
-                            S
-                        </div>
-                    </div>
+                    <div id="score-rank-side"></div>
                 </div>
                 <div id="disks-container"></div>
             </div>

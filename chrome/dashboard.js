@@ -2,6 +2,7 @@
 import {getDiskScoreGradient, getStatIconHtml} from './utils.js';
 
 const nav = document.getElementById('agent-nav');
+
 let isDown = false;
 let startX;
 let scrollLeft;
@@ -429,7 +430,7 @@ function renderDisks(equipArray) {
                     <div class="disk-name-main">
                         <span class="disk-name-text">${disk.name}</span>
                         <div class="disk-level">
-                            ${rankIconHtml}Lv.${disk.level || "null"}
+                            ${rankIconHtml}Lv.${disk.level ?? "null"}
                         </div> 
                     </div>
                     <img src="${disk.icon}" class="disk-icon"> 
@@ -469,7 +470,7 @@ function updateDiskScore(planInfo) {
      * 유효 속성 소스
      */
     //const activePlanSource = planInfo.game_default;
-    const recommendProps = planInfo.plan_effective_property_list;
+    const recommendProps = planInfo.plan_effective_property_list || [];
 
     // 추천 스탯 태그 HTML 생성
     const validStatsHtml = recommendProps.map(prop => {
@@ -518,21 +519,9 @@ function updateDiskScore(planInfo) {
 
     // HTML 최종 렌더링
     scoreContainer.style.background = bgColor;
-    scoreContainer.innerHTML = `
-        <img style="
-        object-fit: contain;
-        position: absolute;
-        top: 0; right: 0;" 
-        src="https://act.hoyolab.com/app/zzz-game-record/images/deco-bg.7128f6e6.png">
-        <div class="score-info-side">
-            <div class="score-title zzz-font-display">${titleText}</div>
-            <span class="plan-source">${planSourceLabel}</span>
-            <div class="score-target-stats-wrapper">
-                ${validStatsHtml}
-            </div>
-        </div>
-        <div class="score-rank-side">
-            ${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}
-        </div>
-    `;
+    document.getElementById("score-title").innerHTML = titleText;
+    document.getElementById("plan-source").innerText = planSourceLabel;
+    document.getElementById("score-target-stats-wrapper").innerHTML = validStatsHtml;
+    document.getElementById("score-rank-side").innerHTML = 
+        `${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}`
 }
