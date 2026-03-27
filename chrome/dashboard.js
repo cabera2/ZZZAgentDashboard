@@ -36,6 +36,13 @@ const EL = {
         5: document.getElementById('skillType5'),
         6: document.getElementById('skillType6'),
     },
+    weaponSection:{
+        weaponIcon: document.getElementById('weapon-icon'),
+        weaponName: document.getElementById('weapon-name'),
+        weaponLevel: document.getElementById('weapon-level'),
+        weaponStar: document.getElementById('weapon-star'),
+        weaponStatsList: document.getElementById('weapon-stats-list'),
+    },
     discSection: {
         scoreContainer: document.getElementById('disk-score-container'),
         scoreTitle: document.getElementById('score-title'),
@@ -377,27 +384,13 @@ function renderWeapon(weapon) {
                 <span class="stat-value">${p.base}</span>
             </div>
         `).join('');
-
-        contentBox.innerHTML = `
-            <div class="weapon-container">
-                <img src="${weapon.icon}" class="weapon-icon" alt="${weapon.name}">
-                <div class="weapon-detail">
-                    <div class="weapon-name-row">
-                        <span class="weapon-name">${weapon.name}</span> 
-                        <span class="weapon-meta"
-                        style="background-color: #9d9d9d; 
-                        color: #000;
-                        border-radius: 5px;
-                        padding: 5px">Lv.${weapon.level}</span>
-                        <img src="./assets/WEngineStar${weapon.star}.png" style="height: 25px">
-                    </div>
-                    <div class="weapon-stats-list">
-                        ${mainPropsHtml}
-                        ${subPropsHtml}
-                    </div>
-                </div>
-            </div>
-        `;
+        
+        EL.weaponSection.weaponIcon.src = weapon.icon;
+        EL.weaponSection.weaponIcon.alt = weapon.name;
+        EL.weaponSection.weaponName.innerText = weapon.name;
+        EL.weaponSection.weaponLevel.innerText = `Lv.${weapon.level}`;
+        EL.weaponSection.weaponStar.src = `./assets/WEngineStar${weapon.star}.png`
+        EL.weaponSection.weaponStatsList.innerHTML = `${mainPropsHtml}${subPropsHtml}`
     } else {
         contentBox.innerHTML = `<div class="empty-msg">장착된 W-엔진이 없습니다.</div>`;
     }

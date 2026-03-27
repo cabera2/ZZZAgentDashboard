@@ -379,7 +379,7 @@ button:hover {
     align-items: center;
 }
 
-.weapon-icon {
+#weapon-icon {
     width: 156px;
     height: 156px;
     object-fit: contain;
@@ -402,7 +402,7 @@ button:hover {
     gap: 10px;
 }
 
-.weapon-name {
+#weapon-name {
     display: block;
     font-size: 18px;
     font-weight: bold;
@@ -414,7 +414,7 @@ button:hover {
     color: #aaa;
 }
 
-.weapon-stats-list {
+#weapon-stats-list {
     display: flex;
     flex-direction: column;
     gap: 6px;
