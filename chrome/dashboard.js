@@ -1,7 +1,9 @@
 ﻿import {UI_SETTING, ZZZ_RESOURCE, ZZZ_FONT, CONTENT_FONT} from './constants.js';
 import {getDiskScoreGradient, getStatIconHtml} from './utils.js';
 
-const nav = document.getElementById('agent-nav');
+const EL = {
+    nav: document.getElementById('agent-nav')
+}
 
 let isDown = false;
 let startX;
@@ -17,7 +19,7 @@ const friction = 0.95; // 마찰력 (1에 가까울수록 오래 미끄러짐)
 const beginMomentum = () => {
     // 속도가 아주 작아질 때까지 반복
     if (Math.abs(velX) > 0.5) {
-        nav.scrollLeft -= velX;
+        EL.nav.scrollLeft -= velX;
         velX *= friction; // 매 프레임마다 속도 감소
         rafID = requestAnimationFrame(beginMomentum);
     } else {
@@ -26,26 +28,26 @@ const beginMomentum = () => {
 };
 
 //내비게이션 제어
-nav.addEventListener('mousedown', (e) => {
+EL.nav.addEventListener('mousedown', (e) => {
     isDown = true;
-    nav.classList.add('active');
+    EL.nav.classList.add('active');
 
     // 클릭 시 진행 중이던 관성 애니메이션 중단
     cancelAnimationFrame(rafID);
 
-    startX = e.pageX - nav.offsetLeft;
-    scrollLeft = nav.scrollLeft;
+    startX = e.pageX - EL.nav.offsetLeft;
+    scrollLeft = EL.nav.scrollLeft;
     lastX = e.pageX;
     velX = 0;
 
-    nav.style.cursor = 'grabbing';
+    EL.nav.style.cursor = 'grabbing';
 });
 
 window.addEventListener('mouseup', () => {
     if (!isDown) return;
     isDown = false;
-    nav.classList.remove('active');
-    nav.style.cursor = 'grab';
+    EL.nav.classList.remove('active');
+    EL.nav.style.cursor = 'grab';
 
     // 마우스를 떼는 순간 미끄러짐 시작
     beginMomentum();
@@ -55,14 +57,14 @@ window.addEventListener('mousemove', (e) => {
     if (!isDown) return;
 
     e.preventDefault();
-    const x = e.pageX - nav.offsetLeft;
+    const x = e.pageX - EL.nav.offsetLeft;
 
     // 현재 프레임에서의 속도 계산 (현재 위치 - 직전 위치)
     velX = e.pageX - lastX;
     lastX = e.pageX;
 
     const walk = (x - startX) * 2;
-    nav.scrollLeft = scrollLeft - walk;
+    EL.nav.scrollLeft = scrollLeft - walk;
 });
 
 let globalAgents = [];
@@ -160,9 +162,8 @@ document.getElementById('fetchBtn').addEventListener('click', () => {
 });
 
 function renderAgentNav(agents) {
-    const nav = document.getElementById('agent-nav');
-    nav.innerHTML = '';
-    nav.classList.remove('hidden');
+    EL.nav.innerHTML = '';
+    EL.nav.classList.remove('hidden');
 
     agents.forEach((agent, index) => {
         const wrapper = document.createElement('div');
@@ -181,7 +182,7 @@ function renderAgentNav(agents) {
             renderAgentDetail(agent);
         });
 
-        nav.appendChild(wrapper);
+        EL.nav.appendChild(wrapper);
     });
 }
 
