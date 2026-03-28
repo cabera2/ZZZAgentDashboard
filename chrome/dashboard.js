@@ -48,7 +48,10 @@ const EL = {
         },
     },
     weaponSection:{
+        weaponContainer: document.getElementById('weapon-container'),
+        weaponEmpty: document.getElementById('weapon-empty'),
         weaponIcon: document.getElementById('weapon-icon'),
+        weaponRarity: document.getElementById('weapon-rarity'),
         weaponName: document.getElementById('weapon-name'),
         weaponLevel: document.getElementById('weapon-level'),
         weaponStar: document.getElementById('weapon-star'),
@@ -427,6 +430,8 @@ function renderWeapon(weapon) {
     if (!contentBox) return;
 
     if (weapon) {
+        EL.weaponSection.weaponContainer.style.display = 'flex';
+        EL.weaponSection.weaponEmpty.style.display = 'none';
         const mainPropsHtml = (weapon.main_properties || []).map(p => `
             <div class="weapon-stat-row main-stat">
                 <div>
@@ -449,12 +454,15 @@ function renderWeapon(weapon) {
         
         EL.weaponSection.weaponIcon.src = weapon.icon;
         EL.weaponSection.weaponIcon.alt = weapon.name;
+        const rankFileName = ZZZ_RESOURCE.RARITY_ICONS[weapon.rarity];
+        EL.weaponSection.weaponRarity.src = `${ZZZ_RESOURCE.BASE.IMAGES}${rankFileName}`;
         EL.weaponSection.weaponName.innerText = weapon.name;
         EL.weaponSection.weaponLevel.innerText = `Lv.${weapon.level}`;
         EL.weaponSection.weaponStar.src = `./assets/WEngineStar${weapon.star}.png`
         EL.weaponSection.weaponStatsList.innerHTML = `${mainPropsHtml}${subPropsHtml}`
     } else {
-        contentBox.innerHTML = `<div class="empty-msg">장착된 W-엔진이 없습니다.</div>`;
+        EL.weaponSection.weaponContainer.style.display = 'none';
+        EL.weaponSection.weaponEmpty.style.display = 'flex';
     }
 }
 
