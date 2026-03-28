@@ -1,5 +1,5 @@
 ﻿import {UI_SETTING, ZZZ_RESOURCE, ZZZ_FONT, CONTENT_FONT} from './constants.js';
-import {getDiskScoreGradient, getStatIconHtml} from './utils.js';
+import {getDiskScoreGradient, getStatIconHtml, formatGameText} from './utils.js';
 
 const EL = {
     fetchBtn: document.getElementById('fetchBtn'),
@@ -28,21 +28,24 @@ const EL = {
             6: document.getElementById('cinema6'),
         }
     },
-    skillIcons:{
-        0: document.getElementById('skillIconType0'),
-        1: document.getElementById('skillIconType1'),
-        2: document.getElementById('skillIconType2'),
-        3: document.getElementById('skillIconType3'),
-        5: document.getElementById('skillIconType5'),
-        6: document.getElementById('skillIconType6'),
-    },
-    skillLevels:{
-        0: document.getElementById('skillLevelType0'),
-        1: document.getElementById('skillLevelType1'),
-        2: document.getElementById('skillLevelType2'),
-        3: document.getElementById('skillLevelType3'),
-        5: document.getElementById('skillLevelType5'),
-        6: document.getElementById('skillLevelType6'),
+    skillSection: {
+        skillsContent: document.getElementById('skills-content'),
+        skillIcons:{
+            0: document.getElementById('skillIconType0'),
+            1: document.getElementById('skillIconType1'),
+            2: document.getElementById('skillIconType2'),
+            3: document.getElementById('skillIconType3'),
+            5: document.getElementById('skillIconType5'),
+            6: document.getElementById('skillIconType6'),
+        },
+        skillLevels:{
+            0: document.getElementById('skillLevelType0'),
+            1: document.getElementById('skillLevelType1'),
+            2: document.getElementById('skillLevelType2'),
+            3: document.getElementById('skillLevelType3'),
+            5: document.getElementById('skillLevelType5'),
+            6: document.getElementById('skillLevelType6'),
+        },
     },
     weaponSection:{
         weaponIcon: document.getElementById('weapon-icon'),
@@ -58,6 +61,12 @@ const EL = {
         scoreTargetStatsWrapper: document.getElementById('score-target-stats-wrapper'),
         scoreRankSide: document.getElementById('score-rank-side'),
         discItemTemplate: document.getElementById('disk-item-template'),
+    },
+    modal: {
+        modalOverlay: document.getElementById('modal-overlay'),
+        modalTitle: document.getElementById('ui-title-modal'),
+        modalCloseBtn: document.getElementById('modal-close-btn'),
+        modalBody: document.getElementById('modal-body'),
     }
 }
 
@@ -124,6 +133,7 @@ window.addEventListener('mousemove', (e) => {
 });
 
 let globalAgents = [];
+let currentAgentIndex = -1;
 
 function applyI18nLabels(i18nData) {
     const mapping = {
@@ -206,6 +216,7 @@ EL.fetchBtn.addEventListener('click', () => {
                 if (globalAgents.length > 0) {
                     EL.resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
                     renderAgentNav(globalAgents);
+                    currentAgentIndex = 0;
                     renderAgentDetail(globalAgents[0]);
                 } else {
                     EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
@@ -214,9 +225,46 @@ EL.fetchBtn.addEventListener('click', () => {
         });
     });
 });
-EL.skillIcons[0].addEventListener('click', () => {
-    console.log('skill clicked');
-})
+
+setButtonFunctions();
+function setButtonFunctions(){
+    EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
+    EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
+}
+function openWeaponDetail(){
+    const header = window.i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
+    const title = globalAgents[currentAgentIndex].weapon.talent_title;
+    const content = globalAgents[currentAgentIndex].weapon.talent_content;
+    const weaponTest = `<h3>${title}</h3><span>${content}</span>`;
+    openModal(header, weaponTest);
+}
+function handleSkillClick(e) {
+    // 1. 클릭된 위치에서 가장 가까운 래퍼 찾기 (위임의 핵심)
+    const wrapper = e.target.closest('.skill-icon-wrapper');
+    if (!wrapper) return; // 래퍼가 아니면 무시
+
+    // 2. 현재 선택된 캐릭터가 있는지 안전 검사
+    if (currentAgentIndex === -1) return;
+
+    // 3. HTML에 심어둔 data-skill-type 숫자 가져오기
+    const type = parseInt(wrapper.dataset.skillType, 10);
+
+    // 4. 전역 배열에서 현재 캐릭터와 스킬 데이터 찾기
+    const agent = globalAgents[currentAgentIndex];
+    const skillInfo = agent.skills.find(s => s.skill_type === type);
+    
+    // 5. 데이터가 존재하면 모달 열기
+    if (skillInfo) {
+        const header = window.i18nData.roles_detail_skill_popup_title ?? 'Skill Detail'
+        
+        let testString = ``;
+        skillInfo.items.forEach((item) => {
+            testString += `<h4>${item.title || ''}</h4>`;
+            testString += formatGameText(item.text);
+        })
+        openModal(header, testString);
+    }
+}
 
 function renderAgentNav(agents) {
     EL.nav.innerHTML = '';
@@ -236,6 +284,8 @@ function renderAgentNav(agents) {
         wrapper.addEventListener('click', () => {
             document.querySelectorAll('.agent-icon-wrapper').forEach(el => el.classList.remove('active'));
             wrapper.classList.add('active');
+            currentAgentIndex = index;
+            console.log(`selectedAgentIndex: ${currentAgentIndex}`);
             renderAgentDetail(agent);
         });
 
@@ -412,8 +462,11 @@ function renderSkills(skillsArray) {
     if (!skillsArray) return;
 
     skillsArray.forEach(skill => {
-        const iconEl = EL.skillLevels[skill.skill_type];
-        if (iconEl) iconEl.textContent = skill.level;
+        const wrapper = document.querySelector(`.skill-icon-wrapper[data-skill-type="${skill.skill_type}"]`);
+        if (wrapper) {
+            const levelEl = wrapper.querySelector('.skill-level');
+            if (levelEl) levelEl.textContent = skill.level;
+        }
     });
 }
 
@@ -554,6 +607,11 @@ function updateDiskScore(planInfo) {
     EL.discSection.scoreRankSide.innerHTML = 
         `${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}`
 }
-function openModal(content){
-    
+function openModal(header, content){
+    EL.modal.modalTitle.innerText = header;
+    EL.modal.modalOverlay.style.display = 'flex';
+    EL.modal.modalBody.innerHTML = content;
 }
+EL.modal.modalCloseBtn.addEventListener('click', () => {
+    EL.modal.modalOverlay.style.display = 'none';
+})

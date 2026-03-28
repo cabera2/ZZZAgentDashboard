@@ -42,7 +42,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7); /* 검은색 70% 투명도 */
-    display: flex;             /* 내부 요소를 중앙 정렬하기 위함 */
+    display: none;             /* 내부 요소를 중앙 정렬하기 위함 */
     justify-content: center;   /* 가로 중앙 */
     align-items: center;       /* 세로 중앙 */
     z-index: 9999;            /* 모든 요소보다 위에 표시 */
@@ -51,18 +51,40 @@
 
 /* 2. 흰색 사각형 모달창 */
 #modal-content {
-    background-color: white;
-    width: 400px;
+    background-color: #1d1f1e;
+    width: fit-content;        /* 내용물에 딱 맞게 가로폭을 맞춤 */
+    min-width: 200px;         /* 너무 좁아지는 것을 방지 (선택 사항) */
+    max-width: 600px;         /* 설정하신 400px보다 조금 더 여유 있게 잡거나 원하는 최대폭 지정 */
     min-height: 200px;
-    padding: 20px;
-    border-radius: 8px;
+    border-radius: 20px;
+    border: 3px solid #191817;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    color: black;             /* 대시보드가 어두운 테마라면 글자색 지정 필요 */
+    color: white;
     position: relative;
+    overflow: hidden;
+}
+#modal-title{
+    font-family: var(--zzz-font), sans-serif;
+    font-size: 16px;
+    position: relative;
+    padding: 15px 20px !important;
+    background-color: #0a0a0a; !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#modal-title h3{
+    margin: 0 !important;
+    font-weight: bold;
+    border-bottom: none !important;
+}
+
+#modal-body{
+    padding: 0 20px 20px;
 }
 
 /* 3. 닫기 버튼 (임시) */
-.modal-close-btn {
+#modal-close-btn {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -614,7 +636,6 @@ button:hover {
 /* 디스크 점수 요약 박스 */
 #disk-score-container {
     background: #1b1b1b;
-    border: 1px solid #333;
     border-radius: 12px;
     box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.25);
 
@@ -664,7 +685,7 @@ button:hover {
 }
 
 /* 유효 속성 태그 그룹 컨테이너 */
-.score-target-stats-wrapper {
+#score-target-stats-wrapper {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;

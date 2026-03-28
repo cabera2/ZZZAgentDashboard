@@ -41,3 +41,18 @@ export function getDiskScoreGradient(rank) {
 
     return `linear-gradient(226deg, ${colorStart} 4.82%, ${colorEnd} 29.32%), #1b1b1b`;
 }
+export function formatGameText(text) {
+    if (!text) return '';
+
+    // 1. <color=#HEX> -> <span style="color:#HEX"> 로 변환
+    // <color=(#[a-fA-F0-9]+)> 부분을 찾아서 span 태그로 바꿉니다.
+    let formatted = text.replace(/<color=(#[a-fA-F0-9]+)>/g, '<span style="color:$1">');
+
+    // 2. </color> -> </span> 로 변환
+    formatted = formatted.replace(/<\/color>/g, '</span>');
+
+    // 3. 만약 \n 같은 줄바꿈 기호가 있다면 <br>로 변환 (필요시)
+    formatted = formatted.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+
+    return formatted;
+}
