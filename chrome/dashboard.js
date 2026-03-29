@@ -258,14 +258,26 @@ function handleSkillClick(e) {
     
     // 5. 데이터가 존재하면 모달 열기
     if (skillInfo) {
-        const header = window.i18nData.roles_detail_skill_popup_title ?? 'Skill Detail'
+        const header = window.i18nData.roles_detail_skill_popup_title ?? 'Skill Detail';
+        const skillTypeNameKey = ZZZ_RESOURCE.SKILL_TYPE_NAMES[type];
+        const skillTypeName = window.i18nData[skillTypeNameKey] ?? skillTypeNameKey;
         
-        let testString = ``;
+        let modalContent = ``;
+
+        modalContent += `
+        <div style="display: flex; align-items: center">
+            <img src=${ZZZ_RESOURCE.SKILL_TYPE_ICONS[type]} alt="${skillTypeName}">
+            <div>
+                <h2 style="margin: 5px">${skillTypeName}</h2>
+                <p style="margin: 5px ">Lv.${skillInfo.level}</p>
+            </div>
+        </div>
+        `
         skillInfo.items.forEach((item) => {
-            testString += `<h4>${item.title || ''}</h4>`;
-            testString += formatGameText(item.text);
+            modalContent += `<h3>${item.title || ''}</h3>`;
+            modalContent += formatGameText(item.text);
         })
-        openModal(header, testString);
+        openModal(header, modalContent);
     }
 }
 

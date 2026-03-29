@@ -58,6 +58,23 @@ export const ZZZ_RESOURCE = {
         5: "profession-defensive-icon.9bd60af4.png",//방어
         6: "profession-rupture-icon.4668f112.png"//명파
     },
+    SKILL_TYPE_ICONS:{
+        0: "https://act.hoyoverse.com/gt-ui/assets/icons/1f66bafcc1f069c2.png",
+        1: "https://act.hoyoverse.com/gt-ui/assets/icons/11ee8bd83f94a1eb.png",
+        2: "https://act.hoyoverse.com/gt-ui/assets/icons/b15382e2428392f2.png",
+        3: "https://act.hoyoverse.com/gt-ui/assets/icons/25a4b80fcfd80526.png",
+        5: "https://act.hoyoverse.com/gt-ui/assets/icons/40791617886f6731.png",
+        6: "https://act.hoyoverse.com/gt-ui/assets/icons/38b9cdcdee285da4.png"
+    },
+    
+    SKILL_TYPE_NAMES:{
+        0: "roles_skill_normal",
+        1: "roles_skill_special",
+        2: "roles_skill_dodge",
+        3: "roles_skill_linkage",
+        5: "roles_skill_core",
+        6: "roles_skill_support"
+    },
 
     // 디스크 점수 등급 아이콘
     DISK_RANK_ICONS: {
