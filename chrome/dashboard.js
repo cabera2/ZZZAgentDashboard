@@ -73,6 +73,8 @@ const EL = {
     }
 }
 
+let i18nData;
+
 let isDown = false;
 let startX;
 let scrollLeft;
@@ -170,7 +172,7 @@ EL.fetchBtn.addEventListener('click', () => {
 
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: i18nUrl}, (i18nRes) => {
         if (i18nRes.success) {
-            window.i18nData = i18nRes.data;
+            i18nData = i18nRes.data;
             applyI18nLabels(i18nRes.data);
         }
 
@@ -235,7 +237,7 @@ function setButtonFunctions(){
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
 }
 function openWeaponDetail(){
-    const header = window.i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
+    const header = i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
     const title = globalAgents[currentAgentIndex].weapon.talent_title;
     const content = globalAgents[currentAgentIndex].weapon.talent_content;
     const weaponTest = `<h3>${title}</h3><span>${content}</span>`;
@@ -258,9 +260,9 @@ function handleSkillClick(e) {
     
     // 5. 데이터가 존재하면 모달 열기
     if (skillInfo) {
-        const header = window.i18nData.roles_detail_skill_popup_title ?? 'Skill Detail';
+        const header = i18nData.roles_detail_skill_popup_title ?? 'Skill Detail';
         const skillTypeNameKey = ZZZ_RESOURCE.SKILL_TYPE_NAMES[type];
-        const skillTypeName = window.i18nData[skillTypeNameKey] ?? skillTypeNameKey;
+        const skillTypeName = i18nData[skillTypeNameKey] ?? skillTypeNameKey;
         
         let modalContent = ``;
 
@@ -584,9 +586,9 @@ function updateDiskScore(planInfo) {
     // 다국어 제목 처리
     let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";
     let planSourceLabel = "스탯 추천 방안 출처: {source}"
-    if(window.i18nData){
-        if (window.i18nData.roles_random_attributes_hit_num) {
-            titleText = window.i18nData.roles_random_attributes_hit_num;
+    if(i18nData){
+        if (i18nData.roles_random_attributes_hit_num) {
+            titleText = i18nData.roles_random_attributes_hit_num;
         }
         const highlightedScore = `<span style="color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}; font-weight: bold;">${score}</span>`;
         titleText = titleText.replace('{num}', highlightedScore);
@@ -596,18 +598,18 @@ function updateDiskScore(planInfo) {
         switch (planInfo.type) {
             default:
             case 1:
-                planSourceContext = window.i18nData.roles_game_default_source//게임 내 기본 추천 스탯
+                planSourceContext = i18nData.roles_game_default_source//게임 내 기본 추천 스탯
                 break;
             case 2:
-                planSourceContext = window.i18nData.roles_guide_plan_source//육성 가이드 방안
+                planSourceContext = i18nData.roles_guide_plan_source//육성 가이드 방안
                 break;
             case 3:
-                planSourceContext = window.i18nData.roles_custom_source//유효한 사용자 정의 서브 스탯
+                planSourceContext = i18nData.roles_custom_source//유효한 사용자 정의 서브 스탯
                 break;
         }
 
-        if (window.i18nData.roles_plan_source){
-            planSourceLabel = window.i18nData.roles_plan_source.replace('{source}', planSourceContext);
+        if (i18nData.roles_plan_source){
+            planSourceLabel = i18nData.roles_plan_source.replace('{source}', planSourceContext);
         }
     }
 
