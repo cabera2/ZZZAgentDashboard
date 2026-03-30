@@ -13,20 +13,13 @@ const EL = {
         agentPortrait: document.getElementById('agent-portrait'),
         agentName: document.getElementById('agent-name'),
         agentLevel: document.getElementById('agent-level'),
+        levelContainer: document.getElementById('level-container'),
         agentRankIcon: document.getElementById('agent-rank-icon'),
         agentElementType: document.getElementById('agent-element-type'),
         agentProfession: document.getElementById('agent-profession'),
         agentGroupIcon: document.getElementById('agent-group-icon'),
         awakenLevel: document.getElementById('awaken-level'),
         awakenMaxLevel: document.getElementById('awaken-max-level'),
-        cinema:{
-            1: document.getElementById('cinema1'),
-            2: document.getElementById('cinema2'),
-            3: document.getElementById('cinema3'),
-            4: document.getElementById('cinema4'),
-            5: document.getElementById('cinema5'),
-            6: document.getElementById('cinema6'),
-        }
     },
     skillSection: {
         skillsContent: document.getElementById('skills-content'),
@@ -234,8 +227,40 @@ EL.fetchBtn.addEventListener('click', () => {
 
 setButtonFunctions();
 function setButtonFunctions(){
+    EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
     EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
+
+    EL.modal.modalCloseBtn.addEventListener('click', () => {
+        EL.modal.modalOverlay.classList.remove('active');
+    })
+    EL.modal.modalOverlay.addEventListener('click', () => {
+        EL.modal.modalOverlay.classList.remove('active');
+    })
+}
+function handleCinemaClick(e) {
+    console.log('cinemaClick');
+    // 1. 이벤트 위임의 핵심: 클릭된 위치에서 가장 가까운 시네마 아이콘 찾기
+    const indicator = e.target.closest('.cinema-indicator');
+    if (!indicator) return; // 시네마 아이콘이 아닌 빈 배경 등을 클릭했으면 무시
+
+    // 2. 현재 선택된 캐릭터가 있는지 안전 검사
+    if (currentAgentIndex === -1) return;
+
+    // 💡 나중에 데이터를 매핑할 때, 사용자가 몇 번을 클릭했는지 알고 싶다면
+    // const clickedCinemaNum = indicator.dataset.cinema; 
+    // 이런 식으로 가져올 수 있습니다.
+
+    const header = i18nData.roles_detail_rank_popup_title || 'Cinema Detail';
+
+    // 임시 내용물
+    let content = ``;
+    globalAgents[currentAgentIndex].ranks.forEach(item => {
+        content +=`<h3>${item.name}</h3>`;
+        content += formatGameText(item.desc);
+    })
+
+    openModal(header, content);
 }
 function openWeaponDetail(){
     const header = i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
@@ -400,15 +425,17 @@ function updatePortrait(agent) {
         section.agentGroupIcon.title = agent.camp_name_mi18n || "";
     }
 
-    // 7. 형상 시네마
+    // 7. 형상 시네마    
     for (let i = 1; i <= 6; i++) {
-        const cinemaEl = section.cinema[i];
+        // id="cinema1" 대신 [data-cinema="1"] 속성으로 엘리먼트를 찾습니다.
+        const cinemaEl = document.querySelector(`[data-cinema="${i}"]`);
+
         if (cinemaEl) {
-            if (i <= agent.rank) {
-                cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
-            } else {
-                cinemaEl.style.backgroundColor = UI_SETTING.FONT_COLORS.CINEMA_INACTIVE
-            }
+            // i가 캐릭터의 돌파 단계(rank)보다 작거나 같으면 활성 색상, 아니면 비활성 색상을 적용합니다.
+            const isActive = i <= agent.rank;
+            cinemaEl.style.backgroundColor = isActive
+                ? UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
+                : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
         }
     }
     document.documentElement.style.setProperty('--awaken-enable', agent.skill_awaken.has_awaken_system ? 'block' : 'none');
@@ -636,6 +663,3 @@ function openModal(header, content){
     EL.modal.modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
-EL.modal.modalCloseBtn.addEventListener('click', () => {
-    EL.modal.modalOverlay.classList.remove('active');
-})
