@@ -254,26 +254,35 @@ function handleCinemaClick(e) {
     const header = i18nData.roles_detail_rank_popup_title || 'Cinema Detail';
 
     let content = ``;
-    globalAgents[currentAgentIndex].ranks.forEach(item => {
+    const ranks = globalAgents[currentAgentIndex].ranks;
+
+    ranks.forEach((item, index) => {
+        const isLast = index === ranks.length - 1;
         const iconVar = `var(--url-cinema${item.id})`;
         const iconColor = item.is_unlocked
             ? UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
             : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
+
         content += `
-    <div style="border-bottom: solid 2px #2a2c2b;">
+    <div class="rank-item" style="padding: 10px 0;">
         <div style="display: flex; align-items: center">
-            <span class="cinema-indicator" data-cinema="1"
-                style="-webkit-mask-image: ${iconVar};
-                mask-image: ${iconVar};
+            <span style="
+                width: 64px; height: 64px; flex-shrink: 0;
+                -webkit-mask-image: ${iconVar}; mask-image: ${iconVar};
                 background-color: ${iconColor}"></span>
             <div>
                 <h2 style="margin: 5px">${item.name}</h2>
-                <p style="margin: 5px ">${i18nData.roles_rank}${item.id}</p>
+                <p style="margin: 5px; color: #888;">${i18nData.roles_rank}${item.id}</p>
             </div>
         </div>
-        ${formatGameText(item.desc)}
-    </div>`
-    })
+        <div style="margin-top: 5px;">${formatGameText(item.desc)}</div>
+    </div>`;
+
+        // 마지막 항목이 아닐 때만 하단에 구분선 추가
+        if (!isLast) {
+            content += `<i class="rank-divider" style="display: block; height: 1px; background: #2a2c2b; margin: 10px 0;"></i>`;
+        }
+    });
 
     openModal(header, content);
 }
