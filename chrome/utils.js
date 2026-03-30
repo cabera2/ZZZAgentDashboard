@@ -1,5 +1,5 @@
 ﻿import {ZZZ_RESOURCE, UI_SETTING} from "./constants.js";
-
+let skillIconMap;
 export function getStatIconHtml(statId, iconColor = '#ffffff') {
     const fileName = ZZZ_RESOURCE.STAT_ICONS[statId];
     if (!fileName) return "";
@@ -41,18 +41,34 @@ export function getDiskScoreGradient(rank) {
 
     return `linear-gradient(226deg, ${colorStart} 4.82%, ${colorEnd} 29.32%), #1b1b1b`;
 }
+export function setSkillIconMap(data){
+    skillIconMap = data
+    console.log(skillIconMap)
+}
 export function formatGameText(text) {
     if (!text) return '';
 
-    // 1. <color=#HEX> -> <span style="color:#HEX"> 로 변환
-    // <color=(#[a-fA-F0-9]+)> 부분을 찾아서 span 태그로 바꿉니다.
-    let formatted = text.replace(/<color=(#[a-fA-F0-9]+)>/g, '<span style="color:$1">');
+    let formatted = text;
 
-    // 2. </color> -> </span> 로 변환
-    formatted = formatted.replace(/<\/color>/g, '</span>');
+    // 1. 아이콘 태그 치환 (<IconMap:ID> -> <img>)
+    // window.skillIconMap에 해당 태그 전체를 키로 하는 URL이 들어있어야 합니다.
+    formatted = formatted.replace(/<IconMap:[^>]+>/g, (match) => {
+        const iconUrl = skillIconMap ? skillIconMap[match] : null;
+        if (iconUrl) {
+            return `<img src="${iconUrl}" class="skill-inline-icon" alt="icon" style="height: 1.4em;">`;
+        }
+        // 매핑된 아이콘이 없으면 태그를 텍스트로 그대로 보여줍니다 (브라우저가 무시하지 않도록 & 처리)
+        return match.replace('<', '&lt;').replace('>', '&gt;');
+    });
 
-    // 3. 만약 \n 같은 줄바꿈 기호가 있다면 <br>로 변환 (필요시)
+    // 2. 컬러 태그 치환 (<color=#HEX>...</color> -> <span style="color:#HEX">...</span>)
+    // 콜백 함수를 사용하여 Rider의 $1 경고를 해결합니다.
+    formatted = formatted.replace(/<color=(#[a-fA-F0-9]+)>(.*?)<\/color>/gs, (match, color, content) => {
+        return `<span style="color:${color}">${content}</span>`;
+    });
+
+    // 3. 줄바꿈 기호 변환
     formatted = formatted.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
 
-    return formatted;
+    return `<p class="skill-description" style="margin: 0">${formatted}</p>`;
 }

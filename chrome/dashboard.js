@@ -1,5 +1,5 @@
 ﻿import {UI_SETTING, ZZZ_RESOURCE, ZZZ_FONT, CONTENT_FONT} from './constants.js';
-import {getDiskScoreGradient, getStatIconHtml, formatGameText} from './utils.js';
+import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap} from './utils.js';
 
 const EL = {
     fetchBtn: document.getElementById('fetchBtn'),
@@ -174,6 +174,7 @@ EL.fetchBtn.addEventListener('click', () => {
         if (i18nRes.success) {
             i18nData = i18nRes.data;
             applyI18nLabels(i18nRes.data);
+            setSkillIconMap(JSON.parse(i18nData.role_skill_rich_text_icons));
         }
 
         EL.resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
@@ -276,7 +277,7 @@ function handleSkillClick(e) {
         </div>
         `
         skillInfo.items.forEach((item) => {
-            modalContent += `<h3>${item.title || ''}</h3>`;
+            modalContent += `<h3 style="margin-block-end: 0.5em;">${item.title || ''}</h3>`;
             modalContent += formatGameText(item.text);
         })
         openModal(header, modalContent);
