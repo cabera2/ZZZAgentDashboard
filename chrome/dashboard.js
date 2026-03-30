@@ -253,11 +253,26 @@ function handleCinemaClick(e) {
 
     const header = i18nData.roles_detail_rank_popup_title || 'Cinema Detail';
 
-    // 임시 내용물
     let content = ``;
     globalAgents[currentAgentIndex].ranks.forEach(item => {
-        content +=`<h3>${item.name}</h3>`;
-        content += formatGameText(item.desc);
+        const iconVar = `var(--url-cinema${item.id})`;
+        const iconColor = item.is_unlocked
+            ? UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
+            : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
+        content += `
+    <div style="border-bottom: solid 2px #2a2c2b;">
+        <div style="display: flex; align-items: center">
+            <span class="cinema-indicator" data-cinema="1"
+                style="-webkit-mask-image: ${iconVar};
+                mask-image: ${iconVar};
+                background-color: ${iconColor}"></span>
+            <div>
+                <h2 style="margin: 5px">${item.name}</h2>
+                <p style="margin: 5px ">${i18nData.roles_rank}${item.id}</p>
+            </div>
+        </div>
+        ${formatGameText(item.desc)}
+    </div>`
     })
 
     openModal(header, content);
