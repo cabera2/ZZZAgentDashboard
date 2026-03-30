@@ -632,9 +632,10 @@ function updateDiskScore(planInfo) {
 }
 function openModal(header, content){
     EL.modal.modalTitle.innerText = header;
-    EL.modal.modalOverlay.style.display = 'flex';
     EL.modal.modalBody.innerHTML = content;
+    EL.modal.modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 EL.modal.modalCloseBtn.addEventListener('click', () => {
-    EL.modal.modalOverlay.style.display = 'none';
+    EL.modal.modalOverlay.classList.remove('active');
 })

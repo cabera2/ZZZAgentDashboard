@@ -54,12 +54,26 @@
     rgba(22, 24, 23, 0.8) 100%);
     background-size: 4px 4px;
     background-repeat: repeat;
-    background-color: rgba(22, 24, 23, 0.8);
-    backdrop-filter: blur(6px);
-    display: none;             /* 내부 요소를 중앙 정렬하기 위함 */
+    background-color: rgba(22, 24, 23, 0);
+    backdrop-filter: blur(0px);
+    display: flex;             /* 내부 요소를 중앙 정렬하기 위함 */
+    visibility: hidden;        /* 평소에는 숨김 */
+    opacity: 0;               /* 투명하게 */
     justify-content: center;   /* 가로 중앙 */
     align-items: center;       /* 세로 중앙 */
     z-index: 9999;            /* 모든 요소보다 위에 표시 */
+    transition: 
+            opacity 0.3s ease,
+            backdrop-filter 0.3s ease,
+            background-color 0.3s ease,
+            visibility 0.3s;
+}
+/* 모달이 열렸을 때의 상태 */
+#modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+    backdrop-filter: blur(6px);
+    background-color: rgba(22, 24, 23, 0.8);
 }
 
 /* 2. 흰색 사각형 모달창 */
