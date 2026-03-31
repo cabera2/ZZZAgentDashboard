@@ -316,10 +316,10 @@ function handleAwakenClick(e){
         skillAwakenItem.awaken_skill_items.forEach(awakenSkillItem => {
             let smallContent = ``;
             awakenSkillItem.skill_items.forEach((skill_item) => {
-                smallContent += `<p>${skill_item.title}</p><p>${skill_item.text}</p>`
+                smallContent += `<p>${skill_item.title}</p>${formatGameText(skill_item.text)}`
             })
             content += `
-                <div style="background-color: #2a2c2b;border-radius: 12px">
+                <div style="background-color: #2a2c2b; border-radius: 12px; padding: 10px; margin: 5px 0">
                 <p>${awakenSkillItem.awaken_simple_info}</p>
                 ${smallContent}
                 </div>`

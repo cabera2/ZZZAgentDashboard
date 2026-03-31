@@ -83,11 +83,14 @@
     min-width: 200px;         /* 너무 좁아지는 것을 방지 (선택 사항) */
     max-width: 600px;         /* 설정하신 400px보다 조금 더 여유 있게 잡거나 원하는 최대폭 지정 */
     min-height: 200px;
+    max-height: 600px;
     border-radius: 20px;
     border: 3px solid #2a2c2b;
     color: white;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 #modal-title{
     font-family: var(--zzz-font), sans-serif;
@@ -98,6 +101,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
 }
 #modal-title h3{
     margin: 0 !important;
@@ -107,6 +111,11 @@
 
 #modal-body{
     padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    /* 스크롤바 숨기기 (IE, Edge, Firefox) */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 /* 3. 닫기 버튼 (임시) */
