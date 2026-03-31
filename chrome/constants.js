@@ -59,14 +59,23 @@ export const ZZZ_RESOURCE = {
         6: "profession-rupture-icon.4668f112.png"//명파
     },
     SKILL_TYPE_ICONS:{
-        0: "https://act.hoyoverse.com/gt-ui/assets/icons/1f66bafcc1f069c2.png",
-        1: "https://act.hoyoverse.com/gt-ui/assets/icons/11ee8bd83f94a1eb.png",
-        2: "https://act.hoyoverse.com/gt-ui/assets/icons/b15382e2428392f2.png",
-        3: "https://act.hoyoverse.com/gt-ui/assets/icons/25a4b80fcfd80526.png",
-        5: "https://act.hoyoverse.com/gt-ui/assets/icons/40791617886f6731.png",
-        6: "https://act.hoyoverse.com/gt-ui/assets/icons/38b9cdcdee285da4.png"
+        0: "1f66bafcc1f069c2.png",//일반 공격
+        1: "11ee8bd83f94a1eb.png",//특수 스킬
+        2: "b15382e2428392f2.png",//회피
+        3: "25a4b80fcfd80526.png",//필살기
+        5: "40791617886f6731.png",//핵심 패시브
+        6: "38b9cdcdee285da4.png"//지원 스킬
+    },
+    SKILL_TYPE_ICONS_SVG:{
+        0: "4f4998a4d92086df.svg",
+        1: "adaf740a590ce8a2.svg",
+        2: "9f8fb507bfb7d9ee.svg",
+        3: "d54ff206fcd1d180.svg",
+        5: "54439e23ce8c4305.svg",
+        6: "3fea4a95a935649a.svg"
     },
     
+    // 스킬 종류
     SKILL_TYPE_NAMES:{
         0: "roles_skill_normal",
         1: "roles_skill_special",

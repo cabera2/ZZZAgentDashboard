@@ -366,7 +366,7 @@ function handleSkillClick(e) {
 
         modalContent += `
         <div style="display: flex; align-items: center">
-            <img src=${ZZZ_RESOURCE.SKILL_TYPE_ICONS[type]} alt="${skillTypeName}">
+            <img src=${ZZZ_RESOURCE.BASE.ICONS}${ZZZ_RESOURCE.SKILL_TYPE_ICONS[type]} alt="${skillTypeName}">
             <div>
                 <h2 style="margin: 5px">${skillTypeName}</h2>
                 <p style="margin: 5px ">Lv.${skillInfo.level}</p>
