@@ -228,6 +228,7 @@ EL.fetchBtn.addEventListener('click', () => {
 setButtonFunctions();
 function setButtonFunctions(){
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
+    EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
     EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
 
@@ -239,7 +240,6 @@ function setButtonFunctions(){
     })
 }
 function handleCinemaClick(e) {
-    console.log('cinemaClick');
     // 1. 이벤트 위임의 핵심: 클릭된 위치에서 가장 가까운 시네마 아이콘 찾기
     const indicator = e.target.closest('.cinema-indicator');
     if (!indicator) return; // 시네마 아이콘이 아닌 빈 배경 등을 클릭했으면 무시
@@ -284,6 +284,47 @@ function handleCinemaClick(e) {
         }
     });
 
+    openModal(header, content);
+}
+function handleAwakenClick(e){
+    const indicator = e.target.closest('.awaken-ui');
+    if (!indicator) return;
+    if (currentAgentIndex === -1) return;
+    const header = i18nData.potential_trigger_detail || 'AwakenDetail';
+    let content = ``;
+    const skillAwaken = globalAgents[currentAgentIndex].skill_awaken;
+    const skillAwakenItems = skillAwaken.skill_awaken_items;
+    //각성 단계별 루프
+    skillAwakenItems.forEach(skillAwakenItem => {
+        const iconVar = `var(--url-cinema${skillAwakenItem.awaken_level})`;
+        const iconColor = skillAwakenItem.awaken_level <= skillAwaken.awaken_level
+            ? UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
+            : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
+        content += `
+        <div style="display: flex; align-items: center">
+            <span style="
+                width: 64px; height: 64px; flex-shrink: 0;
+                -webkit-mask-image: ${iconVar}; mask-image: ${iconVar};
+                background-color: ${iconColor}"></span>
+            <div>
+                <h2 style="margin: 5px">${skillAwakenItem.level_show_name}</h2>
+                <p style="margin: 5px; color: #888;">${i18nData.potential_active}${skillAwakenItem.awaken_level}</p>
+            </div>
+        </div>
+        `
+        //단계 내 스킬별 루프
+        skillAwakenItem.awaken_skill_items.forEach(awakenSkillItem => {
+            let smallContent = ``;
+            awakenSkillItem.skill_items.forEach((skill_item) => {
+                smallContent += `<p>${skill_item.title}</p><p>${skill_item.text}</p>`
+            })
+            content += `
+                <div style="background-color: #2a2c2b;border-radius: 12px">
+                <p>${awakenSkillItem.awaken_simple_info}</p>
+                ${smallContent}
+                </div>`
+        })
+    })
     openModal(header, content);
 }
 function openWeaponDetail(){
