@@ -235,8 +235,10 @@ function setButtonFunctions(){
     EL.modal.modalCloseBtn.addEventListener('click', () => {
         EL.modal.modalOverlay.classList.remove('active');
     })
-    EL.modal.modalOverlay.addEventListener('click', () => {
-        EL.modal.modalOverlay.classList.remove('active');
+    EL.modal.modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            EL.modal.modalOverlay.classList.remove('active');
+        }
     })
 }
 function handleCinemaClick(e) {
@@ -319,10 +321,15 @@ function handleAwakenClick(e){
                 smallContent += `<p>${skill_item.title}</p>${formatGameText(skill_item.text)}`
             })
             content += `
-                <div style="background-color: #2a2c2b; border-radius: 12px; padding: 10px; margin: 5px 0">
-                <p>${awakenSkillItem.awaken_simple_info}</p>
+                
+            <div style="background-color: #2a2c2b; border-radius: 12px; padding: 10px; margin: 5px 0">
+                <details>
+                <summary>${awakenSkillItem.awaken_simple_info}</summary>
                 ${smallContent}
-                </div>`
+                </details>
+            </div>`
+
+
         })
     })
     openModal(header, content);
