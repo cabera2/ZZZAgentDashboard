@@ -236,7 +236,7 @@ function setButtonFunctions(){
         EL.modal.modalOverlay.classList.remove('active');
     })
     EL.modal.modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) {
+        if (e.target === EL.modal.modalOverlay) {
             EL.modal.modalOverlay.classList.remove('active');
         }
     })
@@ -265,20 +265,22 @@ function handleCinemaClick(e) {
             ? UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
             : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
 
+        // language=html
         content += `
-    <div class="rank-item" style="padding: 10px 0;">
-        <div style="display: flex; align-items: center">
-            <span style="
+            <div class="rank-item" style="padding: 10px 0;">
+                <div style="display: flex; align-items: center">
+                    <span style="
                 width: 64px; height: 64px; flex-shrink: 0;
                 -webkit-mask-image: ${iconVar}; mask-image: ${iconVar};
                 background-color: ${iconColor}"></span>
-            <div>
-                <h2 style="margin: 5px">${item.name}</h2>
-                <p style="margin: 5px; color: #888;">${i18nData.roles_rank}${item.id}</p>
+                    <div>
+                        <h2 style="margin: 5px">${item.name}</h2>
+                        <p style="margin: 5px; color: #888;">${i18nData.roles_rank}${item.id}</p>
+                    </div>
+                </div>
+                <div style="margin-top: 5px;">${formatGameText(item.desc)}</div>
             </div>
-        </div>
-        <div style="margin-top: 5px;">${formatGameText(item.desc)}</div>
-    </div>`;
+            `;
 
         // 마지막 항목이 아닐 때만 하단에 구분선 추가
         if (!isLast) {
@@ -298,38 +300,47 @@ function handleAwakenClick(e){
     const skillAwakenItems = skillAwaken.skill_awaken_items;
     //각성 단계별 루프
     skillAwakenItems.forEach(skillAwakenItem => {
-        const iconVar = `var(--url-cinema${skillAwakenItem.awaken_level})`;
+        const numberIconVar = `var(--url-cinema${skillAwakenItem.awaken_level})`;
         const iconColor = skillAwakenItem.awaken_level <= skillAwaken.awaken_level
             ? UI_SETTING.FONT_COLORS.CINEMA_ACTIVE
             : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
+        // language=html
         content += `
-        <div style="display: flex; align-items: center">
+            <div style="display: flex; align-items: center">
             <span style="
                 width: 64px; height: 64px; flex-shrink: 0;
-                -webkit-mask-image: ${iconVar}; mask-image: ${iconVar};
+                -webkit-mask-image: ${numberIconVar}; 
+                mask-image: ${numberIconVar};
                 background-color: ${iconColor}"></span>
-            <div>
-                <h2 style="margin: 5px">${skillAwakenItem.level_show_name}</h2>
-                <p style="margin: 5px; color: #888;">${i18nData.potential_active}${skillAwakenItem.awaken_level}</p>
+                <div>
+                    <h2 style="margin: 5px">${skillAwakenItem.level_show_name}</h2>
+                    <p style="margin: 5px; color: #888;">${i18nData.potential_active.replace('{n}', skillAwakenItem.awaken_level)}</p>
+                </div>
             </div>
-        </div>
         `
         //단계 내 스킬별 루프
         skillAwakenItem.awaken_skill_items.forEach(awakenSkillItem => {
+            const skillIconVar = `${ZZZ_RESOURCE.BASE.ICONS}${ZZZ_RESOURCE.SKILL_TYPE_ICONS_SVG[awakenSkillItem.skill_type]}`;
             let smallContent = ``;
             awakenSkillItem.skill_items.forEach((skill_item) => {
-                smallContent += `<p>${skill_item.title}</p>${formatGameText(skill_item.text)}`
+                smallContent += `<h3>${skill_item.title}</h3>${formatGameText(skill_item.text)}`
             })
+            // language=html
             content += `
-                
-            <div style="background-color: #2a2c2b; border-radius: 12px; padding: 10px; margin: 5px 0">
-                <details>
-                <summary>${awakenSkillItem.awaken_simple_info}</summary>
-                ${smallContent}
-                </details>
-            </div>`
-
-
+                <div style="
+                background-color: #2a2c2b; 
+                border-radius: 12px; 
+                padding: 15px; margin: 10px 0">
+                    <details>
+                        <summary>
+                            <div style="display: flex; align-items: center">
+                                <img style="width: 32px; height: 32px;" src="${skillIconVar}">
+                                <h2 style="margin: 5px">${awakenSkillItem.awaken_simple_info}</h2>
+                            </div>
+                        </summary>
+                        ${smallContent}
+                    </details>
+                </div>`
         })
     })
     openModal(header, content);

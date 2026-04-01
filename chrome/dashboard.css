@@ -34,6 +34,13 @@
     --zzz-font: sans-serif;
 }
 
+summary {
+    list-style: none; /* Chrome, Firefox 등 */
+}
+summary::-webkit-details-marker {
+    display: none; /* Safari용 */
+}
+
 /* 모달 창 */
 #modal-overlay {
     position: fixed;
@@ -132,7 +139,7 @@ body {
     margin: auto;
     
     padding: 20px;
-    width: 1500px;
+    max-width: 1500px;
     
     background-color: var(--bg-color);
     color: var(--text-main);
