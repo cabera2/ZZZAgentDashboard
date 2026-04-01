@@ -128,11 +128,9 @@ summary::-webkit-details-marker {
 /* 3. 닫기 버튼 (임시) */
 #modal-close-btn {
     position: absolute;
-    top: 10px;
+    top: 5px;
     right: 15px;
     cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
 }
 
 body {

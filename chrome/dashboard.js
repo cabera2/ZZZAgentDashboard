@@ -234,10 +234,12 @@ function setButtonFunctions(){
 
     EL.modal.modalCloseBtn.addEventListener('click', () => {
         EL.modal.modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
     })
     EL.modal.modalOverlay.addEventListener('click', (e) => {
         if (e.target === EL.modal.modalOverlay) {
             EL.modal.modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
     })
 }
