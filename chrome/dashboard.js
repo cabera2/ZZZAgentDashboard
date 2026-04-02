@@ -134,6 +134,7 @@ window.addEventListener('mousemove', (e) => {
 
 let globalAgents = [];
 let currentAgentIndex = -1;
+let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
 
 function applyI18nLabels(i18nData) {
     const mapping = {
@@ -151,7 +152,9 @@ function applyI18nLabels(i18nData) {
     }
 }
 
-EL.fetchBtn.addEventListener('click', () => {
+EL.fetchBtn.addEventListener('click', fetchDataAndReload);
+
+function fetchDataAndReload() {
     const selectedLang = EL.langSelect.value;
 
     // 폰트 준비
@@ -187,6 +190,9 @@ EL.fetchBtn.addEventListener('click', () => {
             console.log("Fetched User Data:", zzzGame);
 
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
+            currentUserInfo.uid = String(roleId);    // 명시적으로 문자열 변환
+            currentUserInfo.region = region;
+
             EL.resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
 
             // 3. 에이전트 리스트 가져오기
@@ -217,15 +223,15 @@ EL.fetchBtn.addEventListener('click', () => {
                 if (globalAgents.length > 0) {
                     EL.resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
                     renderAgentNav(globalAgents);
-                    currentAgentIndex = 0;
-                    renderAgentDetail(globalAgents[0]);
+                    currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
+                    renderAgentDetail(globalAgents[currentAgentIndex]);
                 } else {
                     EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
                 }
             });
         });
     });
-});
+}
 
 setButtonFunctions();
 function setButtonFunctions(){
@@ -489,7 +495,8 @@ function openPlanSelect(){
         padding: 10px 75px;
         align-items: center;
         background-color: ${UI_SETTING.FONT_COLORS.SELECTED};
-        color: black">
+        color: black;
+        cursor: pointer;">
                 ${i18nData.confirm}
             </h1>
         </div>
@@ -498,8 +505,55 @@ function openPlanSelect(){
     document.getElementById("change-plan-confirm").addEventListener('click', changePlan);
 }
 function changePlan(){
-    const value = document.querySelector('input[name="plan-selection"]:checked').value;
-    console.log(value)
+    const selected = document.querySelector('input[name="plan-selection"]:checked');
+    if (!selected) return;
+
+    const newPlanType = parseInt(selected.value, 10);
+    const agent = globalAgents[currentAgentIndex];
+    
+    const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
+    let body ={};
+    switch (newPlanType){
+        case 1:
+            body = {
+                uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
+                region: currentUserInfo.region,
+                avatar_id: Number(agent.id), // 확실하게 숫자로 변환
+                type: Number(newPlanType) // 확실하게 숫자로 변환
+            };
+            break;
+        case 2:
+            body = {
+                uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
+                region: currentUserInfo.region,
+                avatar_id: Number(agent.id), // 확실하게 숫자로 변환
+                plan_id: Number(agent.equip_plan_info.cultivate_info.plan_id),
+                type: Number(newPlanType) // 확실하게 숫자로 변환
+            };
+            break;
+    }
+
+
+    console.log("Sending plan change request...", body);
+
+    chrome.runtime.sendMessage({
+        type: 'FETCH_HOYOLAB',
+        method: 'POST',
+        url: url,
+        body: body,
+        lang: EL.langSelect.value,
+        region: currentUserInfo.region
+    }, (res) => {
+        if (res && res.success && res.data.retcode === 0) {
+            console.log("✅ 서버 저장 성공:", res.data);
+            EL.modal.modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            fetchDataAndReload();
+        } else {
+            console.error("❌ 서버 저장 실패:", res?.data?.message || res?.error || "알 수 없는 오류");
+            alert("변경 실패: " + (res?.data?.message || "서버 응답 없음"));
+        }
+    });
 }
 
 function renderAgentNav(agents) {
