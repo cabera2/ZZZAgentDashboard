@@ -58,6 +58,7 @@ const EL = {
         scoreRankSide: document.getElementById('score-rank-side'),
         disksContainer: document.getElementById('disks-container'),
         discItemTemplate: document.getElementById('disk-item-template'),
+        planSelectBtn: document.getElementById('plan-select-btn')
     },
     modal: {
         modalOverlay: document.getElementById('modal-overlay'),
@@ -233,6 +234,7 @@ function setButtonFunctions(){
     EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
     EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
+    EL.discSection.planSelectBtn.addEventListener('click', openPlanSelect);
 
     EL.modal.modalCloseBtn.addEventListener('click', () => {
         EL.modal.modalOverlay.classList.remove('active');
@@ -410,6 +412,43 @@ function handleDiskClick(e){
     content += `<h3 style="color: ${color}">${i18nData.roles_suit_effect_unit.replace('{x}', '4')}</h3>`
     content += `<span style="color: ${color}">${formatGameText(equipSuit.desc2)}</span>`;
     openModal(header, content)
+}
+function openPlanSelect(){
+    const header = i18nData.roles_select_plan_source ?? 'Plan Select';
+    const planInfo = globalAgents[currentAgentIndex].equip_plan_info;
+    const planList = [
+        { label: i18nData.roles_custom_source, properties: planInfo.custom_info.property_list, type: 3 },
+        { label: i18nData.roles_game_default_source, properties: planInfo.game_default.property_list, type: 1 },
+        { label: i18nData.roles_guide_plan_source, properties: planInfo.plan_effective_property_list, type: 2}
+    ];
+    let content = ``;
+    for (const plan of planList) {
+        // 데이터가 있고 빈 배열이 아닌지 확인
+        if (plan.properties && Array.isArray(plan.properties) && plan.properties.length > 0) {
+            // language=html
+            content += `
+                <label style="
+                background-color: #FFFFFF14; 
+                padding: 15px; 
+                border-radius: 15px;
+                margin: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+                transition: background-color 0.2s;"
+                       onmouseover="this.style.backgroundColor='#FFFFFF24'"
+                       onmouseout="this.style.backgroundColor='#FFFFFF14'">
+
+                    <span>${plan.label}</span>
+                    <input type="radio"
+                           name="plan-selection"
+                           value="${plan.type}"
+                           style="cursor: pointer;">
+                </label>`;
+        }
+    }
+    openModal(header, content);
 }
 
 function renderAgentNav(agents) {

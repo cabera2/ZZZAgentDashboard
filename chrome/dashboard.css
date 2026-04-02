@@ -114,6 +114,7 @@ summary::-webkit-details-marker {
     margin: 0 !important;
     font-weight: bold;
     border-bottom: none !important;
+    padding-right: 50px;
 }
 
 #modal-body{
@@ -308,6 +309,15 @@ button:hover {
 
 .grid-deco {
     content: var(--url-grid-deco);
+    position: absolute;
+    right: 20px;
+}
+
+#plan-select-btn{
+    background-color: #333534;
+    padding: 5px 20px;
+    border-radius: 9999px;
+    border-color: black;
     position: absolute;
     right: 20px;
 }
@@ -733,7 +743,6 @@ button:hover {
     position: absolute; 
     top: 0; right: 0;
 }
-
 /* 유효 속성 태그 그룹 컨테이너 */
 #score-target-stats-wrapper {
     display: flex;
