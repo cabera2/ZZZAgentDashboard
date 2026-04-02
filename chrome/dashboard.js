@@ -222,8 +222,10 @@ function fetchDataAndReload() {
 
                 if (globalAgents.length > 0) {
                     EL.resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
-                    renderAgentNav(globalAgents);
-                    currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
+                    if(currentAgentIndex < 0){
+                        currentAgentIndex = 0;
+                        renderAgentNav(globalAgents);
+                    }
                     renderAgentDetail(globalAgents[currentAgentIndex]);
                 } else {
                     EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;

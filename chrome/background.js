@@ -62,45 +62,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'FETCH_HOYOLAB') {
         (async () => {
             try {
-                const {cookieString, ltuid, cookieMap} = await getHoyoverseData();
+                const {cookieString, ltuid} = await getHoyoverseData();
 
                 let targetUrl = message.url;
                 if (targetUrl.includes('getGameRecordCard') && !targetUrl.includes('uid=') && ltuid) {
                     targetUrl += `?uid=${ltuid}`;
                 }
 
-                const deviceId = cookieMap.get('_HYVUUID') || '';
-                const lang = message.lang || 'ko-kr';
-                const serverRegion = message.region || 'prod_gf_jp';
-                const avatarId = message.body?.avatar_id || "1311";
-                const pagePath = `v2.7.2_#/zzz/roles/${avatarId}/detail`;
-
-                // fetch 시에는 기본 헤더만 설정 (Origin/Referer는 NetRequestRule이 처리)
                 const headers = {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Accept-Language': 'ko,ja;q=0.9,en-US;q=0.8,en;q=0.7',
-                    'Cookie': cookieString,
-                    'Content-Type': 'application/json',
-                    'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36',
-                    'sec-ch-ua': '"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"',
-                    'sec-ch-ua-mobile': '?1',
-                    'sec-ch-ua-platform': '"Android"',
-                    'x-rpc-device_fp': '00000000000',
-                    'x-rpc-device_id': deviceId,
-                    'x-rpc-geetest_ext': JSON.stringify({
-                        "viewUid": String(ltuid),
-                        "server": serverRegion,
-                        "gameId": 8,
-                        "page": pagePath,
-                        "isHost": 1,
-                        "viewSource": 1,
-                        "actionSource": 127
-                    }),
-                    'x-rpc-lang': lang,
-                    'x-rpc-language': lang,
-                    'x-rpc-lrsag': '',
-                    'x-rpc-page': pagePath,
-                    'x-rpc-platform': '5'
+                    'Content-Type': 'application/json', // 명시적으로 지정
+                    'Cookie': cookieString,             // 인증을 위해 필수
+                    'x-rpc-client_type': '5'            // 호요랩 API 구분자
                 };
 
                 const fetchOptions = {
