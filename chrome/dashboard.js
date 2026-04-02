@@ -136,24 +136,28 @@ let globalAgents = [];
 let currentAgentIndex = -1;
 let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
 
-function applyI18nLabels(i18nData) {
-    const mapping = {
-        'ui-title-weapon': 'roles_weapon',             // W-엔진
-        'ui-title-skills': 'roles_detail_skill_title', // 스킬
-        'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
-        'ui-title-disks': 'roles_equipment',            // 디스크
-    };
+setButtonFunctions();
+fetchDataAndReload();
+function setButtonFunctions(){
+    EL.fetchBtn.addEventListener('click', fetchDataAndReload);
+    EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
+    EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
+    EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
+    EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
+    EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
+    EL.discSection.planSelectBtn.addEventListener('click', openPlanSelect);
 
-    for (const [id, key] of Object.entries(mapping)) {
-        const element = document.getElementById(id);
-        if (element && i18nData[key]) {
-            element.textContent = i18nData[key];
+    EL.modal.modalCloseBtn.addEventListener('click', () => {
+        EL.modal.modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    })
+    EL.modal.modalOverlay.addEventListener('click', (e) => {
+        if (e.target === EL.modal.modalOverlay) {
+            EL.modal.modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
-    }
+    })
 }
-
-EL.fetchBtn.addEventListener('click', fetchDataAndReload);
-
 function fetchDataAndReload() {
     const selectedLang = EL.langSelect.value;
 
@@ -234,26 +238,20 @@ function fetchDataAndReload() {
         });
     });
 }
+function applyI18nLabels(i18nData) {
+    const mapping = {
+        'ui-title-weapon': 'roles_weapon',             // W-엔진
+        'ui-title-skills': 'roles_detail_skill_title', // 스킬
+        'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
+        'ui-title-disks': 'roles_equipment',            // 디스크
+    };
 
-setButtonFunctions();
-function setButtonFunctions(){
-    EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
-    EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
-    EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
-    EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
-    EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
-    EL.discSection.planSelectBtn.addEventListener('click', openPlanSelect);
-
-    EL.modal.modalCloseBtn.addEventListener('click', () => {
-        EL.modal.modalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    })
-    EL.modal.modalOverlay.addEventListener('click', (e) => {
-        if (e.target === EL.modal.modalOverlay) {
-            EL.modal.modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
+    for (const [id, key] of Object.entries(mapping)) {
+        const element = document.getElementById(id);
+        if (element && i18nData[key]) {
+            element.textContent = i18nData[key];
         }
-    })
+    }
 }
 function handleCinemaClick(e) {
     // 1. 이벤트 위임의 핵심: 클릭된 위치에서 가장 가까운 시네마 아이콘 찾기
