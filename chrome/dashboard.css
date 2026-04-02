@@ -592,7 +592,7 @@ button:hover {
    우측 패널 (가변폭, 데이터)
 ==================================== */
 #right-panel {
-    min-width: 700px;
+    /*min-width: 700px;*/
     flex: 2;
     display: flex;
     flex-direction: column;
@@ -790,6 +790,7 @@ button:hover {
 .disk-name-main {
     display: flex;
     flex-direction: column;
+    padding-right: 66px;
 }
 
 .disk-name-text {

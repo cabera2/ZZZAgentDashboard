@@ -56,6 +56,7 @@ const EL = {
         planSource: document.getElementById('plan-source'),
         scoreTargetStatsWrapper: document.getElementById('score-target-stats-wrapper'),
         scoreRankSide: document.getElementById('score-rank-side'),
+        disksContainer: document.getElementById('disks-container'),
         discItemTemplate: document.getElementById('disk-item-template'),
     },
     modal: {
@@ -231,6 +232,7 @@ function setButtonFunctions(){
     EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
     EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
+    EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
 
     EL.modal.modalCloseBtn.addEventListener('click', () => {
         EL.modal.modalOverlay.classList.remove('active');
@@ -393,6 +395,22 @@ function handleSkillClick(e) {
         openModal(header, modalContent);
     }
 }
+function handleDiskClick(e){
+    const clickedDisk = e.target.closest('.disk-icon');
+    if(!clickedDisk) return;
+    const diskIndex = parseInt(clickedDisk.dataset.diskIndex, 10);
+    const disk = globalAgents[currentAgentIndex].equip?.find(e => e.equipment_type === diskIndex);
+    const header = i18nData.roles_equip_suit_detail;
+    const equipSuit = disk.equip_suit;
+    let content = `<h2>${equipSuit.name}</h2>`;
+    let color = equipSuit.own >= 2 ? '#B5FF00' : '#ACACAC';
+    content += `<h3 style="color: ${color}">${i18nData.roles_suit_effect_unit.replace('{x}', '2')}</h3>`
+    content += `<span style="color: ${color}">${equipSuit.desc1}</span>`;
+    color = equipSuit.own >= 4 ? '#B5FF00' : '#ACACAC';
+    content += `<h3 style="color: ${color}">${i18nData.roles_suit_effect_unit.replace('{x}', '4')}</h3>`
+    content += `<span style="color: ${color}">${formatGameText(equipSuit.desc2)}</span>`;
+    openModal(header, content)
+}
 
 function renderAgentNav(agents) {
     EL.nav.innerHTML = '';
@@ -457,6 +475,7 @@ function updatePortrait(agent) {
     if (section.portraitBgEl) {
         section.portraitBgEl.style.background = themeColor;
     }
+    // marquee효과
     const spans = document.querySelectorAll('span.marquee-text');
     spans.forEach(span => {
         span.innerText = agent.us_full_name.toUpperCase();
@@ -523,6 +542,8 @@ function updatePortrait(agent) {
                 : UI_SETTING.FONT_COLORS.CINEMA_INACTIVE;
         }
     }
+    
+    // 잠재력 각성
     document.documentElement.style.setProperty('--awaken-enable', agent.skill_awaken.has_awaken_system ? 'block' : 'none');
     section.awakenLevel.innerText = agent.skill_awaken.awaken_level;
     section.awakenMaxLevel.innerText = agent.skill_awaken.awaken_max_level;
@@ -606,11 +627,9 @@ function renderSkills(skillsArray) {
 }
 
 function renderDisks(equipArray) {
-    const disksContainer = document.getElementById('disks-container');
-    if (!disksContainer) return;
 
-    disksContainer.innerHTML = '';
-
+    EL.discSection.disksContainer.innerHTML = '';
+    
     for (let i = 1; i <= 6; i++) {
         const disk = equipArray?.find(e => e.equipment_type === i);
         const diskSlotDiv = document.createElement('div');
@@ -654,6 +673,7 @@ function renderDisks(equipArray) {
             clone.querySelector('.disk-name-text').innerText = disk.name;
             clone.querySelector('.disk-level').innerHTML = `${rankIconHtml}Lv.${disk.level ?? "null"}`;
             clone.querySelector('.disk-icon').src = `${disk.icon}`;
+            clone.querySelector('.disk-icon').dataset.diskIndex = `${i}`;
             clone.querySelector('.sub-item').innerHTML = `
             <span class="sub-name">${mainName}</span>
             <span class="sub-val">${mainValue}</span>`
@@ -664,10 +684,9 @@ function renderDisks(equipArray) {
             diskSlotDiv.className = 'disk-card empty-slot';
             diskSlotDiv.innerHTML = `<div class="empty-disk-msg">${i}번 슬롯 비어있음</div>`;
         }
-        disksContainer.appendChild(diskSlotDiv);
+        EL.discSection.disksContainer.appendChild(diskSlotDiv);
     }
 }
-
 function updateDiskScore(planInfo) {
     const scoreContainer = EL.discSection.scoreContainer;
     if (!scoreContainer) return;
