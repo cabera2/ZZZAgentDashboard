@@ -448,6 +448,41 @@ function openPlanSelect(){
                 </label>`;
         }
     }
+    
+    //새로 만들기
+    // language=html
+    content +=`
+        <label class="plan-selection">
+            <h2>${i18nData.roles_custom_source??'Custom'}</h2>
+            <input type="radio"
+                   name="plan-selection"
+                   value=3
+                   style="cursor: pointer;">
+        </label>
+    `;
+    if(planInfo.game_default.property_list && planInfo.game_default.property_list.length > 0){
+        // language=html
+        content +=`
+            <label class="plan-selection">
+                <h2>${i18nData.roles_game_default_source??'Default'}</h2>
+                <input type="radio"
+                       name="plan-selection"
+                       value=1
+                       style="cursor: pointer;">
+            </label>
+        `;
+    }
+    // language=html
+    content +=`
+        <label class="plan-selection">
+            <h2>${i18nData.roles_guide_plan_source??'Guide'}</h2>
+            <input type="radio"
+                   name="plan-selection"
+                   value=2
+                   style="cursor: pointer;">
+            <span>${i18nData.roles_guide_plan_source_label.replace('{plan}', planInfo.cultivate_info.name)??'Source'}</span>
+        </label>
+    `;
     openModal(header, content);
 }
 

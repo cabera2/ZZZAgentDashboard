@@ -692,6 +692,18 @@ button:hover {
     gap: 12px;
     padding: 20px;
 }
+/*방안 선택 라디오*/
+.plan-selection{
+    background-color: #FFFFFF14;
+    padding: 15px;
+    border-radius: 15px;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
 /* 디스크 점수 요약 박스 */
 #disk-score-container {
