@@ -413,77 +413,93 @@ function handleDiskClick(e){
     content += `<span style="color: ${color}">${formatGameText(equipSuit.desc2)}</span>`;
     openModal(header, content)
 }
+
 function openPlanSelect(){
     const header = i18nData.roles_select_plan_source ?? 'Plan Select';
     const planInfo = globalAgents[currentAgentIndex].equip_plan_info;
-    const planList = [
-        { label: i18nData.roles_custom_source, properties: planInfo.custom_info.property_list, type: 3 },
-        { label: i18nData.roles_game_default_source, properties: planInfo.game_default.property_list, type: 1 },
-        { label: i18nData.roles_guide_plan_source, properties: planInfo.plan_effective_property_list, type: 2}
-    ];
     let content = ``;
-    for (const plan of planList) {
-        // 데이터가 있고 빈 배열이 아닌지 확인
-        if (plan.properties && Array.isArray(plan.properties) && plan.properties.length > 0) {
-            // language=html
-            content += `
-                <label style="
-                background-color: #FFFFFF14; 
-                padding: 15px; 
-                border-radius: 15px;
-                margin: 10px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                cursor: pointer;
-                transition: background-color 0.2s;"
-                       onmouseover="this.style.backgroundColor='#FFFFFF24'"
-                       onmouseout="this.style.backgroundColor='#FFFFFF14'">
-
-                    <span>${plan.label}</span>
-                    <input type="radio"
-                           name="plan-selection"
-                           value="${plan.type}"
-                           style="cursor: pointer;">
-                </label>`;
-        }
-    }
     
-    //새로 만들기
     // language=html
     content +=`
         <label class="plan-selection">
-            <h2>${i18nData.roles_custom_source??'Custom'}</h2>
-            <input type="radio"
-                   name="plan-selection"
-                   value=3
-                   style="cursor: pointer;">
+            <div class="plan-selection-header">
+                <h2>${i18nData.roles_custom_source??'Custom'}</h2>
+                <input type="radio"
+                       name="plan-selection"
+                       value=3
+                       ${planInfo.type === 3 ? 'checked' : ''}
+                       style="cursor: pointer;">
+            </div>
         </label>
     `;
     if(planInfo.game_default.property_list && planInfo.game_default.property_list.length > 0){
+        let subStatsHtml = ``;
+        planInfo.game_default.property_list.forEach(item => {
+            // language=html
+            subStatsHtml += `
+                <span style="
+                background-color: #1D1F1E; 
+                padding: 7px 14px; 
+                border-radius: 9999px;
+                color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}">
+                    ${item.name}
+                </span>`
+        })
         // language=html
         content +=`
             <label class="plan-selection">
-                <h2>${i18nData.roles_game_default_source??'Default'}</h2>
-                <input type="radio"
-                       name="plan-selection"
-                       value=1
-                       style="cursor: pointer;">
-            </label>
-        `;
+                <div class="plan-selection-header">
+                    <h2>${i18nData.roles_game_default_source??'Default'}</h2>
+                    <input type="radio"
+                           name="plan-selection"
+                           value=1
+                           ${planInfo.type === 1 ? 'checked' : ''}
+                           style="cursor: pointer;">
+                </div>
+                <span class="plan-selection-desc">
+                    ${i18nData.roles_game_default_source_desc}
+                </span>
+                <div style="display: flex; gap: 5px">${subStatsHtml}</div>
+                
+            </label>`
     }
     // language=html
     content +=`
         <label class="plan-selection">
-            <h2>${i18nData.roles_guide_plan_source??'Guide'}</h2>
-            <input type="radio"
-                   name="plan-selection"
-                   value=2
-                   style="cursor: pointer;">
-            <span>${i18nData.roles_guide_plan_source_label.replace('{plan}', planInfo.cultivate_info.name)??'Source'}</span>
+            <div class="plan-selection-header">
+                <h2>${i18nData.roles_guide_plan_source??'Guide'}</h2>
+                <input type="radio"
+                       name="plan-selection"
+                       value=2
+                       ${planInfo.type === 2 ? 'checked' : ''}
+                       style="cursor: pointer;">
+            </div>
+            <span class="plan-selection-desc">
+                ${i18nData.roles_guide_plan_source_label.replace('{plan}', planInfo.cultivate_info.name)??'Source'}
+            </span>
         </label>
     `;
+    // language=html
+    content += `
+        <div style="text-align: center">
+            <h1 id="change-plan-confirm" style="
+        margin: 0;
+        display: inline-flex;
+        border-radius: 9999px;
+        padding: 10px 75px;
+        align-items: center;
+        background-color: ${UI_SETTING.FONT_COLORS.SELECTED};
+        color: black">
+                ${i18nData.confirm}
+            </h1>
+        </div>
+`
     openModal(header, content);
+    document.getElementById("change-plan-confirm").addEventListener('click', changePlan);
+}
+function changePlan(){
+    const value = document.querySelector('input[name="plan-selection"]:checked').value;
+    console.log(value)
 }
 
 function renderAgentNav(agents) {

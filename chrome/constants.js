@@ -2,6 +2,7 @@
     FONT_COLORS: {
         DEFAULT: '#afafaf',
         HIGHLIGHT: '#f1ad3d',
+        SELECTED: '#ffde00',
         CINEMA_INACTIVE: '#606060',
         CINEMA_ACTIVE: '#fff060'
     },
