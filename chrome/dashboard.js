@@ -537,9 +537,9 @@ function openPlanSelect(){
     // language=html
     content += `
         <div style="text-align: center">
-            <h1 id="change-plan-confirm" class="modal-button" style="background-color: ${UI_SETTING.FONT_COLORS.SELECTED}">
+            <button id="change-plan-confirm" class="modal-button" style="background-color: ${UI_SETTING.FONT_COLORS.SELECTED}">
                 ${planInfo.type === 3 ? i18nData.roles_continue : i18nData.confirm}
-            </h1>
+            </button>
         </div>
 `
     openModal(header, content);
@@ -607,19 +607,13 @@ function updateCustomModalStatus() {
     const isDisabled = checkedCount === 0;
     EL.modal.subStatClearAll.disabled = isDisabled;
     EL.modal.subStatSaveAll.disabled = isDisabled;
-    
-    // 버튼의 시각적 피드백을 위해 투명도 조절 (옵션)
-    EL.modal.subStatClearAll.style.opacity = isDisabled ? '0.5' : '1';
-    EL.modal.subStatSaveAll.style.opacity = isDisabled ? '0.5' : '1';
-    EL.modal.subStatClearAll.style.pointerEvents = isDisabled ? 'none' : 'auto';
-    EL.modal.subStatSaveAll.style.pointerEvents = isDisabled ? 'none' : 'auto';
 
-    // 2. 선택된 체크 박스가 4개 이상일 경우, 미선택된 체크 박스 비활성화
+    // 2. 선택된 체크 박스가 4개 이상일 경우, 미선택된 체크 박스 비활성화 및 라벨 스타일 변경
     checkboxes.forEach(cb => {
         if (!cb.checked) {
             cb.disabled = checkedCount >= 4;
         } else {
-            cb.disabled = false; // 선택된 것은 언제든 해제 가능해야 함
+            cb.disabled = false;
         }
     });
 }

@@ -42,6 +42,11 @@ summary {
 summary::-webkit-details-marker {
     display: none; /* Safari용 */
 }
+.button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;!important;
+    pointer-events: none;
+}
 
 /* 모달 창 */
 #modal-overlay {
@@ -339,13 +344,13 @@ button:hover {
 }
 
 #plan-select-btn{
+    color: #FFFFFFE6;
     background-color: #333534;
     padding: 5px 20px;
     border-radius: 9999px;
     border: 1px solid black;
     position: absolute;
     right: 20px;
-    cursor: pointer;
 }
 
 /* 3. 본문 콘텐츠 영역 패딩 설정 */
@@ -731,6 +736,12 @@ button:hover {
     transition: background-color 0.2s;
 }
 
+/* label 내부에 disabled된 input이 있다면 label 전체의 투명도를 낮춤 */
+.modal-selection:has(input:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .plan-selection:hover {
     background-color: #FFFFFF20;
 }
@@ -759,7 +770,7 @@ button:hover {
     padding: 10px 75px;
     align-items: center;
     color: black;
-    cursor: pointer
+    font-size: 20px;
 }
 
 /* 디스크 점수 요약 박스 */
