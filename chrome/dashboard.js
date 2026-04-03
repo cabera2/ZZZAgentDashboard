@@ -22,6 +22,7 @@ const EL = {
         awakenMaxLevel: document.getElementById('awaken-max-level'),
     },
     skillSection: {
+        header: document.getElementById('ui-title-skills'),
         skillsContent: document.getElementById('skills-content'),
         skillIcons:{
             0: document.getElementById('skillIconType0'),
@@ -41,6 +42,7 @@ const EL = {
         },
     },
     weaponSection:{
+        header: document.getElementById('ui-title-weapon'),
         weaponContainer: document.getElementById('weapon-container'),
         weaponEmpty: document.getElementById('weapon-empty'),
         weaponIcon: document.getElementById('weapon-icon'),
@@ -50,7 +52,11 @@ const EL = {
         weaponStar: document.getElementById('weapon-star'),
         weaponStatsList: document.getElementById('weapon-stats-list'),
     },
+    statSection:{
+        header: document.getElementById('ui-title-stats'),
+    },
     discSection: {
+        header: document.getElementById('ui-title-disks'),
         scoreContainer: document.getElementById('disk-score-container'),
         scoreTitle: document.getElementById('score-title'),
         planSource: document.getElementById('plan-source'),
@@ -67,7 +73,9 @@ const EL = {
         modalContentCommon: document.getElementById('modal-content-common'),
         modalContentCustom: document.getElementById('modal-content-custom'),
         modalBodyCommon: document.getElementById('modal-body-common'),
-        ModalBodyCustom: document.getElementById('modal-body-custom'),
+        modalBodyCustom: document.getElementById('modal-body-custom'),
+        subStatClearAll: document.getElementById('sub-stat-clear-all'),
+        subStatSaveAll: document.getElementById('sub-stat-save-all'),
     }
 }
 
@@ -255,19 +263,18 @@ function fetchDataAndReload() {
     });
 }
 function applyI18nLabels(i18nData) {
-    const mapping = {
-        'ui-title-weapon': 'roles_weapon',             // W-엔진
-        'ui-title-skills': 'roles_detail_skill_title', // 스킬
-        'ui-title-stats': 'roles_detail_props_title',  // 에이전트 속성
-        'ui-title-disks': 'roles_equipment',            // 디스크
-    };
+    const mapping = [
+        {el: EL.weaponSection.header, key: 'roles_weapon'},             // W-엔진
+        {el: EL.skillSection.header, key: 'roles_detail_skill_title'}, // 스킬
+        {el: EL.statSection.header, key: 'roles_detail_props_title'},  // 에이전트 속성
+        {el: EL.discSection.header, key: 'roles_equipment'},            // 디스크
+    ]
 
-    for (const [id, key] of Object.entries(mapping)) {
-        const element = document.getElementById(id);
-        if (element && i18nData[key]) {
-            element.textContent = i18nData[key];
+    mapping.forEach(({ el, key }) => {
+        if (el && i18nData[key]) {
+            el.textContent = i18nData[key];
         }
-    }
+    });
 }
 function handleCinemaClick(e) {
     // 1. 이벤트 위임의 핵심: 클릭된 위치에서 가장 가까운 시네마 아이콘 찾기
@@ -555,7 +562,7 @@ function changePlan(){
                     </label>
                 `
             })
-            EL.modal.ModalBodyCustom.innerHTML = `${content}`
+            EL.modal.modalBodyCustom.innerHTML = `${content}`
             break
     }
 }
