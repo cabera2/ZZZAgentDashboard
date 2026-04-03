@@ -29,6 +29,7 @@
     --text-sub: #eee; /* [변경] 서브 텍스트(제목 등): 밝은 회색 */
     --border-color: #444; /* 경계선: 더 어둡게 */
     --highlight: #f7768e; /* 포인트 컬러: 유지 */
+    --selected: #ffde00;
 
     --awaken-enable: none;
     --zzz-font: sans-serif;
@@ -708,7 +709,7 @@ button:hover {
 /*모달 라디오*/
 .modal-selection{
     background-color: #FFFFFF14;
-    padding: 15px;
+    padding: 20px 30px;
     border-radius: 15px;
     margin: 10px 0;
     display: flex;
@@ -729,7 +730,7 @@ button:hover {
     width: 100%;
 }
 
-.plan-selection h2 {
+.plan-selection-header h2 {
     margin: 0; /* 제목 여백 제거 */
 }
 
@@ -739,6 +740,7 @@ button:hover {
     opacity: 0.8;
 }
 .modal-button{
+    font-family: var(--zzz-font), sans-serif;
     margin: 0;
     display: inline-flex;
     border-radius: 9999px;
@@ -983,4 +985,54 @@ button:hover {
 .stat-row {
     display: flex;
     align-items: center;
+}
+
+/* 기본 스타일 초기화 및 커스텀 디자인 정의 */
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 4px solid #FFFFFF52;
+    border-radius: 50%;
+    background-color: #FFFFFF00;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+/* 라디오 버튼도 동일한 사각형 디자인을 원하시면 위 설정을 유지하고, 
+   동그란 모양을 원하시면 아래 라인을 추가하세요. */
+/* input[type="radio"] { border-radius: 50%; } */
+
+/* 마우스 호버 시 */
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
+    border-color: var(--selected);
+    border-radius: 50%;
+}
+
+/* 체크되었을 때 (Checked state) */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-color: var(--selected);
+    border-color: var(--selected);
+}
+
+/* 체크 표시 (V자 또는 점) */
+input[type="checkbox"]:checked::after,
+input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -45%);
+    width: 18px;
+    height: 18px;
+    background-color: black;
+    -webkit-mask-image: url("https://act.hoyoverse.com/gt-ui/assets/icons/8de51fb501e617be.svg");
 }

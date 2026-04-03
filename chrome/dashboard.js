@@ -278,12 +278,13 @@ function applyI18nLabels(i18nData) {
         {el: EL.statSection.header, key: 'roles_detail_props_title'},  // 에이전트 속성
         {el: EL.discSection.header, key: 'roles_equipment'},            // 디스크
         {el: EL.modal.subStatClearAll, key: 'roles_clear_all'},
-        {el: EL.modal.subStatSaveAll, key: 'roles_save_all'}
+        {el: EL.modal.subStatSaveAll, key: 'roles_save_all'},
+        {el: EL.modal.modalTitleCustom, key: 'roles_select_custom_property'}
     ]
 
     mapping.forEach(({ el, key }) => {
         if (el && i18nData[key]) {
-            el.textContent = i18nData[key];
+            el.textContent = i18nData[key]??key;
         }
     });
 }
@@ -523,12 +524,27 @@ function openPlanSelect(){
     content += `
         <div style="text-align: center">
             <h1 id="change-plan-confirm" class="modal-button" style="background-color: ${UI_SETTING.FONT_COLORS.SELECTED}">
-                ${i18nData.confirm}
+                ${planInfo.type === 3 ? i18nData.roles_continue : i18nData.confirm}
             </h1>
         </div>
 `
     openModal(header, content);
-    document.getElementById("change-plan-confirm").addEventListener('click', changePlan);
+
+    const modalBody = EL.modal.modalBodyCommon;
+    const confirmBtn = document.getElementById("change-plan-confirm");
+
+    if (modalBody && confirmBtn) {
+        modalBody.addEventListener('change', (e) => {
+            if (e.target.name === 'plan-selection') {
+                const val = parseInt(e.target.value, 10);
+                confirmBtn.innerText = (val === 3) ? i18nData.roles_continue : i18nData.confirm;
+            }
+        });
+    }
+    
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', changePlan);
+    }
 }
 function changePlan(){
     const selected = document.querySelector('input[name="plan-selection"]:checked');
@@ -597,9 +613,8 @@ function changePlanRequest(planType){
     }, (res) => {
         if (res && res.success && res.data.retcode === 0) {
             console.log("✅ 서버 저장 성공:", res.data);
-            EL.modal.modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
             fetchDataAndReload();
+            closeModal();
         } else {
             console.error("❌ 서버 저장 실패:", res?.data?.message || res?.error || "알 수 없는 오류");
             alert("변경 실패: " + (res?.data?.message || "서버 응답 없음"));
