@@ -68,8 +68,8 @@ const EL = {
     },
     modal: {
         modalOverlay: document.getElementById('modal-overlay'),
-        modalTitleCommon: document.getElementById('modal-title-common'),
-        modalTitleCustom: document.getElementById('modal-title-custom'),
+        modalTitleCommon: document.getElementById('ui-title-modal-common'),
+        modalTitleCustom: document.getElementById('ui-title-modal-custom'),
         modalContentCommon: document.getElementById('modal-content-common'),
         modalContentCustom: document.getElementById('modal-content-custom'),
         modalBodyCommon: document.getElementById('modal-body-common'),
