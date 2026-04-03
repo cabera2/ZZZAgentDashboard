@@ -551,7 +551,11 @@ function changePlan(){
                             ${getStatIconHtml(item.id)}
                             ${item.full_name}
                         </div>
-                        <input type="checkbox" name="stat-selection" value="${item.id}">
+                        <input 
+                                type="checkbox" 
+                                name="stat-selection" 
+                                value="${item.id}"
+                                ${item.is_select === true ? 'checked' : ''}>
                     </label>
                 `
             })
