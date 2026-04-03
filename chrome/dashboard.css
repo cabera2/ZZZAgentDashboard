@@ -705,8 +705,8 @@ button:hover {
     gap: 12px;
     padding: 20px;
 }
-/*방안 선택 라디오*/
-.plan-selection{
+/*모달 라디오*/
+.modal-selection{
     background-color: #FFFFFF14;
     padding: 15px;
     border-radius: 15px;

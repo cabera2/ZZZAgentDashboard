@@ -169,6 +169,15 @@ function setButtonFunctions(){
             closeModal();
         }
     })
+    //사용자 정의 보조 속성 전부 지우기
+    EL.modal.subStatClearAll.addEventListener('click', () => {
+        document.querySelectorAll('input[name="stat-selection"]')
+            .forEach(cb => cb.checked = false);
+    });
+    //사용자 정의 보조 속성 저장
+    EL.modal.subStatSaveAll.addEventListener('click', ()=>{
+        changePlanRequest(3);
+    });
 }
 function openModal(header, content){
     EL.modal.modalTitleCommon.innerText = header;
@@ -452,7 +461,7 @@ function openPlanSelect(){
     
     // language=html
     content +=`
-        <label class="plan-selection">
+        <label class="modal-selection">
             <div class="plan-selection-header">
                 <h2>${i18nData.roles_custom_source??'Custom'}</h2>
                 <input type="radio"
@@ -478,7 +487,7 @@ function openPlanSelect(){
         })
         // language=html
         content +=`
-            <label class="plan-selection">
+            <label class="modal-selection">
                 <div class="plan-selection-header">
                     <h2>${i18nData.roles_game_default_source??'Default'}</h2>
                     <input type="radio"
@@ -496,7 +505,7 @@ function openPlanSelect(){
     }
     // language=html
     content +=`
-        <label class="plan-selection">
+        <label class="modal-selection">
             <div class="plan-selection-header">
                 <h2>${i18nData.roles_guide_plan_source??'Guide'}</h2>
                 <input type="radio"
@@ -524,36 +533,25 @@ function openPlanSelect(){
 function changePlan(){
     const selected = document.querySelector('input[name="plan-selection"]:checked');
     if (!selected) return;
-
-    const newPlanType = parseInt(selected.value, 10);
-    const agent = globalAgents[currentAgentIndex];
-    let body = {
-        uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
-        region: currentUserInfo.region,
-        avatar_id: Number(agent.id), // 확실하게 숫자로 변환
-        type: Number(newPlanType) // 확실하게 숫자로 변환
-    };
-    switch (newPlanType){
+    const playType = parseInt(selected.value, 10);
+    switch (playType){
         case 1:
-            changePlanRequest(body)
-            break;
         case 2:
-            body.plan_id = Number(agent.equip_plan_info.cultivate_info.plan_id);
-            changePlanRequest(body)
+            changePlanRequest(playType)
             break;
         case 3:
             EL.modal.modalContentCommon.classList.remove('active');
             EL.modal.modalContentCustom.classList.add('active')
             let content = `<span>${i18nData.roles_select_custom_property_desc||'desc'}</span>`;
-            agent.equip_plan_info.custom_info.property_list.forEach(item => {
+            globalAgents[currentAgentIndex].equip_plan_info.custom_info.property_list.forEach(item => {
                 // language=html
                 content += `
-                    <label class="plan-selection" style="flex-direction: row;justify-content: space-between">
+                    <label class="modal-selection" style="flex-direction: row;justify-content: space-between">
                         <div>
                             ${getStatIconHtml(item.id)}
                             ${item.full_name}
                         </div>
-                        <input type="checkbox" value="${item.id}">
+                        <input type="checkbox" name="stat-selection" value="${item.id}">
                     </label>
                 `
             })
@@ -561,8 +559,29 @@ function changePlan(){
             break
     }
 }
-function changePlanRequest(body){
+function changePlanRequest(planType){
     const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
+    const agent = globalAgents[currentAgentIndex];
+    let body = {
+        uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
+        region: currentUserInfo.region,
+        avatar_id: Number(agent.id), // 확실하게 숫자로 변환
+        type: Number(planType) // 확실하게 숫자로 변환
+    };
+    switch (planType) {
+        default:
+        case 1:
+            break;
+        case 2:
+            body.plan_id = Number(agent.equip_plan_info.cultivate_info.plan_id);
+            break;
+        case 3:
+            const selectedValues = [...document.querySelectorAll('input[name="stat-selection"]:checked')]
+                .map(cb => cb.value);
+            body.property_id_list = selectedValues;
+            break;
+    }            
+    
     console.log("Sending plan change request...", body);
     chrome.runtime.sendMessage({
         type: 'FETCH_HOYOLAB',
