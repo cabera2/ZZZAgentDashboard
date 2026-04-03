@@ -62,9 +62,12 @@ const EL = {
     },
     modal: {
         modalOverlay: document.getElementById('modal-overlay'),
-        modalTitle: document.getElementById('ui-title-modal'),
-        modalCloseBtn: document.getElementById('modal-close-btn'),
-        modalBody: document.getElementById('modal-body'),
+        modalTitleCommon: document.getElementById('modal-title-common'),
+        modalTitleCustom: document.getElementById('modal-title-custom'),
+        modalContentCommon: document.getElementById('modal-content-common'),
+        modalContentCustom: document.getElementById('modal-content-custom'),
+        modalBodyCommon: document.getElementById('modal-body-common'),
+        ModalBodyCustom: document.getElementById('modal-body-custom'),
     }
 }
 
@@ -147,16 +150,29 @@ function setButtonFunctions(){
     EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
     EL.discSection.planSelectBtn.addEventListener('click', openPlanSelect);
 
-    EL.modal.modalCloseBtn.addEventListener('click', () => {
-        EL.modal.modalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    })
+    const closeButtons = document.querySelectorAll('.modal-close-btn');
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            closeModal();
+        });
+    });
     EL.modal.modalOverlay.addEventListener('click', (e) => {
         if (e.target === EL.modal.modalOverlay) {
-            EL.modal.modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
+            closeModal();
         }
     })
+}
+function openModal(header, content){
+    EL.modal.modalTitleCommon.innerText = header;
+    EL.modal.modalBodyCommon.innerHTML = content;
+    EL.modal.modalContentCommon.classList.add('active');
+    EL.modal.modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+    EL.modal.modalContentCustom.classList.remove('active');
+    EL.modal.modalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
 }
 function fetchDataAndReload() {
     const selectedLang = EL.langSelect.value;
@@ -488,15 +504,7 @@ function openPlanSelect(){
     // language=html
     content += `
         <div style="text-align: center">
-            <h1 id="change-plan-confirm" style="
-        margin: 0;
-        display: inline-flex;
-        border-radius: 9999px;
-        padding: 10px 75px;
-        align-items: center;
-        background-color: ${UI_SETTING.FONT_COLORS.SELECTED};
-        color: black;
-        cursor: pointer;">
+            <h1 id="change-plan-confirm" class="modal-button" style="background-color: ${UI_SETTING.FONT_COLORS.SELECTED}">
                 ${i18nData.confirm}
             </h1>
         </div>
@@ -510,8 +518,6 @@ function changePlan(){
 
     const newPlanType = parseInt(selected.value, 10);
     const agent = globalAgents[currentAgentIndex];
-    
-    const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
     let body ={};
     switch (newPlanType){
         case 1:
@@ -521,6 +527,7 @@ function changePlan(){
                 avatar_id: Number(agent.id), // 확실하게 숫자로 변환
                 type: Number(newPlanType) // 확실하게 숫자로 변환
             };
+            changePlanRequest(body)
             break;
         case 2:
             body = {
@@ -530,12 +537,31 @@ function changePlan(){
                 plan_id: Number(agent.equip_plan_info.cultivate_info.plan_id),
                 type: Number(newPlanType) // 확실하게 숫자로 변환
             };
+            changePlanRequest(body)
             break;
+        case 3:
+            EL.modal.modalContentCommon.classList.remove('active');
+            EL.modal.modalContentCustom.classList.add('active')
+            let content = `<span>${i18nData.roles_select_custom_property_desc||'desc'}</span>`;
+            agent.equip_plan_info.custom_info.property_list.forEach(item => {
+                // language=html
+                content += `
+                    <label class="plan-selection" style="flex-direction: row;justify-content: space-between">
+                        <div>
+                            ${getStatIconHtml(item.id)}
+                            ${item.full_name}
+                        </div>
+                        <input type="checkbox" value="${item.id}">
+                    </label>
+                `
+            })
+            EL.modal.ModalBodyCustom.innerHTML = `${content}`
+            break
     }
-
-
+}
+function changePlanRequest(body){
+    const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
     console.log("Sending plan change request...", body);
-
     chrome.runtime.sendMessage({
         type: 'FETCH_HOYOLAB',
         method: 'POST',
@@ -904,10 +930,4 @@ function updateDiskScore(planInfo) {
     EL.discSection.scoreTargetStatsWrapper.innerHTML = validStatsHtml;
     EL.discSection.scoreRankSide.innerHTML = 
         `${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}`
-}
-function openModal(header, content){
-    EL.modal.modalTitle.innerText = header;
-    EL.modal.modalBody.innerHTML = content;
-    EL.modal.modalOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
 }

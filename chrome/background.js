@@ -72,7 +72,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const headers = {
                     'Content-Type': 'application/json', // 명시적으로 지정
                     'Cookie': cookieString,             // 인증을 위해 필수
-                    'x-rpc-client_type': '5'            // 호요랩 API 구분자
+                    'x-rpc-client_type': '5',           // 호요랩 API 구분자
+                    'Origin': 'https://act.hoyolab.com',
+                    'Referer': 'https://act.hoyolab.com/'
                 };
 
                 const fetchOptions = {

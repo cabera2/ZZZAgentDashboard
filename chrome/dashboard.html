@@ -207,13 +207,30 @@
     </main>
 </div>
 <div id="modal-overlay">
-    <div id="modal-content">
-        <div id="modal-title">
+    <div class="modal-content" id="modal-content-common">
+        <div class="modal-title" id="modal-title-common">
             <h3 id="ui-title-modal">Modal</h3>
-            <img src="https://act.hoyolab.com/app/zzz-game-record/images/close-icon-sea.3e1386d8.png" id="modal-close-btn">
+            <img src="https://act.hoyolab.com/app/zzz-game-record/images/close-icon-sea.3e1386d8.png" class="modal-close-btn">
         </div>
-        <div id="modal-body">
+        <div class="modal-body" id="modal-body-common">
             <p>Content</p>
+        </div>
+    </div>
+    <div class="modal-content" id="modal-content-custom">
+        <div class="modal-title" id="modal-title-custom">
+            <h3 id="ui-custom-title-modal">Modal</h3>
+            <img src="https://act.hoyolab.com/app/zzz-game-record/images/close-icon-sea.3e1386d8.png" class="modal-close-btn">
+        </div>
+        <div class="modal-body" id="modal-body-custom">
+            <p>Content</p>
+        </div>
+        <div style="text-align: center; padding: 10px; gap: 20px">
+            <h1 id="sub-stat-clear-all" class="modal-button" style="background-color: #333534">
+                test1
+            </h1>
+            <h1 id="sub-stat-save-all" class="modal-button" style="background-color: #ffde00">
+                test2
+            </h1>
         </div>
     </div>
 </div>
