@@ -19,6 +19,7 @@
     --url-cinema4: url('https://act.hoyoverse.com/gt-ui/assets/icons/c38e275d1752227c.svg');
     --url-cinema5: url('https://act.hoyoverse.com/gt-ui/assets/icons/e38ac6870459d7ff.svg');
     --url-cinema6: url('https://act.hoyoverse.com/gt-ui/assets/icons/55832216257906d4.svg');
+    --url-modal-back-btn: url('https://act.hoyoverse.com/gt-ui/assets/icons/2d25ab48a8160046.svg');
 
     /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
     --bg-color: #0c0d10; /* 전체 배경: 더 어둡게 */
@@ -138,6 +139,16 @@ summary::-webkit-details-marker {
     /* 스크롤바 숨기기 (IE, Edge, Firefox) */
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+#modal-back-btn{
+    width: 48px;height: 48px;
+    padding: -20px 0;
+    margin: -20px 0;
+    background-color: white;
+    -webkit-mask-image: var(--url-modal-back-btn);
+    mask-image: var(--url-modal-back-btn);
+    cursor: pointer;
 }
 
 /* 3. 닫기 버튼 */
@@ -334,6 +345,7 @@ button:hover {
     border: 1px solid black;
     position: absolute;
     right: 20px;
+    cursor: pointer;
 }
 
 /* 3. 본문 콘텐츠 영역 패딩 설정 */

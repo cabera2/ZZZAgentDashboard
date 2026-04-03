@@ -68,6 +68,7 @@ const EL = {
     },
     modal: {
         modalOverlay: document.getElementById('modal-overlay'),
+        modalBackBtn: document.getElementById('modal-back-btn'),
         modalTitleCommon: document.getElementById('ui-title-modal-common'),
         modalTitleCustom: document.getElementById('ui-title-modal-custom'),
         modalContentCommon: document.getElementById('modal-content-common'),
@@ -157,13 +158,18 @@ function setButtonFunctions(){
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
     EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
     EL.discSection.planSelectBtn.addEventListener('click', openPlanSelect);
-
+    
     const closeButtons = document.querySelectorAll('.modal-close-btn');
     closeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             closeModal();
         });
     });
+    //모달 뒤로 버튼
+    EL.modal.modalBackBtn.addEventListener('click', () => {
+        EL.modal.modalContentCommon.classList.add('active');
+        EL.modal.modalContentCustom.classList.remove('active')
+    })
     EL.modal.modalOverlay.addEventListener('click', (e) => {
         if (e.target === EL.modal.modalOverlay) {
             closeModal();
@@ -173,10 +179,18 @@ function setButtonFunctions(){
     EL.modal.subStatClearAll.addEventListener('click', () => {
         document.querySelectorAll('input[name="stat-selection"]')
             .forEach(cb => cb.checked = false);
+        updateCustomModalStatus(); 
     });
     //사용자 정의 보조 속성 저장
     EL.modal.subStatSaveAll.addEventListener('click', ()=>{
         changePlanRequest(3);
+    });
+
+    // [이동됨] 커스텀 속성 선택 변경 감지 (페이지 로드 시 1회만 등록)
+    EL.modal.modalBodyCustom.addEventListener('change', (e) => {
+        if (e.target.name === 'stat-selection') {
+            updateCustomModalStatus();
+        }
     });
 }
 function openModal(header, content){
@@ -576,9 +590,40 @@ function changePlan(){
                 `
             })
             EL.modal.modalBodyCustom.innerHTML = `${content}`
+            
+            // [추가] 커스텀 모달이 열린 직후 초기 상태 업데이트
+            updateCustomModalStatus();
             break
     }
 }
+
+// [추가] 커스텀 모달의 버튼 및 체크박스 상태를 관리하는 함수
+function updateCustomModalStatus() {
+    const checkboxes = document.querySelectorAll('input[name="stat-selection"]');
+    const checkedBoxes = document.querySelectorAll('input[name="stat-selection"]:checked');
+    const checkedCount = checkedBoxes.length;
+
+    // 1. 선택된 체크박스가 없을 경우 버튼 비활성화
+    const isDisabled = checkedCount === 0;
+    EL.modal.subStatClearAll.disabled = isDisabled;
+    EL.modal.subStatSaveAll.disabled = isDisabled;
+    
+    // 버튼의 시각적 피드백을 위해 투명도 조절 (옵션)
+    EL.modal.subStatClearAll.style.opacity = isDisabled ? '0.5' : '1';
+    EL.modal.subStatSaveAll.style.opacity = isDisabled ? '0.5' : '1';
+    EL.modal.subStatClearAll.style.pointerEvents = isDisabled ? 'none' : 'auto';
+    EL.modal.subStatSaveAll.style.pointerEvents = isDisabled ? 'none' : 'auto';
+
+    // 2. 선택된 체크 박스가 4개 이상일 경우, 미선택된 체크 박스 비활성화
+    checkboxes.forEach(cb => {
+        if (!cb.checked) {
+            cb.disabled = checkedCount >= 4;
+        } else {
+            cb.disabled = false; // 선택된 것은 언제든 해제 가능해야 함
+        }
+    });
+}
+
 function changePlanRequest(planType){
     const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
     const agent = globalAgents[currentAgentIndex];
