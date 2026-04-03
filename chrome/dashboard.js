@@ -527,25 +527,18 @@ function changePlan(){
 
     const newPlanType = parseInt(selected.value, 10);
     const agent = globalAgents[currentAgentIndex];
-    let body ={};
+    let body = {
+        uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
+        region: currentUserInfo.region,
+        avatar_id: Number(agent.id), // 확실하게 숫자로 변환
+        type: Number(newPlanType) // 확실하게 숫자로 변환
+    };
     switch (newPlanType){
         case 1:
-            body = {
-                uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
-                region: currentUserInfo.region,
-                avatar_id: Number(agent.id), // 확실하게 숫자로 변환
-                type: Number(newPlanType) // 확실하게 숫자로 변환
-            };
             changePlanRequest(body)
             break;
         case 2:
-            body = {
-                uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
-                region: currentUserInfo.region,
-                avatar_id: Number(agent.id), // 확실하게 숫자로 변환
-                plan_id: Number(agent.equip_plan_info.cultivate_info.plan_id),
-                type: Number(newPlanType) // 확실하게 숫자로 변환
-            };
+            body.plan_id = Number(agent.equip_plan_info.cultivate_info.plan_id);
             changePlanRequest(body)
             break;
         case 3:
