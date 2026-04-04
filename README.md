@@ -2,3 +2,4 @@
 <img width="1571" height="1192" alt="image" src="https://github.com/user-attachments/assets/d385bee6-dd4d-4dce-bf4e-e4d803a0dd42" />
 
 Chrome Extention for Zenless Zone Zero character dashboard
+(Still in development)
