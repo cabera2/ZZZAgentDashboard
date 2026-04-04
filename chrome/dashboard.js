@@ -207,34 +207,6 @@ function closeModal(){
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
 }
-
-/**
- * 캐릭터 상세 정보 개별 로딩
- */
-async function fetchAgentDetail(index) {
-    if (index < 0 || !globalAgents[index]) return;
-    
-    const agent = globalAgents[index];
-    const selectedLang = EL.langSelect.value;
-    
-    EL.fetchBtn.disabled = true;
-    EL.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
-
-    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${currentUserInfo.uid}&server=${currentUserInfo.region}&id_list[]=${agent.id}&lang=${selectedLang}`;
-    
-    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
-        if (res.success && res.data.retcode === 0) {
-            currentAgentDetail = res.data.data.avatar_list[0];
-            console.log("Detail Data:", currentAgentDetail);
-            renderAgentDetail(currentAgentDetail);
-            EL.resultDiv.innerHTML = `${currentUserInfo.nickname} / Server: ${currentUserInfo.region_name} / uid: ${currentUserInfo.uid}`;
-        } else {
-            EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패: ${res.data?.message || "서버 응답 없음"}`;
-        }
-        EL.fetchBtn.disabled = false;
-    });
-}
-
 function fetchDataAndReload() {
     EL.fetchBtn.disabled = true;
     const selectedLang = EL.langSelect.value;
@@ -307,6 +279,35 @@ function fetchDataAndReload() {
                 }
             });
         });
+    });
+}
+/**
+ * 캐릭터 상세 정보 개별 로딩
+ */
+async function fetchAgentDetail(index) {
+    if (index < 0 || !globalAgents[index]) return;
+
+    const agent = globalAgents[index];
+    const selectedLang = EL.langSelect.value;
+
+    EL.fetchBtn.disabled = true;
+    EL.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
+
+    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${currentUserInfo.uid}&server=${currentUserInfo.region}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
+
+    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
+        if (res.success && res.data.retcode === 0) {
+            currentAgentDetail = res.data.data.avatar_list[0];
+            console.log("Data1:", res);
+            console.log("Data2:", res.data);
+            console.log("Data3:", res.data.data);
+            console.log("Detail Data:", currentAgentDetail);
+            renderAgentDetail(currentAgentDetail);
+            EL.resultDiv.innerHTML = `${currentUserInfo.nickname} / Server: ${currentUserInfo.region_name} / uid: ${currentUserInfo.uid}`;
+        } else {
+            EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패: ${res.data?.message || "서버 응답 없음"}`;
+        }
+        EL.fetchBtn.disabled = false;
     });
 }
 function applyI18nLabels(i18nData) {
