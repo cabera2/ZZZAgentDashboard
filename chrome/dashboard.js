@@ -94,6 +94,7 @@ let rafID = null;      // 애니메이션 프레임 ID
 const friction = 0.95; // 마찰력 (1에 가까울수록 오래 미끄러짐)
 
 let globalAgents = [];
+let currentAgentDetail = '';
 let currentAgentIndex = -1;
 let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
 setNavScrollEvent();
@@ -206,6 +207,34 @@ function closeModal(){
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
 }
+
+/**
+ * 캐릭터 상세 정보 개별 로딩
+ */
+async function fetchAgentDetail(index) {
+    if (index < 0 || !globalAgents[index]) return;
+    
+    const agent = globalAgents[index];
+    const selectedLang = EL.langSelect.value;
+    
+    EL.fetchBtn.disabled = true;
+    EL.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
+
+    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${currentUserInfo.uid}&server=${currentUserInfo.region}&id_list[]=${agent.id}&lang=${selectedLang}`;
+    
+    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
+        if (res.success && res.data.retcode === 0) {
+            currentAgentDetail = res.data.data.avatar_list[0];
+            console.log("Detail Data:", currentAgentDetail);
+            renderAgentDetail(currentAgentDetail);
+            EL.resultDiv.innerHTML = `${currentUserInfo.nickname} / Server: ${currentUserInfo.region_name} / uid: ${currentUserInfo.uid}`;
+        } else {
+            EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패: ${res.data?.message || "서버 응답 없음"}`;
+        }
+        EL.fetchBtn.disabled = false;
+    });
+}
+
 function fetchDataAndReload() {
     EL.fetchBtn.disabled = true;
     const selectedLang = EL.langSelect.value;
@@ -248,51 +277,34 @@ function fetchDataAndReload() {
             console.log("Fetched User Data:", zzzGame);
 
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
-            currentUserInfo.uid = String(roleId);    // 명시적으로 문자열 변환
+            currentUserInfo.uid = String(roleId);    
             currentUserInfo.region = region;
+            currentUserInfo.nickname = nickname; 
+            currentUserInfo.region_name = region_name; 
 
             EL.resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
 
-            // 3. 에이전트 리스트 가져오기
+            // 3. 에이전트 리스트 가져오기 (목록만)
             const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
 
             chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
                 if (!basicRes.success || basicRes.data.retcode !== 0) {
-                    resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+                    EL.resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
                     EL.fetchBtn.disabled = false;
                     return;
                 }
 
-                const avatarIds = basicRes.data.data.avatar_list.map(a => a.id);
-                EL.resultDiv.innerHTML = `✅ 에이전트 ${avatarIds.length}명. <br><b>[3/4]</b> 상세 데이터 로드 중...`;
-
-                // 4. 에이전트별 상세 정보 가져오기
-                const detailPromises = avatarIds.map(id => {
-                    return new Promise((resolve) => {
-                        const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${roleId}&server=${region}&id_list[]=${id}&lang=${selectedLang}`;
-                        chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => resolve(res));
-                    });
-                });
-
-                const results = await Promise.all(detailPromises);
-                globalAgents = results
-                    .filter(r => r.success && r.data.retcode === 0)
-                    .map(r => r.data.data.avatar_list[0]);
-
-                // 데이터 확인용
-                console.log("Fetched Agents Data:", globalAgents);
+                globalAgents = basicRes.data.data.avatar_list;
+                console.log("Fetched Agents List:", globalAgents);
 
                 if (globalAgents.length > 0) {
-                    EL.resultDiv.innerHTML = `${nickname} / Server: ${region_name} / uid: ${roleId}`;
-                    if(currentAgentIndex < 0){
-                        currentAgentIndex = 0;
-                        renderAgentNav(globalAgents);
-                    }
-                    renderAgentDetail(globalAgents[currentAgentIndex]);
+                    renderAgentNav(globalAgents);
+                    currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
+                    fetchAgentDetail(currentAgentIndex);
                 } else {
-                    EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
+                    EL.resultDiv.innerHTML = `❌ 로드할 에이전트가 없습니다.`;
+                    EL.fetchBtn.disabled = false;
                 }
-                EL.fetchBtn.disabled = false; // 모든 처리가 끝난 후 비활성화 해제
             });
         });
     });
@@ -329,7 +341,7 @@ function handleCinemaClick(e) {
     const header = i18nData.roles_detail_rank_popup_title || 'Cinema Detail';
 
     let content = ``;
-    const ranks = globalAgents[currentAgentIndex].ranks;
+    const ranks = currentAgentDetail.ranks;
 
     ranks.forEach((item, index) => {
         const isLast = index === ranks.length - 1;
@@ -369,7 +381,7 @@ function handleAwakenClick(e){
     if (currentAgentIndex === -1) return;
     const header = i18nData.potential_trigger_detail || 'AwakenDetail';
     let content = ``;
-    const skillAwaken = globalAgents[currentAgentIndex].skill_awaken;
+    const skillAwaken = currentAgentDetail.skill_awaken;
     const skillAwakenItems = skillAwaken.skill_awaken_items;
     //각성 단계별 루프
     skillAwakenItems.forEach(skillAwakenItem => {
@@ -420,8 +432,8 @@ function handleAwakenClick(e){
 }
 function openWeaponDetail(){
     const header = i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
-    const title = globalAgents[currentAgentIndex].weapon.talent_title;
-    const content = globalAgents[currentAgentIndex].weapon.talent_content;
+    const title = currentAgentDetail.weapon.talent_title;
+    const content = currentAgentDetail.weapon.talent_content;
     const weaponTest = `<h3>${title}</h3><span>${content}</span>`;
     openModal(header, weaponTest);
 }
@@ -437,8 +449,7 @@ function handleSkillClick(e) {
     const type = parseInt(wrapper.dataset.skillType, 10);
 
     // 4. 전역 배열에서 현재 캐릭터와 스킬 데이터 찾기
-    const agent = globalAgents[currentAgentIndex];
-    const skillInfo = agent.skills.find(s => s.skill_type === type);
+    const skillInfo = currentAgentDetail.skills.find(s => s.skill_type === type);
     
     // 5. 데이터가 존재하면 모달 열기
     if (skillInfo) {
@@ -468,7 +479,7 @@ function handleDiskClick(e){
     const clickedDisk = e.target.closest('.disk-icon');
     if(!clickedDisk) return;
     const diskIndex = parseInt(clickedDisk.dataset.diskIndex, 10);
-    const disk = globalAgents[currentAgentIndex].equip?.find(e => e.equipment_type === diskIndex);
+    const disk = currentAgentDetail.equip?.find(e => e.equipment_type === diskIndex);
     const header = i18nData.roles_equip_suit_detail;
     const equipSuit = disk.equip_suit;
     let content = `<h2>${equipSuit.name}</h2>`;
@@ -483,7 +494,7 @@ function handleDiskClick(e){
 
 function openPlanSelect(){
     const header = i18nData.roles_select_plan_source ?? 'Plan Select';
-    const planInfo = globalAgents[currentAgentIndex].equip_plan_info;
+    const planInfo = currentAgentDetail.equip_plan_info;
     let content = ``;
     
     // language=html
@@ -585,7 +596,7 @@ function changePlan(){
             EL.modal.modalContentCommon.classList.remove('active');
             EL.modal.modalContentCustom.classList.add('active')
             let content = `<span>${i18nData.roles_select_custom_property_desc||'desc'}</span>`;
-            globalAgents[currentAgentIndex].equip_plan_info.custom_info.property_list.forEach(item => {
+            currentAgentDetail.equip_plan_info.custom_info.property_list.forEach(item => {
                 // language=html
                 content += `
                     <label class="modal-selection" style="flex-direction: row;justify-content: space-between">
@@ -632,11 +643,10 @@ function updateCustomModalStatus() {
 
 function changePlanRequest(planType){
     const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
-    const agent = globalAgents[currentAgentIndex];
     let body = {
         uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
         region: currentUserInfo.region,
-        avatar_id: Number(agent.id), // 확실하게 숫자로 변환
+        avatar_id: Number(currentAgentDetail.id), // 확실하게 숫자로 변환
         type: Number(planType) // 확실하게 숫자로 변환
     };
     switch (planType) {
@@ -644,7 +654,7 @@ function changePlanRequest(planType){
         case 1:
             break;
         case 2:
-            body.plan_id = Number(agent.equip_plan_info.cultivate_info.plan_id);
+            body.plan_id = Number(currentAgentDetail.equip_plan_info.cultivate_info.plan_id);
             break;
         case 3:
             const selectedValues = [...document.querySelectorAll('input[name="stat-selection"]:checked')]
@@ -664,7 +674,7 @@ function changePlanRequest(planType){
     }, (res) => {
         if (res && res.success && res.data.retcode === 0) {
             console.log("✅ 서버 저장 성공:", res.data);
-            fetchDataAndReload();
+            fetchAgentDetail(currentAgentIndex); // 단일 캐릭터 새로고침 호출
             closeModal();
         } else {
             console.error("❌ 서버 저장 실패:", res?.data?.message || res?.error || "알 수 없는 오류");
@@ -693,7 +703,7 @@ function renderAgentNav(agents) {
             wrapper.classList.add('active');
             currentAgentIndex = index;
             console.log(`selectedAgentIndex: ${currentAgentIndex}`);
-            renderAgentDetail(agent);
+            fetchAgentDetail(currentAgentIndex); // 클릭 시 상세 정보 가져오기
         });
 
         EL.nav.appendChild(wrapper);
@@ -704,7 +714,7 @@ function renderAgentNav(agents) {
  * 에이전트 상세 정보 렌더링
  */
 function renderAgentDetail(agent) {
-    if (!agent) return;
+    if (!agent || !agent.properties) return; // 상세 정보가 없으면 렌더링 중단
 
     // 메인 컨텐츠 표시
     EL.mainContent.classList.remove('hidden');
