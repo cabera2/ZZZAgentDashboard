@@ -42,6 +42,9 @@ summary {
 summary::-webkit-details-marker {
     display: none; /* Safari용 */
 }
+.button{
+    cursor: pointer;
+}
 .button:disabled{
     opacity: 0.5;
     cursor: not-allowed;!important;
@@ -76,6 +79,7 @@ summary::-webkit-details-marker {
     justify-content: center;   /* 가로 중앙 */
     align-items: center;       /* 세로 중앙 */
     z-index: 9999;            /* 모든 요소보다 위에 표시 */
+    pointer-events: none;
     transition: 
             opacity 0.3s ease,
             backdrop-filter 0.3s ease,
@@ -84,6 +88,7 @@ summary::-webkit-details-marker {
 }
 /* 모달이 열렸을 때의 상태 */
 #modal-overlay.active {
+    pointer-events: auto;
     visibility: visible;
     opacity: 1;
     backdrop-filter: blur(6px);
@@ -153,7 +158,6 @@ summary::-webkit-details-marker {
     background-color: white;
     -webkit-mask-image: var(--url-modal-back-btn);
     mask-image: var(--url-modal-back-btn);
-    cursor: pointer;
 }
 
 /* 3. 닫기 버튼 */
@@ -168,7 +172,7 @@ body {
     margin: auto;
     
     padding: 20px;
-    max-width: 1500px;
+    width: 1500px;
     
     background-color: var(--bg-color);
     color: var(--text-main);
