@@ -23,7 +23,7 @@
     --url-modal-back-btn: url('https://act.hoyoverse.com/gt-ui/assets/icons/2d25ab48a8160046.svg');
 
     /* 원본 페이지 이미지에서 샘플링한 기본 컬러 변경 */
-    --bg-color: #0c0d10; /* 전체 배경: 더 어둡게 */
+    --bg-color: #010101; /* 전체 배경: 더 어둡게 */
     --panel-bg: #2a2a2a; /* 카드 본문 배경 (어두운 회색) */
     --header-bg: #161616; /* 카드 제목 배경 (거의 검정색) */
 
@@ -144,7 +144,7 @@ summary::-webkit-details-marker {
 }
 
 .modal-body{
-    padding: 20px;
+    padding: 10px 20px 20px;
     overflow-y: auto;
     flex-grow: 1;
     /* 스크롤바 숨기기 (IE, Edge, Firefox) */
@@ -178,8 +178,9 @@ body {
     background-image: var(--url-bg-img);
     background-color: var(--bg-color);
     background-size: cover;
+    background-repeat: no-repeat;
     color: var(--text-main);
-    line-height: 1.5; /* 가독성을 위한 행간 추가 */
+    line-height: 1.5;
 }
 #app{
     margin: auto;
@@ -195,6 +196,7 @@ body {
 /* 상단 컨트롤 및 네비게이션 (스타일 유지) */
 .header-controls {
     display: flex;
+    position: relative;
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
@@ -233,7 +235,10 @@ button:hover {
 #result {
     margin-left: 15px;
     font-size: 14px;
-    color: #888;
+    color: white;
+    background-color: var(--header-bg);
+    border-radius: 15px;
+    padding: 5px 15px;
 }
 
 /* 에이전트 목록 (상단 바) (스타일 유지) */
@@ -659,7 +664,7 @@ button:hover {
 #stats-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 0 !important;
+    padding: 0 0 10px;
     background-color: #232323; /* 기본 배경 */
 }
 
@@ -668,7 +673,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
+    padding: 8px 20px;
     margin: 0;
 }
 
@@ -734,7 +739,7 @@ button:hover {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    padding: 20px;
+    padding: 12px 20px 20px;
 }
 /*모달 라디오*/
 .modal-selection{
@@ -777,10 +782,10 @@ button:hover {
 }
 .modal-button{
     font-family: var(--zzz-font), sans-serif;
-    margin: 0;
+    margin: 0 10px;
     display: inline-flex;
     border-radius: 9999px;
-    padding: 10px 75px;
+    padding: 10px 40px;
     align-items: center;
     color: black;
     font-size: 20px;

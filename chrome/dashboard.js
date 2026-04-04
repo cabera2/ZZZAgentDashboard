@@ -93,6 +93,53 @@ let lastX = 0;         // 직전 마우스 위치
 let rafID = null;      // 애니메이션 프레임 ID
 const friction = 0.95; // 마찰력 (1에 가까울수록 오래 미끄러짐)
 
+let globalAgents = [];
+let currentAgentIndex = -1;
+let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
+setNavScrollEvent();
+setButtonFunctions();
+fetchDataAndReload();
+function setNavScrollEvent(){
+    //내비게이션 제어
+    EL.nav.addEventListener('mousedown', (e) => {
+        isDown = true;
+        EL.nav.classList.add('active');
+
+        // 클릭 시 진행 중이던 관성 애니메이션 중단
+        cancelAnimationFrame(rafID);
+
+        startX = e.pageX - EL.nav.offsetLeft;
+        scrollLeft = EL.nav.scrollLeft;
+        lastX = e.pageX;
+        velX = 0;
+
+        EL.nav.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (!isDown) return;
+        isDown = false;
+        EL.nav.classList.remove('active');
+        EL.nav.style.cursor = 'grab';
+
+        // 마우스를 떼는 순간 미끄러짐 시작
+        beginMomentum();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+
+        e.preventDefault();
+        const x = e.pageX - EL.nav.offsetLeft;
+
+        // 현재 프레임에서의 속도 계산 (현재 위치 - 직전 위치)
+        velX = e.pageX - lastX;
+        lastX = e.pageX;
+
+        const walk = (x - startX) * 2;
+        EL.nav.scrollLeft = scrollLeft - walk;
+    });
+}
 // 관성 애니메이션 함수
 const beginMomentum = () => {
     // 속도가 아주 작아질 때까지 반복
@@ -104,53 +151,6 @@ const beginMomentum = () => {
         cancelAnimationFrame(rafID);
     }
 };
-
-//내비게이션 제어
-EL.nav.addEventListener('mousedown', (e) => {
-    isDown = true;
-    EL.nav.classList.add('active');
-
-    // 클릭 시 진행 중이던 관성 애니메이션 중단
-    cancelAnimationFrame(rafID);
-
-    startX = e.pageX - EL.nav.offsetLeft;
-    scrollLeft = EL.nav.scrollLeft;
-    lastX = e.pageX;
-    velX = 0;
-
-    EL.nav.style.cursor = 'grabbing';
-});
-
-window.addEventListener('mouseup', () => {
-    if (!isDown) return;
-    isDown = false;
-    EL.nav.classList.remove('active');
-    EL.nav.style.cursor = 'grab';
-
-    // 마우스를 떼는 순간 미끄러짐 시작
-    beginMomentum();
-});
-
-window.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-
-    e.preventDefault();
-    const x = e.pageX - EL.nav.offsetLeft;
-
-    // 현재 프레임에서의 속도 계산 (현재 위치 - 직전 위치)
-    velX = e.pageX - lastX;
-    lastX = e.pageX;
-
-    const walk = (x - startX) * 2;
-    EL.nav.scrollLeft = scrollLeft - walk;
-});
-
-let globalAgents = [];
-let currentAgentIndex = -1;
-let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
-
-setButtonFunctions();
-fetchDataAndReload();
 function setButtonFunctions(){
     EL.fetchBtn.addEventListener('click', fetchDataAndReload);
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
@@ -207,6 +207,7 @@ function closeModal(){
     document.body.style.overflow = '';
 }
 function fetchDataAndReload() {
+    EL.fetchBtn.disabled = true;
     const selectedLang = EL.langSelect.value;
 
     // 폰트 준비
@@ -234,11 +235,16 @@ function fetchDataAndReload() {
         chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, (response) => {
             if (!response || !response.success || response.data.retcode !== 0) {
                 EL.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
+                EL.fetchBtn.disabled = false;
                 return;
             }
 
             const zzzGame = response.data.data.list.find(game => game.game_id === 8);
-            if (!zzzGame) return EL.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+            if (!zzzGame) {
+                EL.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+                EL.fetchBtn.disabled = false;
+                return;
+            }
             console.log("Fetched User Data:", zzzGame);
 
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
@@ -251,7 +257,11 @@ function fetchDataAndReload() {
             const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
 
             chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
-                if (!basicRes.success || basicRes.data.retcode !== 0) return resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+                if (!basicRes.success || basicRes.data.retcode !== 0) {
+                    resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+                    EL.fetchBtn.disabled = false;
+                    return;
+                }
 
                 const avatarIds = basicRes.data.data.avatar_list.map(a => a.id);
                 EL.resultDiv.innerHTML = `✅ 에이전트 ${avatarIds.length}명. <br><b>[3/4]</b> 상세 데이터 로드 중...`;
@@ -282,6 +292,7 @@ function fetchDataAndReload() {
                 } else {
                     EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패`;
                 }
+                EL.fetchBtn.disabled = false; // 모든 처리가 끝난 후 비활성화 해제
             });
         });
     });
