@@ -8,6 +8,7 @@
 }
 
 :root {
+    --url-bg-img: url('https://act.hoyolab.com/app/zzz-game-record/images/page-bg-pc.9bd180ff.png');
     --url-frame-bg: url('https://act.hoyolab.com/app/zzz-game-record/images/base-info-border-bg.09b1b6a9.png');
     --url-title-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/detail-title-icon.12f90997.png');
     --url-grid-deco: url('https://act.hoyolab.com/app/zzz-game-record/images/icon-white-black-grids.cb4a1704.png');
@@ -168,15 +169,23 @@ summary::-webkit-details-marker {
     cursor: pointer;
 }
 
+/* 1. 스크롤바가 없어도 항상 자리를 비워둠 (레이아웃 고정) */
+html {
+    scrollbar-gutter: stable;
+}
+
 body {
-    margin: auto;
-    
-    padding: 20px;
-    width: 1500px;
-    
+    background-image: var(--url-bg-img);
     background-color: var(--bg-color);
+    background-size: cover;
     color: var(--text-main);
     line-height: 1.5; /* 가독성을 위한 행간 추가 */
+}
+#app{
+    margin: auto;
+    padding: 20px;
+    border-radius: 20px;
+    width: 1500px;
 }
 
 .hidden {

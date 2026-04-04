@@ -2,6 +2,7 @@
 import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap} from './utils.js';
 
 const EL = {
+    app: document.getElementById('app'),
     fetchBtn: document.getElementById('fetchBtn'),
     nav: document.getElementById('agent-nav'),
     resultDiv: document.getElementById('result'),
@@ -719,8 +720,8 @@ function updatePortrait(agent) {
 
     // 1. 배경색 설정
     const themeColor = agent.vertical_painting_color || '#24283b';
-    document.body.style.background = `linear-gradient(to bottom, ${themeColor}, #000000)`;
-    document.body.style.backgroundAttachment = 'fixed';
+    EL.app.style.background = `linear-gradient(to bottom, ${themeColor}, #000000)`;
+    //document.body.style.backgroundAttachment = 'fixed';
     if (section.portraitBgEl) {
         section.portraitBgEl.style.background = themeColor;
     }
