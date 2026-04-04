@@ -5,7 +5,7 @@ chrome.action.onClicked.addListener(() => {
 
 // 2. hoyolab.com과 mihoyo.com의 쿠키를 모두 수집하여 하나로 합칩니다.
 async function getHoyoverseData() {
-    const domains = ["https://www.hoyolab.com", "https://os.mihoyo.com"];
+    const domains = ["https://www.hoyolab.com"];
     let allCookies = [];
 
     for (const url of domains) {
@@ -42,7 +42,7 @@ async function updateNetRequestRules() {
             ]
         },
         condition: {
-            urlFilter: '*://*.hoyolab.com/*',
+            urlFilter: 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment',
             resourceTypes: ['xmlhttprequest']
         }
     };

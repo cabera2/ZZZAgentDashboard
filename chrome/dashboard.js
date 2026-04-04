@@ -974,26 +974,29 @@ function updateDiskScore(planInfo) {
     const score = planInfo.valid_property_cnt;
     const rank = planInfo.equip_rating || 'ER_Default';
 
+    // 다국어 제목 처리
+    let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";
+    let planSourceLabel = '';
+    let validStatsHtml = '';
+    
     /**
      * 유효 속성 소스
      */
     //const activePlanSource = planInfo.game_default;
     const recommendProps = planInfo.plan_effective_property_list || [];
+    if(recommendProps.length === 0){
+        titleText = i18nData.roles_not_suitable_development_tip;
+    }
+    else{
+        // 추천 스탯 태그 HTML 생성
+        validStatsHtml = recommendProps.map(prop => {
+            // ZZZ_RESOURCE.STAT_ICONS의 키값(12103 등)과 일치하는 prop.id를 사용합니다.
+            const iconHtml = getStatIconHtml(prop.id, UI_SETTING.FONT_COLORS.DEFAULT);
+            return `<span class="stat-tag">${iconHtml}${prop.name}</span>`;
+        }).join('');
 
-    // 추천 스탯 태그 HTML 생성
-    const validStatsHtml = recommendProps.map(prop => {
-        // ZZZ_RESOURCE.STAT_ICONS의 키값(12103 등)과 일치하는 prop.id를 사용합니다.
-        const iconHtml = getStatIconHtml(prop.id, UI_SETTING.FONT_COLORS.DEFAULT);
-        return `<span class="stat-tag">${iconHtml}${prop.name}</span>`;
-    }).join('');
 
-    // 다국어 제목 처리
-    let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";
-    let planSourceLabel = "스탯 추천 방안 출처: {source}"
-    if(i18nData){
-        if (i18nData.roles_random_attributes_hit_num) {
-            titleText = i18nData.roles_random_attributes_hit_num;
-        }
+        titleText = i18nData.roles_random_attributes_hit_num;
         const highlightedScore = `<span style="color: ${UI_SETTING.FONT_COLORS.HIGHLIGHT}; font-weight: bold;">${score}</span>`;
         titleText = titleText.replace('{num}', highlightedScore);
 
@@ -1012,10 +1015,8 @@ function updateDiskScore(planInfo) {
                 break;
         }
 
-        if (i18nData.roles_plan_source){
-            planSourceLabel = i18nData.roles_plan_source.replace('{source}', planSourceContext);
-        }
-    }
+        planSourceLabel = i18nData.roles_plan_source.replace('{source}', planSourceContext);
+    }    
 
     // 랭크 이미지 설정
     let rankIconUrl = '';
