@@ -126,7 +126,6 @@ summary::-webkit-details-marker {
     opacity: 1;
 }
 .modal-title{
-    font-family: var(--zzz-font), sans-serif;
     font-size: 16px;
     position: relative;
     padding: 15px 20px !important;
@@ -137,10 +136,10 @@ summary::-webkit-details-marker {
     flex-shrink: 0;
 }
 .modal-title h3{
+    font-family: var(--zzz-font), sans-serif;
     margin: 0 !important;
     font-weight: bold;
     border-bottom: none !important;
-    padding-right: 50px;
 }
 
 .modal-body{

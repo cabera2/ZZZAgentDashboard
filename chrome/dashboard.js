@@ -78,6 +78,8 @@ const EL = {
         modalBodyCustom: document.getElementById('modal-body-custom'),
         subStatClearAll: document.getElementById('sub-stat-clear-all'),
         subStatSaveAll: document.getElementById('sub-stat-save-all'),
+        wikiBtn: document.getElementById('wiki-btn'),
+        wikiBtnLabel: document.getElementById('wiki-btn-label'),
     }
 }
 
@@ -94,6 +96,7 @@ let rafID = null;      // 애니메이션 프레임 ID
 const friction = 0.95; // 마찰력 (1에 가까울수록 오래 미끄러짐)
 
 let globalAgents = [];
+let currentAgentFullData = '';
 let currentAgentDetail = '';
 let currentAgentIndex = -1;
 let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
@@ -195,7 +198,11 @@ function setButtonFunctions(){
         }
     });
 }
-function openModal(header, content){
+function openModal(header, content, wikiUrl = null){
+    EL.modal.wikiBtn.style.display = wikiUrl ? 'block' : 'none';
+    if(wikiUrl){
+        EL.modal.wikiBtn.href = wikiUrl;
+    }
     EL.modal.modalTitleCommon.innerText = header;
     EL.modal.modalBodyCommon.innerHTML = content;
     EL.modal.modalContentCommon.classList.add('active');
@@ -297,6 +304,7 @@ async function fetchAgentDetail(index) {
 
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
         if (res.success && res.data.retcode === 0) {
+            currentAgentFullData= res.data.data;
             currentAgentDetail = res.data.data.avatar_list[0];
             console.log("Data1:", res);
             console.log("Data2:", res.data);
@@ -318,7 +326,8 @@ function applyI18nLabels(i18nData) {
         {el: EL.discSection.header, key: 'roles_equipment'},            // 디스크
         {el: EL.modal.subStatClearAll, key: 'roles_clear_all'},
         {el: EL.modal.subStatSaveAll, key: 'roles_save_all'},
-        {el: EL.modal.modalTitleCustom, key: 'roles_select_custom_property'}
+        {el: EL.modal.modalTitleCustom, key: 'roles_select_custom_property'},
+        {el: EL.modal.wikiBtnLabel, key: 'wiki'},
     ]
 
     mapping.forEach(({ el, key }) => {
@@ -373,8 +382,8 @@ function handleCinemaClick(e) {
             content += `<i class="rank-divider" style="display: block; height: 1px; background: #2a2c2b; margin: 10px 0;"></i>`;
         }
     });
-
-    openModal(header, content);
+    const wikiUrl = currentAgentFullData.avatar_wiki[currentAgentDetail.id];
+    openModal(header, content, wikiUrl);
 }
 function handleAwakenClick(e){
     const indicator = e.target.closest('.awaken-ui');
@@ -429,14 +438,17 @@ function handleAwakenClick(e){
                 </div>`
         })
     })
-    openModal(header, content);
+    const wikiUrl = currentAgentFullData.avatar_wiki[currentAgentDetail.id];
+    openModal(header, content, wikiUrl);
 }
 function openWeaponDetail(){
     const header = i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
-    const title = currentAgentDetail.weapon.talent_title;
-    const content = currentAgentDetail.weapon.talent_content;
-    const weaponTest = `<h3>${title}</h3><span>${content}</span>`;
-    openModal(header, weaponTest);
+    const weapon = currentAgentDetail.weapon;
+    const title = weapon.talent_title;
+    const content = weapon.talent_content;
+    const weaponTest = `<h3>${title}</h3><span>${content}</span>`;        
+    const wikiUrl = currentAgentFullData.weapon_wiki[weapon.id];
+    openModal(header, content, wikiUrl);
 }
 function handleSkillClick(e) {
     // 1. 클릭된 위치에서 가장 가까운 래퍼 찾기 (위임의 핵심)
@@ -458,9 +470,9 @@ function handleSkillClick(e) {
         const skillTypeNameKey = ZZZ_RESOURCE.SKILL_TYPE_NAMES[type];
         const skillTypeName = i18nData[skillTypeNameKey] ?? skillTypeNameKey;
         
-        let modalContent = ``;
+        let content = ``;
 
-        modalContent += `
+        content += `
         <div style="display: flex; align-items: center">
             <img src=${ZZZ_RESOURCE.BASE.ICONS}${ZZZ_RESOURCE.SKILL_TYPE_ICONS[type]} alt="${skillTypeName}">
             <div>
@@ -470,10 +482,11 @@ function handleSkillClick(e) {
         </div>
         `
         skillInfo.items.forEach((item) => {
-            modalContent += `<h3 style="margin-block-end: 0.5em;">${item.title || ''}</h3>`;
-            modalContent += formatGameText(item.text);
+            content += `<h3 style="margin-block-end: 0.5em;">${item.title || ''}</h3>`;
+            content += formatGameText(item.text);
         })
-        openModal(header, modalContent);
+        const wikiUrl = currentAgentFullData.avatar_wiki[currentAgentDetail.id];
+        openModal(header, content, wikiUrl);
     }
 }
 function handleDiskClick(e){
@@ -490,7 +503,8 @@ function handleDiskClick(e){
     color = equipSuit.own >= 4 ? '#B5FF00' : '#ACACAC';
     content += `<h3 style="color: ${color}">${i18nData.roles_suit_effect_unit.replace('{x}', '4')}</h3>`
     content += `<span style="color: ${color}">${formatGameText(equipSuit.desc2)}</span>`;
-    openModal(header, content)
+    const wikiUrl = currentAgentFullData.equip_wiki[disk.id];
+    openModal(header, content, wikiUrl);
 }
 
 function openPlanSelect(){
