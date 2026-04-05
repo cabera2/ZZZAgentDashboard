@@ -253,7 +253,11 @@ function fetchDataAndReload() {
                 EL.fetchBtn.disabled = false;
                 return;
             }
-            console.log("Fetched User Data:", zzzGame);
+            console.log("Fetched User Data1:", response);
+            console.log("Fetched User Data2:", response.data);
+            console.log("Fetched User Data3:", response.data.data);
+            console.log("Fetched User Data4:", response.data.data.list);
+            console.log("Fetched User Data5:", zzzGame);
 
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
             currentUserInfo.uid = String(roleId);    
