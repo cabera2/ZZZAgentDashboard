@@ -3,12 +3,18 @@ import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap} 
 
 const EL = {
     app: document.getElementById('app'),
-    fetchBtn: document.getElementById('fetchBtn'),
     nav: document.getElementById('agent-nav'),
-    resultDiv: document.getElementById('result'),
     langSelect: document.getElementById('langSelect'),
     mainContent: document.getElementById('main-content'),
     statsContent: document.getElementById('stats-content'),
+    headerSection:{
+        profilePic: document.getElementById('profile-pic'),
+        nickname: document.getElementById('nickname'),
+        playerLevel: document.getElementById('player-level'),
+        serverInfo: document.getElementById('server-info'),
+        fetchBtn: document.getElementById('fetchBtn'),
+        resultDiv: document.getElementById('result'),
+    },
     portraitSection:{
         portraitBgEl: document.getElementById('portrait-bg-color'),
         agentPortrait: document.getElementById('agent-portrait'),
@@ -99,7 +105,7 @@ let globalAgents = [];
 let currentAgentFullData = '';
 let currentAgentDetail = '';
 let currentAgentIndex = -1;
-let currentUserInfo = { uid: null, region: null }; // 전역 사용자 정보 추가
+let currentUserInfo = {}; // 전역 사용자 정보 추가
 setNavScrollEvent();
 setButtonFunctions();
 fetchDataAndReload();
@@ -156,7 +162,7 @@ const beginMomentum = () => {
     }
 };
 function setButtonFunctions(){
-    EL.fetchBtn.addEventListener('click', fetchDataAndReload);
+    EL.headerSection.fetchBtn.addEventListener('click', fetchDataAndReload);
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
     EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
     EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
@@ -215,7 +221,7 @@ function closeModal(){
     document.body.style.overflow = '';
 }
 function fetchDataAndReload() {
-    EL.fetchBtn.disabled = true;
+    EL.headerSection.fetchBtn.disabled = true;
     const selectedLang = EL.langSelect.value;
 
     // 폰트 준비
@@ -224,7 +230,7 @@ function fetchDataAndReload() {
     console.log(`title font: ${ZZZ_FONT[selectedLang]}`);
     document.documentElement.style.setProperty('--zzz-font', ZZZ_FONT[selectedLang] || font);
 
-    EL.resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
+    EL.headerSection.resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
 
     // 1. UI 다국어 데이터(i18n) 가져오기
     const i18nUrl = `https://fastcdn.hoyoverse.com/mi18n/nap_global/m20240410hy38foxb7k/m20240410hy38foxb7k-${selectedLang}.json`;
@@ -236,21 +242,21 @@ function fetchDataAndReload() {
             setSkillIconMap(JSON.parse(i18nData.role_skill_rich_text_icons));
         }
 
-        EL.resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
+        EL.headerSection.resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
 
         // 2. 계정 기본 정보 가져오기
         const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
         chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, (response) => {
             if (!response || !response.success || response.data.retcode !== 0) {
-                EL.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
-                EL.fetchBtn.disabled = false;
+                EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
+                EL.headerSection.fetchBtn.disabled = false;
                 return;
             }
 
             const zzzGame = response.data.data.list.find(game => game.game_id === 8);
             if (!zzzGame) {
-                EL.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
-                EL.fetchBtn.disabled = false;
+                EL.headerSection.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+                EL.headerSection.fetchBtn.disabled = false;
                 return;
             }
             console.log("Fetched User Data1:", response);
@@ -262,18 +268,16 @@ function fetchDataAndReload() {
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
             currentUserInfo.uid = String(roleId);    
             currentUserInfo.region = region;
-            currentUserInfo.nickname = nickname; 
-            currentUserInfo.region_name = region_name; 
 
-            EL.resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
+            EL.headerSection.resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
 
             // 3. 에이전트 리스트 가져오기 (목록만)
             const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
 
             chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
                 if (!basicRes.success || basicRes.data.retcode !== 0) {
-                    EL.resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
-                    EL.fetchBtn.disabled = false;
+                    EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+                    EL.headerSection.fetchBtn.disabled = false;
                     return;
                 }
 
@@ -285,8 +289,21 @@ function fetchDataAndReload() {
                     currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
                     fetchAgentDetail(currentAgentIndex);
                 } else {
-                    EL.resultDiv.innerHTML = `❌ 로드할 에이전트가 없습니다.`;
-                    EL.fetchBtn.disabled = false;
+                    EL.headerSection.resultDiv.innerHTML = `❌ 로드할 에이전트가 없습니다.`;
+                    EL.headerSection.fetchBtn.disabled = false;
+                }
+            });
+            
+            //프로필
+            const IndexUrl = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${roleId}&lang=${selectedLang}`
+            chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: IndexUrl}, (res) => {
+                if (res.success && res.data.retcode === 0) {
+                    const profile = res.data.data;
+                    console.log("profile:", res.data.data);
+                    EL.headerSection.nickname.innerText = nickname;
+                    EL.headerSection.playerLevel.innerText = `Lv. ${zzzGame.level}`;
+                    EL.headerSection.serverInfo.innerText = `${profile.game_data_show.personal_title} / ${region_name} / UID: ${roleId}`;
+                    EL.headerSection.profilePic.style.backgroundImage = `url(${profile.cur_head_icon_url})`;
                 }
             });
         });
@@ -301,11 +318,10 @@ async function fetchAgentDetail(index) {
     const agent = globalAgents[index];
     const selectedLang = EL.langSelect.value;
 
-    EL.fetchBtn.disabled = true;
-    EL.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
+    EL.headerSection.fetchBtn.disabled = true;
+    EL.headerSection.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
 
     const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${currentUserInfo.uid}&server=${currentUserInfo.region}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
-
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
         if (res.success && res.data.retcode === 0) {
             currentAgentFullData= res.data.data;
@@ -315,11 +331,11 @@ async function fetchAgentDetail(index) {
             console.log("Data3:", res.data.data);
             console.log("Detail Data:", currentAgentDetail);
             renderAgentDetail(currentAgentDetail);
-            EL.resultDiv.innerHTML = `${currentUserInfo.nickname} / Server: ${currentUserInfo.region_name} / uid: ${currentUserInfo.uid}`;
+            EL.headerSection.resultDiv.innerHTML = `Load Success`;
         } else {
-            EL.resultDiv.innerHTML = `❌ 상세 데이터 로드 실패: ${res.data?.message || "서버 응답 없음"}`;
+            EL.headerSection.resultDiv.innerHTML = `Load Failed: ${res.data?.message || "no response"}`;
         }
-        EL.fetchBtn.disabled = false;
+        EL.headerSection.fetchBtn.disabled = false;
     });
 }
 function applyI18nLabels(i18nData) {
