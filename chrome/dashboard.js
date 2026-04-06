@@ -357,6 +357,7 @@ function applyI18nLabels(i18nData) {
         {el: EL.modal.subStatSaveAll, key: 'roles_save_all'},
         {el: EL.modal.modalTitleCustom, key: 'roles_select_custom_property'},
         {el: EL.modal.wikiBtnLabel, key: 'wiki'},
+        {el: EL.discSection.planSelectBtn, key: 'roles_change_plan'}
     ]
 
     mapping.forEach(({ el, key }) => {
