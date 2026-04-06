@@ -353,11 +353,11 @@ function applyI18nLabels(i18nData) {
         {el: EL.skillSection.header, key: 'roles_detail_skill_title'}, // 스킬
         {el: EL.statSection.header, key: 'roles_detail_props_title'},  // 에이전트 속성
         {el: EL.discSection.header, key: 'roles_equipment'},            // 디스크
+        {el: EL.discSection.planSelectBtn, key: 'roles_change_plan'},
         {el: EL.modal.subStatClearAll, key: 'roles_clear_all'},
         {el: EL.modal.subStatSaveAll, key: 'roles_save_all'},
         {el: EL.modal.modalTitleCustom, key: 'roles_select_custom_property'},
         {el: EL.modal.wikiBtnLabel, key: 'wiki'},
-        {el: EL.discSection.planSelectBtn, key: 'roles_change_plan'}
     ]
 
     mapping.forEach(({ el, key }) => {
