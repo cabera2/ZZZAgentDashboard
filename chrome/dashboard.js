@@ -302,7 +302,16 @@ function fetchDataAndReload() {
                     console.log("profile:", res.data.data);
                     EL.headerSection.nickname.innerText = nickname;
                     EL.headerSection.playerLevel.innerText = `Lv. ${zzzGame.level}`;
-                    EL.headerSection.serverInfo.innerText = `${profile.game_data_show.personal_title} / ${region_name} / UID: ${roleId}`;
+                    const titleMainColor = `${profile.game_data_show.title_main_color || FFFFFF}`
+                    const titleBottomColor = `${profile.game_data_show.title_bottom_color || titleMainColor}`
+                    // language=html
+                    const personal_title = `
+                        <span style="
+                        background: linear-gradient(to bottom, #${titleMainColor}, #${titleBottomColor});
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;">${profile.game_data_show.personal_title}</span>
+                    `
+                    EL.headerSection.serverInfo.innerHTML = `${personal_title} / ${region_name} / UID: ${roleId}`;
                     EL.headerSection.profilePic.style.backgroundImage = `url(${profile.cur_head_icon_url})`;
                 }
             });
@@ -326,9 +335,9 @@ async function fetchAgentDetail(index) {
         if (res.success && res.data.retcode === 0) {
             currentAgentFullData= res.data.data;
             currentAgentDetail = res.data.data.avatar_list[0];
-            console.log("Data1:", res);
-            console.log("Data2:", res.data);
-            console.log("Data3:", res.data.data);
+            // console.log("Data1:", res);
+            // console.log("Data2:", res.data);
+            // console.log("Data3:", res.data.data);
             console.log("Detail Data:", currentAgentDetail);
             renderAgentDetail(currentAgentDetail);
             EL.headerSection.resultDiv.innerHTML = `Load Success`;
