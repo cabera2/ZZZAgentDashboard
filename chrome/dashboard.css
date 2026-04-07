@@ -59,7 +59,13 @@ summary::-webkit-details-marker {
     cursor: not-allowed;!important;
     pointer-events: none;
 }
-
+#loading-img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
 /* 모달 창 */
 #modal-overlay {
     position: fixed;
@@ -108,8 +114,8 @@ summary::-webkit-details-marker {
 .modal-content {
     background-color: #1d1f1e;
     width: fit-content;        /* 내용물에 딱 맞게 가로폭을 맞춤 */
-    min-width: 200px;         /* 너무 좁아지는 것을 방지 (선택 사항) */
-    max-width: 600px;         /* 설정하신 400px보다 조금 더 여유 있게 잡거나 원하는 최대폭 지정 */
+    min-width: 300px;         /* 너무 좁아지는 것을 방지 (선택 사항) */
+    max-width: 1000px;
     min-height: 200px;
     max-height: 600px;
     border-radius: 20px;
@@ -472,7 +478,6 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.75;
     z-index: 1; /* 가장 아래쪽 */
 }
 
@@ -512,6 +517,13 @@ button:hover {
     height: 100%;
     object-fit: cover;
     z-index: 3;
+}
+#clothes-btn{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 4;
+    width:48px;
 }
 
 .agent-title {

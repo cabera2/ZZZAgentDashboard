@@ -2,6 +2,7 @@
 import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap} from './utils.js';
 
 const EL = {
+    loadingImg: document.getElementById('loading-img'),
     app: document.getElementById('app'),
     nav: document.getElementById('agent-nav'),
     langSelect: document.getElementById('langSelect'),
@@ -18,6 +19,7 @@ const EL = {
     portraitSection:{
         portraitBgEl: document.getElementById('portrait-bg-color'),
         agentPortrait: document.getElementById('agent-portrait'),
+        clothesBtn: document.getElementById('clothes-btn'),
         agentName: document.getElementById('agent-name'),
         agentLevel: document.getElementById('agent-level'),
         levelContainer: document.getElementById('level-container'),
@@ -186,6 +188,7 @@ function setButtonFunctions(){
     EL.headerSection.fetchBtn.addEventListener('click', fetchDataAndReload);
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
     EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
+    EL.portraitSection.clothesBtn.addEventListener('click', openClothes);
     EL.weaponSection.weaponIcon.addEventListener('click', openWeaponDetail );
     EL.skillSection.skillsContent.addEventListener('click', handleSkillClick);
     EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
@@ -369,6 +372,7 @@ async function fetchAgentDetail(index) {
             EL.headerSection.resultDiv.innerHTML = `Load Failed: ${res.data?.message || "no response"}`;
         }
         EL.headerSection.fetchBtn.disabled = false;
+        EL.loadingImg.style.display = 'none';
     });
 }
 function applyI18nLabels(i18nData) {
@@ -494,6 +498,20 @@ function handleAwakenClick(e){
     })
     const wikiUrl = currentAgentFullData.avatar_wiki[currentAgentDetail.id];
     openModal(header, content, wikiUrl);
+}
+function openClothes(){
+    const header = i18nData.clothes_cabinet ?? "clothes_cabinet";
+    let content = i18nData.roles_clothes_popup_tip;
+    currentAgentDetail.skin_list.forEach(skin => {
+        const bgImgUrl = skin.is_original ? 
+            'https://act.hoyolab.com/app/zzz-game-record/images/card-bg-origin-pc.b365065a.png':
+            'https://act.hoyolab.com/app/zzz-game-record/images/card-bg-pc.1faa35bf.png'
+        //language=html
+        content +=`<div>
+            <img src=${bgImgUrl}>
+        </div>`
+    })
+    openModal(header, content);
 }
 function openWeaponDetail(){
     const header = i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
