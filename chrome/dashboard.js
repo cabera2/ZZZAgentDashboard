@@ -501,14 +501,14 @@ function handleAwakenClick(e){
 }
 function openClothes(){
     const header = i18nData.clothes_cabinet ?? "clothes_cabinet";
-    let content = i18nData.roles_clothes_popup_tip;
+    let content = `<p>${i18nData.roles_clothes_popup_tip}</p>`;
     currentAgentDetail.skin_list.forEach(skin => {
         //language=html
         content +=`<div>
             <img style="background-color: ${skin.skin_vertical_painting_color};
             border-radius: 15px" 
                  src=${skin.skin_vertical_painting_url}>
-            <h1>${skin.skin_name}</h1>
+            <h1 style="margin-top: 5px;margin-bottom: 25px">${skin.skin_name}</h1>
         </div>`
     })
     openModal(header, content);
