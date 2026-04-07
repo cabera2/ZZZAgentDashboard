@@ -503,12 +503,12 @@ function openClothes(){
     const header = i18nData.clothes_cabinet ?? "clothes_cabinet";
     let content = i18nData.roles_clothes_popup_tip;
     currentAgentDetail.skin_list.forEach(skin => {
-        const bgImgUrl = skin.is_original ? 
-            'https://act.hoyolab.com/app/zzz-game-record/images/card-bg-origin-pc.b365065a.png':
-            'https://act.hoyolab.com/app/zzz-game-record/images/card-bg-pc.1faa35bf.png'
         //language=html
         content +=`<div>
-            <img src=${bgImgUrl}>
+            <img style="background-color: ${skin.skin_vertical_painting_color};
+            border-radius: 15px" 
+                 src=${skin.skin_vertical_painting_url}>
+            <h1>${skin.skin_name}</h1>
         </div>`
     })
     openModal(header, content);
