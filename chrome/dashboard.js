@@ -106,9 +106,30 @@ let currentAgentFullData = '';
 let currentAgentDetail = '';
 let currentAgentIndex = -1;
 let currentUserInfo = {}; // 전역 사용자 정보 추가
+loadSaveData(()=>{
+    fetchDataAndReload();});
 setNavScrollEvent();
 setButtonFunctions();
-fetchDataAndReload();
+function loadSaveData(callback){
+    chrome.storage.sync.get('selectedLanguage', function(data) {
+        if (data.selectedLanguage) {
+            console.log("Save data exist:", data.selectedLanguage);
+            EL.langSelect.value = data.selectedLanguage;
+        } else {
+            console.log("Save data not exist:", navigator.language);
+            const browserLang = navigator.language.toLowerCase();
+            const options = Array.from(EL.langSelect.options);
+            let matched = options.find(opt => opt.value.startsWith(browserLang));
+            if(!matched){
+                matched = options.find(opt => opt.value.startsWith(browserLang.split('-')[0]));
+            }
+            if (matched) {
+                EL.langSelect.value = matched.value;
+            }
+        }
+        if (callback) callback();
+    });
+}
 function setNavScrollEvent(){
     //내비게이션 제어
     EL.nav.addEventListener('mousedown', (e) => {
@@ -223,6 +244,9 @@ function closeModal(){
 function fetchDataAndReload() {
     EL.headerSection.fetchBtn.disabled = true;
     const selectedLang = EL.langSelect.value;
+    chrome.storage.sync.set({ 'selectedLanguage': EL.langSelect.value }, function() {
+        console.log('Language saved: ' + EL.langSelect.value);
+    });
 
     // 폰트 준비
     const font = CONTENT_FONT[selectedLang] || CONTENT_FONT["default"];
