@@ -506,9 +506,11 @@ function openClothes(){
         //language=html
         content +=`<div>
             <img style="background-color: ${skin.skin_vertical_painting_color};
-            border-radius: 15px" 
+                 border-radius: 15px;
+                 height: 356px;
+                 background-image: url('https://act.hoyolab.com/app/zzz-game-record/images/page-bg.a60aa991.png')"
                  src=${skin.skin_vertical_painting_url}>
-            <h1 style="margin-top: 5px;margin-bottom: 25px">${skin.skin_name}</h1>
+            <h1 class = "zzz-font-display" style="margin-top: 5px;margin-bottom: 25px">${skin.skin_name}</h1>
         </div>`
     })
     openModal(header, content);
