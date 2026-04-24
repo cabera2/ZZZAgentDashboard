@@ -50,24 +50,38 @@ export function formatGameText(text) {
 
     let formatted = text;
 
-    // 1. 아이콘 태그 치환 (<IconMap:ID> -> <img>)
-    // window.skillIconMap에 해당 태그 전체를 키로 하는 URL이 들어있어야 합니다.
+    // 1. 호요랩 원본 특수 태그 치환 (공백 처리)
+    formatted = formatted.replace(/\{SPACE\}/g, " ").replace(/\{NON_BREAK_SPACE\}/g, "&nbsp;");
+
+    // 2. 아이콘 태그 치환 (<IconMap:ID> -> <img>)
     formatted = formatted.replace(/<IconMap:[^>]+>/g, (match) => {
         const iconUrl = skillIconMap ? skillIconMap[match] : null;
         if (iconUrl) {
-            return `<img src="${iconUrl}" class="skill-inline-icon" alt="icon" style="height: 1.4em;">`;
+            return `<img src="${iconUrl}" class="skill-inline-icon" alt="icon" style="height: 1.4em; vertical-align: bottom;">`;
         }
-        // 매핑된 아이콘이 없으면 태그를 텍스트로 그대로 보여줍니다 (브라우저가 무시하지 않도록 & 처리)
         return match.replace('<', '&lt;').replace('>', '&gt;');
     });
 
-    // 2. 컬러 태그 치환 (<color=#HEX>...</color> -> <span style="color:#HEX">...</span>)
-    // 콜백 함수를 사용하여 Rider의 $1 경고를 해결합니다.
-    formatted = formatted.replace(/<color=(#[a-fA-F0-9]+)>(.*?)<\/color>/gs, (match, color, content) => {
-        return `<span style="color:${color}">${content}</span>`;
+    // 3. 컬러 및 스타일 태그 치환
+    // 컬러 태그 (<color=#HEX>...</color>)
+    formatted = formatted.replace(/<color=#?([a-fA-F0-9]{6,8})>(.*?)<\/color>/gs, (match, color, content) => {
+        return `<span style="color:#${color}">${content}</span>`;
     });
+    // 기울임 및 굵게 (<i>, <b>)
+    formatted = formatted.replace(/<i>(.*?)<\/i>/g, "<span style='font-style: italic;'>$1</span>");
+    formatted = formatted.replace(/<b>(.*?)<\/b>/g, "<span style='font-weight: 700;'>$1</span>");
 
-    // 3. 줄바꿈 기호 변환
+    // 4. 조건부 레이아웃 및 성별 분기 처리 (원본 로직 이식)
+    formatted = formatted.replace(/\{F#(.+?)\}/g, ""); // 여성형 무시
+    formatted = formatted.replace(/\{M#(.+?)\}/g, "$1"); // 남성형 출력
+    formatted = formatted.replace(/\{LAYOUT_CONSOLECONTROLLER#[^}]*\}/g, ""); // 콘솔 태그 제거
+    formatted = formatted.replace(/\{LAYOUT_FALLBACK#([^}]*)\}/g, "$1"); // 폴백 태그의 텍스트만 남김
+    formatted = formatted.replace(/\{LAYOUT_MOBILE(.*?)\}/g, ""); // 모바일 태그 제거
+    formatted = formatted.replace(/\{LAYOUT_CONTROLLER(.*?)\}/g, ""); // 컨트롤러 태그 제거
+    formatted = formatted.replace(/\{LAYOUT_KEYBOARD(.*?)\}/g, ""); // 키보드 태그 제거
+    formatted = formatted.replace(/\{LAYOUT_XBOXCONTROLLER(.*?)\}/g, ""); // 엑박 태그 제거
+
+    // 5. 줄바꿈 기호 변환
     formatted = formatted.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
 
     return `<p class="skill-description" style="margin: 0">${formatted}</p>`;
