@@ -321,6 +321,16 @@ function fetchDataAndReload() {
                 }
             });
             
+            const testUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=1302653608&server=${region}&lang=${selectedLang}`;
+            chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: testUrl}, async (TestRes) => {
+                if (!TestRes.success || TestRes.data.retcode !== 0) {
+                    console.log(`Test Fail${TestRes.data?.message}`);
+                    return;
+                }
+                const TestAgent = TestRes.data.data.avatar_list;
+                console.log("Fetched Agents List Test:", TestAgent);
+            });
+            
             //프로필
             const IndexUrl = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${roleId}&lang=${selectedLang}`
             chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: IndexUrl}, (res) => {
