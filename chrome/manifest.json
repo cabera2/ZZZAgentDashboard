@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "ZZZ Dashboard",
+  "name": "__MSG_appName__",
+  "description": "__MSG_appDesc__",
+  "default_locale": "ko",
   "icons": {
     "128": "icon.png"
   },
-  "version": "0.9.4",
-  "description": "젠레스 존 제로의 에이전트 상세 전적과 육성 가이드를 PC 화면에 최적화된 레이아웃으로 확인하세요.",
+  "version": "1.0.2",
   "permissions": [
     "storage",
     "cookies",
