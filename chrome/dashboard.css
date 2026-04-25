@@ -192,6 +192,7 @@ body {
     background-color: var(--bg-color);
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--text-main);
     line-height: 1.5;
 }
@@ -1129,4 +1130,52 @@ input[type="radio"]:checked::after {
     height: 18px;
     background-color: black;
     -webkit-mask-image: url("https://act.hoyoverse.com/gt-ui/assets/icons/8de51fb501e617be.svg");
+}
+
+/* 슬라이드 패널 기본 스타일 (화면 전체 높이로 수정) */
+.slide-panel {
+    position: fixed;
+    top: 0; /* 상단 끝에 밀착 */
+    right: -300px; /* 패널 너비만큼 화면 밖으로 숨김 */
+    width: 300px;
+    height: 100vh; /* 화면 전체 높이 차지 */
+    background: #1a1a1a;
+    transition: right 0.3s ease-out; /* 스르륵 움직이는 효과 */
+    z-index: 1000; /* 다른 요소들 위에 표시 */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: row;
+}
+
+/* 패널 본체 (리스트 내용) */
+.slide-panel .panel-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    color: var(--text-main);
+}
+
+/* 라벨 (빼꼼 내밀고 있는 부분) */
+.slide-panel .panel-label {
+    position: absolute;
+    left: -40px; /* 패널 왼쪽에 붙어서 밖으로 튀어나옴 */
+    top: 50%; /* 중앙 유지 */
+    transform: translateY(-50%);
+    width: 40px;
+    height: 120px;
+    background: var(--selected);
+    color: black;
+    writing-mode: vertical-lr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 10px 0 0 10px;
+    font-weight: bold;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* 활성화 상태 */
+.slide-panel.active {
+    right: 0;
 }

@@ -88,6 +88,10 @@ const EL = {
         subStatSaveAll: document.getElementById('sub-stat-save-all'),
         wikiBtn: document.getElementById('wiki-btn'),
         wikiBtnLabel: document.getElementById('wiki-btn-label'),
+    },
+    userList: {
+        panel: document.getElementById('user-list-panel'),
+        label: document.getElementById('user-list-label'),
     }
 }
 
@@ -104,8 +108,8 @@ let rafID = null;      // 애니메이션 프레임 ID
 const friction = 0.95; // 마찰력 (1에 가까울수록 오래 미끄러짐)
 
 let globalAgents = [];
-let currentAgentFullData = '';
-let currentAgentDetail = '';
+let currentAgentFullData = null;
+let currentAgentDetail = null;
 let currentAgentIndex = -1;
 let currentUserInfo = {}; // 전역 사용자 정보 추가
 loadSaveData(()=>{
@@ -221,11 +225,16 @@ function setButtonFunctions(){
         changePlanRequest(3);
     });
 
-    // [이동됨] 커스텀 속성 선택 변경 감지 (페이지 로드 시 1회만 등록)
+    // 커스텀 속성 선택 변경 감지 (페이지 로드 시 1회만 등록)
     EL.modal.modalBodyCustom.addEventListener('change', (e) => {
         if (e.target.name === 'stat-selection') {
             updateCustomModalStatus();
         }
+    });
+
+    // [추가] 유저 리스트 패널 토글
+    EL.userList.label.addEventListener('click', () => {
+        EL.userList.panel.classList.toggle('active');
     });
 }
 function openModal(header, content, wikiUrl = null){
