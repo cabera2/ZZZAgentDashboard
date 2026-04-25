@@ -1184,9 +1184,11 @@ input[type="radio"]:checked::after {
 
 /* 개별 유저 아이템 스타일 */
 .user-list-item {
+    position: relative; /* 삭제 버튼 배치를 위해 추가 */
     display: flex;
     align-items: center;
     padding: 10px;
+    padding-right: 50px; /* 삭제 버튼 공간 확보 */
     gap: 12px;
     border-radius: 8px;
     margin-bottom: 8px;
@@ -1209,6 +1211,24 @@ input[type="radio"]:checked::after {
     font-size: 14px;
     font-weight: bold;
     color: #eee;
+}
+
+/* 삭제 버튼 스타일 (개선) */
+.remove-user-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px; /* 약 2배 크기 */
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+    padding: 5px; /* 클릭 영역 확보 */
+}
+
+.remove-user-btn:hover {
+    color: #f7768e; /* 하이라이트 컬러 */
 }
 
 /* 입력 영역 스타일 */
