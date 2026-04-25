@@ -92,6 +92,9 @@ const EL = {
     userList: {
         panel: document.getElementById('user-list-panel'),
         label: document.getElementById('user-list-label'),
+        itemsList: document.getElementById('user-items-list'),
+        uidInput: document.getElementById('new-user-uid'),
+        addBtn: document.getElementById('add-user-btn'),
     }
 }
 
@@ -232,11 +235,34 @@ function setButtonFunctions(){
         }
     });
 
-    // [추가] 유저 리스트 패널 토글
+    // 유저 리스트 패널 토글
     EL.userList.label.addEventListener('click', () => {
         EL.userList.panel.classList.toggle('active');
     });
+
+    // 유저 추가 버튼 테스트 로직
+    EL.userList.addBtn.addEventListener('click', () => {
+        const uid = EL.userList.uidInput.value.trim();
+        if (uid) {
+            addUserToList(uid);
+            EL.userList.uidInput.value = '';
+        }
+    });
 }
+
+/**
+ * 유저 리스트에 아이템 추가 (테스트용)
+ */
+function addUserToList(uid) {
+    const li = document.createElement('li');
+    li.className = 'user-list-item';
+    li.innerHTML = `
+        <div class="profile-pic user-avatar-mini" style="background-image: url('https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_uda4md/c5ccd33f6588199b0a4ae7244bdf9dd6.png')"></div>
+        <span class="user-info">${uid}</span>
+    `;
+    EL.userList.itemsList.appendChild(li);
+}
+
 function openModal(header, content, wikiUrl = null){
     EL.modal.wikiBtn.style.display = wikiUrl ? 'block' : 'none';
     if(wikiUrl){
@@ -250,6 +276,7 @@ function openModal(header, content, wikiUrl = null){
 }
 function closeModal(){
     EL.modal.modalContentCustom.classList.remove('active');
+    EL.modal.modalContentCommon.classList.remove('active');
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
 }
@@ -295,10 +322,6 @@ function fetchDataAndReload() {
                 EL.headerSection.fetchBtn.disabled = false;
                 return;
             }
-            console.log("Fetched User Data1:", response);
-            console.log("Fetched User Data2:", response.data);
-            console.log("Fetched User Data3:", response.data.data);
-            console.log("Fetched User Data4:", response.data.data.list);
             console.log("Fetched User Data5:", zzzGame);
 
             const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
@@ -330,16 +353,6 @@ function fetchDataAndReload() {
                 }
             });
             
-            const testUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=1302653608&server=${region}&lang=${selectedLang}`;
-            chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: testUrl}, async (TestRes) => {
-                if (!TestRes.success || TestRes.data.retcode !== 0) {
-                    console.log(`Test Fail${TestRes.data?.message}`);
-                    return;
-                }
-                const TestAgent = TestRes.data.data.avatar_list;
-                console.log("Fetched Agents List Test:", TestAgent);
-            });
-            
             //프로필
             const IndexUrl = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${roleId}&lang=${selectedLang}`
             chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: IndexUrl}, (res) => {
@@ -348,7 +361,7 @@ function fetchDataAndReload() {
                     console.log("profile:", res.data.data);
                     EL.headerSection.nickname.innerText = nickname;
                     EL.headerSection.playerLevel.innerText = `Lv. ${zzzGame.level}`;
-                    const titleMainColor = `${profile.game_data_show.title_main_color || FFFFFF}`
+                    const titleMainColor = `${profile.game_data_show.title_main_color || 'FFFFFF'}`
                     const titleBottomColor = `${profile.game_data_show.title_bottom_color || titleMainColor}`
                     // language=html
                     const personal_title = `
@@ -381,9 +394,6 @@ async function fetchAgentDetail(index) {
         if (res.success && res.data.retcode === 0) {
             currentAgentFullData= res.data.data;
             currentAgentDetail = res.data.data.avatar_list[0];
-            // console.log("Data1:", res);
-            // console.log("Data2:", res.data);
-            // console.log("Data3:", res.data.data);
             console.log("Detail Data:", currentAgentDetail);
             renderAgentDetail(currentAgentDetail);
             EL.headerSection.resultDiv.innerHTML = `Load Success`;
@@ -741,10 +751,19 @@ function updateCustomModalStatus() {
 
     // 2. 선택된 체크 박스가 4개 이상일 경우, 미선택된 체크 박스 비활성화 및 라벨 스타일 변경
     checkboxes.forEach(cb => {
+        const label = cb.closest('.modal-selection');
         if (!cb.checked) {
             cb.disabled = checkedCount >= 4;
+            if (label) {
+                label.style.opacity = (checkedCount >= 4) ? '0.5' : '1';
+                label.style.cursor = (checkedCount >= 4) ? 'not-allowed' : 'pointer';
+            }
         } else {
             cb.disabled = false;
+            if (label) {
+                label.style.opacity = '1';
+                label.style.cursor = 'pointer';
+            }
         }
     });
 }

@@ -1134,7 +1134,7 @@ input[type="radio"]:checked::after {
     -webkit-mask-image: url("https://act.hoyoverse.com/gt-ui/assets/icons/8de51fb501e617be.svg");
 }
 
-/* 슬라이드 패널 기본 스타일 (화면 전체 높이로 수정) */
+/* 슬라이드 패널 기본 스타일 (화면 전체 높이) */
 .slide-panel {
     position: fixed;
     top: 0;
@@ -1166,6 +1166,14 @@ input[type="radio"]:checked::after {
     overflow-y: auto;
     margin-bottom: 15px;
     border-bottom: 1px solid #333;
+    /* 스크롤바 숨기기 (IE, Edge, Firefox) */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* 스크롤바 숨기기 (Chrome, Safari, Opera) */
+#user-items-scroll-view::-webkit-scrollbar {
+    display: none;
 }
 
 #user-items-list {
