@@ -11,7 +11,7 @@
     <header id="header-section">
         <div style="justify-content: space-between" class="header-controls">
             <div class="header-sub" id="header-left">
-                <div id="profile-pic"></div>
+                <div class="profile-pic" id="profile-pic"></div>
                 <h1 id="nickname"></h1>
                 <span id="player-level"></span>
                 <span id="server-info"></span>
@@ -266,7 +266,19 @@
 <div id="user-list-panel" class="slide-panel">
     <div class="panel-content">
         <h3>저장된 유저 목록</h3>
-        <ul id="user-items"></ul>
+        <div id="user-items-scroll-view">
+            <ul id="user-items-list">
+                <!-- 아이템 예시 -->
+                <li class="user-list-item">
+                    <div class="profile-pic user-avatar-mini" style="background-image: url('https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_uda4md/c5ccd33f6588199b0a4ae7244bdf9dd6.png')"></div>
+                    <span class="user-info">123456789</span>
+                </li>
+            </ul>
+        </div>
+        <div id="user-input-area">
+            <input type="text" id="new-user-uid" placeholder="UID 입력">
+            <button id="add-user-btn" class="button">+</button>
+        </div>
     </div>
     <div id="user-list-label" class="panel-label">
         <span>USER LIST</span>
