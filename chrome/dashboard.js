@@ -244,12 +244,12 @@ function setButtonFunctions(){
     EL.userList.addBtn.addEventListener('click', () => {
         const uid = EL.userList.uidInput.value.trim();
         if (uid) {
-            addUserToList(uid);
+            addUserToList("Test User", uid);
             EL.userList.uidInput.value = '';
         }
     });
 
-    // [추가] 유저 리스트 내 삭제 버튼 이벤트 (위임 방식)
+    // 유저 리스트 내 삭제 버튼 이벤트 (위임 방식)
     EL.userList.itemsList.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove-user-btn')) {
             e.stopPropagation(); // 부모 클릭 이벤트 방지
@@ -262,15 +262,17 @@ function setButtonFunctions(){
 /**
  * 유저 리스트에 아이템 추가 (테스트용)
  */
-function addUserToList(uid, isMe = false) {
+function addUserToList(name, uid, isMe = false) {
     const li = document.createElement('li');
     li.className = 'user-list-item';
-    // isMe가 true면 삭제 버튼을 넣지 않습니다.
     const removeBtnHtml = isMe ? '' : `<span class="remove-user-btn">×</span>`;
     
     li.innerHTML = `
         <div class="profile-pic user-avatar-mini" style="background-image: url('https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_uda4md/c5ccd33f6588199b0a4ae7244bdf9dd6.png')"></div>
-        <span class="user-info">${uid}</span>
+        <div class="user-info-container">
+            <span class="user-name">${name}</span>
+            <span class="user-uid">${uid}</span>
+        </div>
         ${removeBtnHtml}
     `;
     EL.userList.itemsList.appendChild(li);
@@ -345,7 +347,7 @@ function fetchDataAndReload() {
 
             // [추가] "나"를 유저 리스트 처음에 추가 (한 번만)
             if (EL.userList.itemsList.children.length === 0) {
-                addUserToList(`${nickname} (Me)`, true);
+                addUserToList(nickname, roleId, true);
             }
 
             // 3. 에이전트 리스트 가져오기 (목록만)
@@ -769,10 +771,19 @@ function updateCustomModalStatus() {
 
     // 2. 선택된 체크 박스가 4개 이상일 경우, 미선택된 체크 박스 비활성화 및 라벨 스타일 변경
     checkboxes.forEach(cb => {
+        const label = cb.closest('.modal-selection');
         if (!cb.checked) {
             cb.disabled = checkedCount >= 4;
+            if (label) {
+                label.style.opacity = (checkedCount >= 4) ? '0.5' : '1';
+                label.style.cursor = (checkedCount >= 4) ? 'not-allowed' : 'pointer';
+            }
         } else {
             cb.disabled = false;
+            if (label) {
+                label.style.opacity = '1';
+                label.style.cursor = 'pointer';
+            }
         }
     });
 }

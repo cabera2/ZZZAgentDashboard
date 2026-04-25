@@ -1201,6 +1201,27 @@ input[type="radio"]:checked::after {
     background: #333;
 }
 
+/* 유저 정보 텍스트를 담는 부모 컨테이너 */
+.user-info-container {
+    display: flex;
+    flex-direction: column; /* 세로로 쌓기 */
+    gap: 2px; /* 이름과 UID 사이의 미세한 간격 */
+    flex-grow: 1; /* 남은 공간 차지 */
+}
+
+/* 유저명 스타일 (윗줄) */
+.user-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* UID 스타일 (아랫줄) */
+.user-uid {
+    font-size: 12px;
+    color: #888;
+}
+
 .user-avatar-mini {
     width: 40px;
     height: 40px;
@@ -1285,3 +1306,5 @@ input[type="radio"]:checked::after {
 .slide-panel.active {
     right: 0;
 }
+
+/* html 배경색은 사용자 지시가 있을 때만 수정 */
