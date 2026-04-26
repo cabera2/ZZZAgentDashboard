@@ -86,3 +86,58 @@ export function formatGameText(text) {
 
     return `<p class="skill-description" style="margin: 0">${formatted}</p>`;
 }
+export function getRegionByUid(uid){
+    const regionNum = String(uid).slice(0, 2);
+    switch (regionNum) {
+        case "10":
+            return "prod_gf_us"
+        case "13":
+            return "prod_gf_jp"
+        case "15":
+            return "prod_gf_eu"
+        case "17":
+            return "prod_gf_sg"
+        default:
+            return null
+    }
+}
+export async function getNickname(uid){
+    let url = "";
+    const mode = 0;
+    switch (mode) {
+        case 0:
+            url = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/hadal_info_v2?server=${getRegionByUid(uid)}&role_id=${uid}&schedule_type=1&without_v2_detail=true`;
+            console.log(url);
+            return new Promise((resolve, reject) => {
+                chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: url}, (res) => {
+                    if (res.success && res.data.retcode === 0) {
+                        const nickname = res.data.data.nick_name;
+                        const avatar = res.data.data.icon;
+                        console.log("nick success", nickname, avatar);
+                        resolve({nickname, avatar});
+                    }
+                    else{
+                        console.log("nick fail");
+                        resolve(null);
+                    }
+                });
+            })
+        case 1:
+            url = `https://enka.network/api/zzz/uid/${uid}`;
+            console.log(url);
+            return new Promise((resolve, reject) => {
+                chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, (res) => {
+                    console.log("test", res);
+                    if (res.ok) {
+                        console.log("nick success", res);
+                        resolve({nickname, avatar});
+                    }
+                    else{
+                        console.log("nick fail");
+                        resolve(null);
+                    }
+                });
+            })
+    }
+    
+}

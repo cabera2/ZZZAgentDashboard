@@ -13,7 +13,8 @@
     "declarativeNetRequestWithHostAccess"
   ],
   "host_permissions": [
-    "*://*.hoyolab.com/*"
+    "*://*.hoyolab.com/*",
+    "https://enka.network/*"
   ],
   "background": {
     "service_worker": "background.js"

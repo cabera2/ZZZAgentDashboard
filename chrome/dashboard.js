@@ -1,5 +1,5 @@
 ﻿import {UI_SETTING, ZZZ_RESOURCE, ZZZ_FONT, CONTENT_FONT} from './constants.js';
-import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap} from './utils.js';
+import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap, getNickname} from './utils.js';
 
 const EL = {
     loadingImg: document.getElementById('loading-img'),
@@ -241,11 +241,14 @@ function setButtonFunctions(){
     });
 
     // 유저 추가 버튼 테스트 로직
-    EL.userList.addBtn.addEventListener('click', () => {
+    EL.userList.addBtn.addEventListener('click', async () => {
         const uid = EL.userList.uidInput.value.trim();
         if (uid) {
-            addUserToList("Test User", uid);
-            EL.userList.uidInput.value = '';
+            const {nickname, avatar} = await getNickname(uid);
+            if (nickname) {
+                addUserToList(nickname, uid, avatar);
+                EL.userList.uidInput.value = '';
+            }
         }
     });
 
@@ -262,13 +265,14 @@ function setButtonFunctions(){
 /**
  * 유저 리스트에 아이템 추가 (테스트용)
  */
-function addUserToList(name, uid, isMe = false) {
+function addUserToList(name, uid, avatar, isMe = false) {
+    console.log("add Item", name, uid, isMe);
     const li = document.createElement('li');
     li.className = 'user-list-item';
     const removeBtnHtml = isMe ? '' : `<span class="remove-user-btn">×</span>`;
     
     li.innerHTML = `
-        <div class="profile-pic user-avatar-mini" style="background-image: url('https://act-webstatic.hoyoverse.com/darkmatter/nap/prod_gf_cn/item_icon_uda4md/c5ccd33f6588199b0a4ae7244bdf9dd6.png')"></div>
+        <div class="profile-pic user-avatar-mini" style="background-image: url(${avatar})"></div>
         <div class="user-info-container">
             <span class="user-name">${name}</span>
             <span class="user-uid">${uid}</span>
@@ -295,7 +299,7 @@ function closeModal(){
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
 }
-function fetchDataAndReload() {
+async function fetchDataAndReload() {
     EL.headerSection.fetchBtn.disabled = true;
     const selectedLang = EL.langSelect.value;
     chrome.storage.sync.set({ 'selectedLanguage': EL.langSelect.value }, function() {
@@ -313,94 +317,108 @@ function fetchDataAndReload() {
     // 1. UI 다국어 데이터(i18n) 가져오기
     const i18nUrl = `https://fastcdn.hoyoverse.com/mi18n/nap_global/m20240410hy38foxb7k/m20240410hy38foxb7k-${selectedLang}.json`;
 
+    console.log('i18nUrl',i18nUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: i18nUrl}, (i18nRes) => {
         if (i18nRes.success) {
             i18nData = i18nRes.data;
             applyI18nLabels(i18nRes.data);
             setSkillIconMap(JSON.parse(i18nData.role_skill_rich_text_icons));
         }
+    });
 
-        EL.headerSection.resultDiv.innerHTML = `<b>[1/4]</b> 계정 정보 가져오는 중...`;
+    // 2. 계정 기본 정보 가져오기
+    const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
+    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, async (response) => {
+        if (!response || !response.success || response.data.retcode !== 0) {
+            EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
+            EL.headerSection.fetchBtn.disabled = false;
+            return;
+        }
 
-        // 2. 계정 기본 정보 가져오기
-        const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
-        chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, (response) => {
-            if (!response || !response.success || response.data.retcode !== 0) {
-                EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
-                EL.headerSection.fetchBtn.disabled = false;
-                return;
-            }
+        const zzzGame = response.data.data.list.find(game => game.game_id === 8);
+        if (!zzzGame) {
+            EL.headerSection.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+            EL.headerSection.fetchBtn.disabled = false;
+            return;
+        }
+        console.log("Fetched User Data5:", zzzGame);
 
-            const zzzGame = response.data.data.list.find(game => game.game_id === 8);
-            if (!zzzGame) {
-                EL.headerSection.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
-                EL.headerSection.fetchBtn.disabled = false;
-                return;
-            }
-            console.log("Fetched User Data5:", zzzGame);
-
-            const {game_role_id: roleId, region, nickname, region_name} = zzzGame;
-            currentUserInfo.uid = String(roleId);    
-            currentUserInfo.region = region;
-
-            EL.headerSection.resultDiv.innerHTML = `✅ <b>${nickname}</b>님. <br><b>[2/4]</b> 목록 가져오는 중...`;
-
+        const {game_role_id: roleId, region} = zzzGame;
+        currentUserInfo.uid = String(roleId);
+        currentUserInfo.region = region;
+        
+        const {nickname, avatar} = await getNickname(currentUserInfo.uid);
+        
+        if(nickname) {
+            EL.headerSection.nickname.innerText = nickname;
+            EL.headerSection.profilePic.style.backgroundImage = `url(${avatar})`;
             // [추가] "나"를 유저 리스트 처음에 추가 (한 번만)
             if (EL.userList.itemsList.children.length === 0) {
-                addUserToList(nickname, roleId, true);
+                addUserToList(nickname, roleId, avatar,true);
             }
 
-            // 3. 에이전트 리스트 가져오기 (목록만)
-            const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${roleId}&server=${region}&lang=${selectedLang}`;
-
-            chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
-                if (!basicRes.success || basicRes.data.retcode !== 0) {
-                    EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
-                    EL.headerSection.fetchBtn.disabled = false;
-                    return;
-                }
-
-                globalAgents = basicRes.data.data.avatar_list;
-                console.log("Fetched Agents List:", globalAgents);
-
-                if (globalAgents.length > 0) {
-                    renderAgentNav(globalAgents);
-                    currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
-                    fetchAgentDetail(currentAgentIndex);
-                } else {
-                    EL.headerSection.resultDiv.innerHTML = `❌ 로드할 에이전트가 없습니다.`;
-                    EL.headerSection.fetchBtn.disabled = false;
-                }
-            });
-            
-            //프로필
-            const IndexUrl = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${roleId}&lang=${selectedLang}`
-            chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: IndexUrl}, (res) => {
-                if (res.success && res.data.retcode === 0) {
-                    const profile = res.data.data;
-                    console.log("profile:", res.data.data);
-                    EL.headerSection.nickname.innerText = nickname;
-                    EL.headerSection.playerLevel.innerText = `Lv. ${zzzGame.level}`;
-                    const titleMainColor = `${profile.game_data_show.title_main_color || 'FFFFFF'}`
-                    const titleBottomColor = `${profile.game_data_show.title_bottom_color || titleMainColor}`
-                    // language=html
-                    const personal_title = `
+            await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+            fetchAgentList(currentUserInfo.uid, currentUserInfo.region);
+        }
+    });
+}
+async function fetchIndex(uid, region){
+    const selectedLang = EL.langSelect.value;
+    EL.headerSection.resultDiv.innerHTML = `Fetching Profile...`;
+    const IndexUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${uid}&lang=${selectedLang}`
+    console.log("index url:", IndexUrl);
+    return new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: IndexUrl}, (res) => {
+            if (res.success && res.data.retcode === 0) {
+                const profile = res.data.data;
+                EL.headerSection.playerLevel.innerText = `${profile.stats.world_level_name}`;
+                const titleMainColor = `${profile.game_data_show.title_main_color || 'FFFFFF'}`
+                const titleBottomColor = `${profile.game_data_show.title_bottom_color || titleMainColor}`
+                // language=html
+                const personal_title = `
                         <span style="
                         background: linear-gradient(to bottom, #${titleMainColor}, #${titleBottomColor});
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;">${profile.game_data_show.personal_title}</span>
                     `
-                    EL.headerSection.serverInfo.innerHTML = `${personal_title} / ${region_name} / UID: ${roleId}`;
-                    EL.headerSection.profilePic.style.backgroundImage = `url(${profile.cur_head_icon_url})`;
-                }
-            });
+                EL.headerSection.serverInfo.innerHTML = `${personal_title} / UID: ${currentUserInfo.uid}`;
+                resolve(true);
+            }
+            else{
+                EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${res.data?.message}`;
+                resolve(false);
+            }
         });
+    })
+}
+function fetchAgentList(uid, region){
+    const selectedLang = EL.langSelect.value;
+    const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${uid}&server=${region}&lang=${selectedLang}`;
+    console.log("basic url:", basicUrl);
+    chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
+        if (!basicRes.success || basicRes.data.retcode !== 0) {
+            EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+            EL.headerSection.fetchBtn.disabled = false;
+            return;
+        }
+
+        globalAgents = basicRes.data.data.avatar_list;
+        console.log("Fetched Agents List:", globalAgents);
+
+        if (globalAgents.length > 0) {
+            renderAgentNav(globalAgents);
+            currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
+            fetchAgentDetail(currentAgentIndex);
+        } else {
+            EL.headerSection.resultDiv.innerHTML = `❌ 로드할 에이전트가 없습니다.`;
+            EL.headerSection.fetchBtn.disabled = false;
+        }
     });
 }
 /**
  * 캐릭터 상세 정보 개별 로딩
  */
-async function fetchAgentDetail(index) {
+function fetchAgentDetail(index) {
     if (index < 0 || !globalAgents[index]) return;
 
     const agent = globalAgents[index];
@@ -410,6 +428,7 @@ async function fetchAgentDetail(index) {
     EL.headerSection.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
 
     const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${currentUserInfo.uid}&server=${currentUserInfo.region}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
+    console.log("detail url:", detailUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
         if (res.success && res.data.retcode === 0) {
             currentAgentFullData= res.data.data;

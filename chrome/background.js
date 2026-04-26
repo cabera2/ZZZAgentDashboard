@@ -58,7 +58,7 @@ chrome.runtime.onInstalled.addListener(updateNetRequestRules);
 chrome.runtime.onStartup.addListener(updateNetRequestRules);
 
 // 4. 대시보드 페이지로부터의 요청을 받아 호요버스 API와 통신합니다.
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {    
     if (message.type === 'FETCH_HOYOLAB') {
         (async () => {
             try {
@@ -86,6 +86,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const response = await fetch(targetUrl, fetchOptions);
                 const data = await response.json();
                 sendResponse({success: true, data, ltuid});
+            } catch (err) {
+                sendResponse({success: false, error: err.message});
+            }
+        })();
+        return true;
+    }
+    if(message.type === 'FETCH_ENKA'){
+        (async () => {
+            try {
+                const response = await fetch(message.url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'User-Agent': 'ZZZAgentDashboard/1.0'
+                    }
+                });
+                const data = await response.json();
+                sendResponse({success: true, data});
             } catch (err) {
                 sendResponse({success: false, error: err.message});
             }
