@@ -347,20 +347,47 @@ async function fetchDataAndReload() {
         currentUserInfo.uid = String(roleId);
         currentUserInfo.region = region;
         
-        const {nickname, avatar} = await getNickname(currentUserInfo.uid);
+        //const {nickname, avatar} = await getNickname(currentUserInfo.uid);
         
+        const {nickname, level, region2} = await fetchEnka(roleId)
         if(nickname) {
-            EL.headerSection.nickname.innerText = nickname;
-            EL.headerSection.profilePic.style.backgroundImage = `url(${avatar})`;
-            // [추가] "나"를 유저 리스트 처음에 추가 (한 번만)
-            if (EL.userList.itemsList.children.length === 0) {
-                addUserToList(nickname, roleId, avatar,true);
+            const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+            if(indexData) {
+                addUserToList(nickname, roleId, indexData.cur_head_icon_url,true);
             }
-
-            await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
-            fetchAgentList(currentUserInfo.uid, currentUserInfo.region);
         }
+        // if(nickname) {
+        //     EL.headerSection.nickname.innerText = nickname;
+        //     EL.headerSection.profilePic.style.backgroundImage = `url(${avatar})`;
+        //     // [추가] "나"를 유저 리스트 처음에 추가 (한 번만)
+        //     if (EL.userList.itemsList.children.length === 0) {
+        //         addUserToList(nickname, roleId, avatar,true);
+        //     }
+        //
+        //     await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+        //     fetchAgentList(currentUserInfo.uid, currentUserInfo.region);
+        // }
     });
+}
+async function fetchEnka(uid){
+    const url = `https://enka.network/api/zzz/uid/${uid}`;
+    console.log(url);
+    return new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, (res) => {
+            console.log("test", res);
+            if (res) {
+                const nickname = res.data.PlayerInfo.SocialDetail.ProfileDetail.Nickname;
+                const level = res.data.PlayerInfo.SocialDetail.ProfileDetail.Level;
+                const region = res.data.region;
+                console.log("nick success", nickname);
+                resolve({nickname, level, region});
+            }
+            else{
+                console.log("nick fail");
+                resolve(null);
+            }
+        });
+    })
 }
 async function fetchIndex(uid, region){
     const selectedLang = EL.langSelect.value;
@@ -382,7 +409,7 @@ async function fetchIndex(uid, region){
                         -webkit-text-fill-color: transparent;">${profile.game_data_show.personal_title}</span>
                     `
                 EL.headerSection.serverInfo.innerHTML = `${personal_title} / UID: ${currentUserInfo.uid}`;
-                resolve(true);
+                resolve(res.data.data);
             }
             else{
                 EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${res.data?.message}`;

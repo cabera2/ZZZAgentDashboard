@@ -58,56 +58,50 @@ chrome.runtime.onInstalled.addListener(updateNetRequestRules);
 chrome.runtime.onStartup.addListener(updateNetRequestRules);
 
 // 4. 대시보드 페이지로부터의 요청을 받아 호요버스 API와 통신합니다.
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {    
-    if (message.type === 'FETCH_HOYOLAB') {
-        (async () => {
-            try {
-                const {cookieString, ltuid} = await getHoyoverseData();
-
-                let targetUrl = message.url;
-                if (targetUrl.includes('getGameRecordCard') && !targetUrl.includes('uid=') && ltuid) {
-                    targetUrl += `?uid=${ltuid}`;
-                }
-
-                const headers = {
-                    'Content-Type': 'application/json', // 명시적으로 지정
-                    'Cookie': cookieString,             // 인증을 위해 필수
-                    'x-rpc-client_type': '5',           // 호요랩 API 구분자
-                    'Origin': 'https://act.hoyolab.com',
-                    'Referer': 'https://act.hoyolab.com/'
-                };
-
-                const fetchOptions = {
-                    method: message.method || 'GET',
-                    headers: headers,
-                    body: message.body ? JSON.stringify(message.body) : null
-                };
-
-                const response = await fetch(targetUrl, fetchOptions);
-                const data = await response.json();
-                sendResponse({success: true, data, ltuid});
-            } catch (err) {
-                sendResponse({success: false, error: err.message});
-            }
-        })();
-        return true;
-    }
-    if(message.type === 'FETCH_ENKA'){
-        (async () => {
-            try {
-                const response = await fetch(message.url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'User-Agent': 'ZZZAgentDashboard/1.0'
-                    }
-                });
-                const data = await response.json();
-                sendResponse({success: true, data});
-            } catch (err) {
-                sendResponse({success: false, error: err.message});
-            }
-        })();
-        return true;
-    }
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    handleMessage(message, sender, sendResponse);
+    return true;
 });
+async function handleMessage(message, sender, sendResponse) {
+    try {
+        if (message.type === 'FETCH_HOYOLAB') {
+            const {cookieString, ltuid} = await getHoyoverseData();
+
+            let targetUrl = message.url;
+            if (targetUrl.includes('getGameRecordCard') && !targetUrl.includes('uid=') && ltuid) {
+                targetUrl += `?uid=${ltuid}`;
+            }
+
+            const headers = {
+                'Content-Type': 'application/json', // 명시적으로 지정
+                'Cookie': cookieString,             // 인증을 위해 필수
+                'x-rpc-client_type': '5',           // 호요랩 API 구분자
+                'Origin': 'https://act.hoyolab.com',
+                'Referer': 'https://act.hoyolab.com/'
+            };
+
+            const fetchOptions = {
+                method: message.method || 'GET',
+                headers: headers,
+                body: message.body ? JSON.stringify(message.body) : null
+            };
+
+            const response = await fetch(targetUrl, fetchOptions);
+            const data = await response.json();
+            sendResponse({success: true, data, ltuid});
+        }
+        else if(message.type === 'FETCH_ENKA'){
+            const response = await fetch(message.url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'User-Agent': 'ZZZAgentDashboard/1.0'
+                }
+            });
+            const data = await response.json();
+            sendResponse({success: true, data});
+        }
+    } catch (err) {
+        sendResponse({success: false, error: err.message});
+    }
+}

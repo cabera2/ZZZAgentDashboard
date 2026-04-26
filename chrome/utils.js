@@ -103,7 +103,7 @@ export function getRegionByUid(uid){
 }
 export async function getNickname(uid){
     let url = "";
-    const mode = 0;
+    const mode = 1;
     switch (mode) {
         case 0:
             url = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/hadal_info_v2?server=${getRegionByUid(uid)}&role_id=${uid}&schedule_type=1&without_v2_detail=true`;
@@ -128,8 +128,9 @@ export async function getNickname(uid){
             return new Promise((resolve, reject) => {
                 chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, (res) => {
                     console.log("test", res);
-                    if (res.ok) {
-                        console.log("nick success", res);
+                    if (res) {
+                        const nickname = res.data.PlayerInfo.SocialDetail.ProfileDetail.Nickname;
+                        console.log("nick success", nickname);
                         resolve({nickname, avatar});
                     }
                     else{
@@ -138,6 +139,5 @@ export async function getNickname(uid){
                     }
                 });
             })
-    }
-    
+    }    
 }
