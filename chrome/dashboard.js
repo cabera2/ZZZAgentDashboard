@@ -121,7 +121,8 @@ let globalAgents = [];
 let currentAgentFullData = null;
 let currentAgentDetail = null;
 let currentAgentIndex = -1;
-let currentUserInfo = {}; // 전역 사용자 정보 추가
+let myUidList = [];
+let activeUserUid; // 전역 사용자 정보 추가
 let userListData = {};
 loadSaveData(()=>{
     fetchDataAndReload();});
@@ -279,6 +280,7 @@ function setButtonFunctions(){
             } else {
                 const indexData = await fetchIndex(uid);
                 if (indexData) {
+                    currentAgentIndex = -1;
                     const enkaData = await fetchEnka(uid);
                     await renderUser(uid, enkaData, indexData);
                     const avatarElement = li.querySelector('.profile-pic.user-avatar-mini');
@@ -372,9 +374,9 @@ async function fetchDataAndReload() {
         }
         console.log("Fetched User Data5:", zzzGame);
 
-        const {game_role_id: roleId, region} = zzzGame;
-        currentUserInfo.uid = String(roleId);
-        currentUserInfo.region = region;
+        const {nickname, level, region_name, game_role_id:roleId} = zzzGame;
+        // activeUserUid.uid = String(roleId);
+        // activeUserUid.region = region;
 
         //유저 목록 로드
         //초기화
@@ -383,11 +385,15 @@ async function fetchDataAndReload() {
         userListData = {};
 
         //자신
-        const indexData = await fetchIndex(currentUserInfo.uid);
+        const indexData = await fetchIndex(roleId);
         if(indexData) {
-            const enkaData = await fetchEnka(roleId)
-            addUserToList(enkaData.nickname, currentUserInfo.uid,  indexData.cur_head_icon_url, true);
-            await renderUser(currentUserInfo.uid, enkaData, indexData);
+            const enkaData = {
+                nickname: nickname,
+                level: level,
+                regionName: region_name
+            }
+            addUserToList(enkaData.nickname, roleId,  indexData.cur_head_icon_url, true);
+            await renderUser(roleId, enkaData, indexData);
         }
         //나머지
         chrome.storage.sync.get('userListData', (data) => {
@@ -446,6 +452,7 @@ async function fetchIndex(uid){
     })
 }
 async function renderUser(uid, enkaData, indexData){
+    activeUserUid = uid;
     EL.headerSection.nickname.innerText = enkaData.nickname;
     //EL.headerSection.playerLevel.innerText = `${profile.stats.world_level_name}`;
     EL.headerSection.playerLevel.innerText = `Lv. ${enkaData.level}`;
@@ -458,7 +465,7 @@ async function renderUser(uid, enkaData, indexData){
             background: linear-gradient(to bottom, #${titleMainColor}, #${titleBottomColor});
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;">${indexData.game_data_show.personal_title}</span>`
-    EL.headerSection.serverInfo.innerHTML = `${personal_title} / ${enkaData.regionName} / UID: ${currentUserInfo.uid}`;
+    EL.headerSection.serverInfo.innerHTML = `${personal_title} / ${enkaData.regionName} / UID: ${uid}`;
     EL.headerSection.profilePic.style.backgroundImage = `url(${indexData.cur_head_icon_url})`;
     fetchAgentList(uid);
 }
@@ -499,7 +506,7 @@ function fetchAgentDetail(index) {
     EL.headerSection.fetchBtn.disabled = true;
     EL.headerSection.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
 
-    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${currentUserInfo.uid}&server=${currentUserInfo.region}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
+    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${activeUserUid}&server=${getRegionByUid(activeUserUid)}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
     console.log("detail url:", detailUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
         if (res.success && res.data.retcode === 0) {
@@ -882,8 +889,8 @@ function updateCustomModalStatus() {
 function changePlanRequest(planType){
     const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
     let body = {
-        uid: String(currentUserInfo.uid), // 확실하게 문자열로 변환
-        region: currentUserInfo.region,
+        uid: String(activeUserUid), // 확실하게 문자열로 변환
+        region: getRegionByUid(activeUserUid),
         avatar_id: Number(currentAgentDetail.id), // 확실하게 숫자로 변환
         type: Number(planType) // 확실하게 숫자로 변환
     };
@@ -908,7 +915,7 @@ function changePlanRequest(planType){
         url: url,
         body: body,
         lang: EL.langSelect.value,
-        region: currentUserInfo.region
+        region: getRegionByUid(activeUserUid)
     }, (res) => {
         if (res && res.success && res.data.retcode === 0) {
             console.log("✅ 서버 저장 성공:", res.data);
