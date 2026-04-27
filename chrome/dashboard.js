@@ -1,5 +1,12 @@
 ﻿import {UI_SETTING, ZZZ_RESOURCE, ZZZ_FONT, CONTENT_FONT} from './constants.js';
-import {getDiskScoreGradient, getStatIconHtml, formatGameText, setSkillIconMap, getNickname} from './utils.js';
+import {
+    getDiskScoreGradient,
+    getStatIconHtml,
+    formatGameText,
+    setSkillIconMap,
+    getNickname,
+    getRegionByUid
+} from './utils.js';
 
 const EL = {
     loadingImg: document.getElementById('loading-img'),
@@ -244,9 +251,10 @@ function setButtonFunctions(){
     EL.userList.addBtn.addEventListener('click', async () => {
         const uid = EL.userList.uidInput.value.trim();
         if (uid) {
-            const {nickname, avatar} = await getNickname(uid);
-            if (nickname) {
-                addUserToList(nickname, uid, avatar);
+            const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+            if(indexData) {
+                const enkaData = await fetchEnka(roleId)
+                addUserToList(enkaData.nickname, uid,  indexData.cur_head_icon_url);
                 EL.userList.uidInput.value = '';
             }
         }
@@ -347,48 +355,42 @@ async function fetchDataAndReload() {
         currentUserInfo.uid = String(roleId);
         currentUserInfo.region = region;
         
-        //const {nickname, avatar} = await getNickname(currentUserInfo.uid);
-        
-        const {nickname, level, region2} = await fetchEnka(roleId)
-        if(nickname) {
-            const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
-            if(indexData) {
-                addUserToList(nickname, roleId, indexData.cur_head_icon_url,true);
-            }
+        const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+        if(indexData) {
+            const enkaData = await fetchEnka(roleId)
+            addUserToList(enkaData.nickname, currentUserInfo.uid,  indexData.cur_head_icon_url, true);
+            await renderUser(currentUserInfo.uid, enkaData, indexData);
         }
-        // if(nickname) {
-        //     EL.headerSection.nickname.innerText = nickname;
-        //     EL.headerSection.profilePic.style.backgroundImage = `url(${avatar})`;
-        //     // [추가] "나"를 유저 리스트 처음에 추가 (한 번만)
-        //     if (EL.userList.itemsList.children.length === 0) {
-        //         addUserToList(nickname, roleId, avatar,true);
-        //     }
-        //
-        //     await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
-        //     fetchAgentList(currentUserInfo.uid, currentUserInfo.region);
-        // }
     });
 }
 async function fetchEnka(uid){
     const url = `https://enka.network/api/zzz/uid/${uid}`;
     console.log(url);
+    let nickname = uid;
+    let level = "?";
+    let regionName = getRegionByUid(uid);
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, (res) => {
             console.log("test", res);
             if (res) {
-                const nickname = res.data.PlayerInfo.SocialDetail.ProfileDetail.Nickname;
-                const level = res.data.PlayerInfo.SocialDetail.ProfileDetail.Level;
-                const region = res.data.region;
+                nickname = res.data.PlayerInfo.SocialDetail.ProfileDetail.Nickname;
+                level = res.data.PlayerInfo.SocialDetail.ProfileDetail.Level;
+                regionName = res.data.region;
                 console.log("nick success", nickname);
-                resolve({nickname, level, region});
             }
             else{
                 console.log("nick fail");
-                resolve(null);
             }
+            resolve({
+                nickname: nickname,
+                level: level,
+                regionName: regionName
+            });
         });
+        return true;
     })
 }
+
 async function fetchIndex(uid, region){
     const selectedLang = EL.langSelect.value;
     EL.headerSection.resultDiv.innerHTML = `Fetching Profile...`;
@@ -397,28 +399,36 @@ async function fetchIndex(uid, region){
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: IndexUrl}, (res) => {
             if (res.success && res.data.retcode === 0) {
-                const profile = res.data.data;
-                EL.headerSection.playerLevel.innerText = `${profile.stats.world_level_name}`;
-                const titleMainColor = `${profile.game_data_show.title_main_color || 'FFFFFF'}`
-                const titleBottomColor = `${profile.game_data_show.title_bottom_color || titleMainColor}`
-                // language=html
-                const personal_title = `
-                        <span style="
-                        background: linear-gradient(to bottom, #${titleMainColor}, #${titleBottomColor});
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;">${profile.game_data_show.personal_title}</span>
-                    `
-                EL.headerSection.serverInfo.innerHTML = `${personal_title} / UID: ${currentUserInfo.uid}`;
+                console.log("Index Data:", res.data.data);
                 resolve(res.data.data);
             }
             else{
                 EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${res.data?.message}`;
-                resolve(false);
+                resolve(null);
             }
         });
+        return true;
     })
 }
-function fetchAgentList(uid, region){
+async function renderUser(uid, enkaData, indexData){
+    EL.headerSection.nickname.innerText = enkaData.nickname;
+    //EL.headerSection.playerLevel.innerText = `${profile.stats.world_level_name}`;
+    EL.headerSection.playerLevel.innerText = `Lv. ${enkaData.level}`;
+    console.log("renderUser", indexData);
+    const titleMainColor = `${indexData.game_data_show.title_main_color || 'FFFFFF'}`
+    const titleBottomColor = `${indexData.game_data_show.title_bottom_color || titleMainColor}`
+    // language=html
+    const personal_title = `
+        <span style="
+            background: linear-gradient(to bottom, #${titleMainColor}, #${titleBottomColor});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;">${indexData.game_data_show.personal_title}</span>`
+    EL.headerSection.serverInfo.innerHTML = `${personal_title} / ${enkaData.regionName} / UID: ${currentUserInfo.uid}`;
+    EL.headerSection.profilePic.style.backgroundImage = `url(${indexData.cur_head_icon_url})`;
+    fetchAgentList(uid);
+}
+function fetchAgentList(uid){
+    const region = getRegionByUid(uid);
     const selectedLang = EL.langSelect.value;
     const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${uid}&server=${region}&lang=${selectedLang}`;
     console.log("basic url:", basicUrl);
