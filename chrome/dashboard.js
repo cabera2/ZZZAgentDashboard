@@ -252,7 +252,7 @@ function setButtonFunctions(){
     EL.userList.addBtn.addEventListener('click', async () => {
         const uid = EL.userList.uidInput.value.trim();
         if (uid) {
-            const indexData = await fetchIndex(uid, getRegionByUid(uid));
+            const indexData = await fetchIndex(uid);
             if(indexData) {
                 const enkaData = await fetchEnka(uid);
                 userListData[uid] = {
@@ -266,24 +266,32 @@ function setButtonFunctions(){
         }
     });
 
-    // 유저 리스트 내 삭제 버튼 이벤트 (위임 방식)
-    EL.userList.itemsList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-user-btn')) {
+    // 유저 리스트 내 버튼 이벤트 (위임 방식)
+    EL.userList.itemsList.addEventListener('click', async (e) => {
+        const li = e.target.closest('.user-list-item');
+        if(li){
             e.stopPropagation(); // 부모 클릭 이벤트 방지
-            const li = e.target.closest('.user-list-item');
-            if (li){
-                const uid = li.dataset.uid;
+            const uid = li.dataset.uid;
+            if (e.target.classList.contains('remove-user-btn')) {
                 delete userListData[uid];
-                chrome.storage.sync.set({ 'userListData': userListData });
+                chrome.storage.sync.set({'userListData': userListData});
                 li.remove();
-            } 
-        }
+            } else {
+                const indexData = await fetchIndex(uid);
+                if (indexData) {
+                    const enkaData = await fetchEnka(uid);
+                    await renderUser(uid, enkaData, indexData);
+                    const avatarElement = li.querySelector('.profile-pic.user-avatar-mini');
+                    if (avatarElement) {
+                        avatarElement.style.backgroundImage = `url(${indexData.cur_head_icon_url})`;
+                    }
+                }
+            }
+        }        
     });
+    // 유저 리스트 내 유저 버튼 이벤트
+    
 }
-
-/**
- * 유저 리스트에 아이템 추가 (테스트용)
- */
 function addUserToList(nickname, uid, avatar, isMe = false) {
     console.log("add Item", nickname, uid, isMe);
     const li = document.createElement('li');
@@ -351,7 +359,7 @@ async function fetchDataAndReload() {
     const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, async (response) => {
         if (!response || !response.success || response.data.retcode !== 0) {
-            EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${response?.data?.message || "로그인 필요"}`;
+            EL.headerSection.resultDiv.innerHTML = `❌ 실패1: ${response?.data?.message || "로그인 필요"}`;
             EL.headerSection.fetchBtn.disabled = false;
             return;
         }
@@ -375,7 +383,7 @@ async function fetchDataAndReload() {
         userListData = {};
 
         //자신
-        const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+        const indexData = await fetchIndex(currentUserInfo.uid);
         if(indexData) {
             const enkaData = await fetchEnka(roleId)
             addUserToList(enkaData.nickname, currentUserInfo.uid,  indexData.cur_head_icon_url, true);
@@ -417,7 +425,8 @@ async function fetchEnka(uid){
     })
 }
 
-async function fetchIndex(uid, region){
+async function fetchIndex(uid){
+    const region = getRegionByUid(uid);
     const selectedLang = EL.langSelect.value;
     EL.headerSection.resultDiv.innerHTML = `Fetching Profile...`;
     const IndexUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${uid}&lang=${selectedLang}`
@@ -429,7 +438,7 @@ async function fetchIndex(uid, region){
                 resolve(res.data.data);
             }
             else{
-                EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${res.data?.message}`;
+                EL.headerSection.resultDiv.innerHTML = `❌ 실패2: ${res.data?.message}`;
                 resolve(null);
             }
         });
@@ -460,7 +469,7 @@ function fetchAgentList(uid){
     console.log("basic url:", basicUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
         if (!basicRes.success || basicRes.data.retcode !== 0) {
-            EL.headerSection.resultDiv.innerHTML = `❌ 실패: ${basicRes.data?.message}`;
+            EL.headerSection.resultDiv.innerHTML = `❌ 실패3: ${basicRes.data?.message}`;
             EL.headerSection.fetchBtn.disabled = false;
             return;
         }
