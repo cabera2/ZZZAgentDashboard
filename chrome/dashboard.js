@@ -122,6 +122,7 @@ let currentAgentFullData = null;
 let currentAgentDetail = null;
 let currentAgentIndex = -1;
 let currentUserInfo = {}; // 전역 사용자 정보 추가
+let userListData = {};
 loadSaveData(()=>{
     fetchDataAndReload();});
 setNavScrollEvent();
@@ -251,9 +252,14 @@ function setButtonFunctions(){
     EL.userList.addBtn.addEventListener('click', async () => {
         const uid = EL.userList.uidInput.value.trim();
         if (uid) {
-            const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
+            const indexData = await fetchIndex(uid, getRegionByUid(uid));
             if(indexData) {
-                const enkaData = await fetchEnka(roleId)
+                const enkaData = await fetchEnka(uid);
+                userListData[uid] = {
+                    name: enkaData.nickname,
+                    avatar: indexData.cur_head_icon_url
+                };
+                chrome.storage.sync.set({ 'userListData': userListData });
                 addUserToList(enkaData.nickname, uid,  indexData.cur_head_icon_url);
                 EL.userList.uidInput.value = '';
             }
@@ -265,7 +271,12 @@ function setButtonFunctions(){
         if (e.target.classList.contains('remove-user-btn')) {
             e.stopPropagation(); // 부모 클릭 이벤트 방지
             const li = e.target.closest('.user-list-item');
-            if (li) li.remove();
+            if (li){
+                const uid = li.dataset.uid;
+                delete userListData[uid];
+                chrome.storage.sync.set({ 'userListData': userListData });
+                li.remove();
+            } 
         }
     });
 }
@@ -273,16 +284,16 @@ function setButtonFunctions(){
 /**
  * 유저 리스트에 아이템 추가 (테스트용)
  */
-function addUserToList(name, uid, avatar, isMe = false) {
-    console.log("add Item", name, uid, isMe);
+function addUserToList(nickname, uid, avatar, isMe = false) {
+    console.log("add Item", nickname, uid, isMe);
     const li = document.createElement('li');
     li.className = 'user-list-item';
+    li.dataset.uid = uid;
     const removeBtnHtml = isMe ? '' : `<span class="remove-user-btn">×</span>`;
-    
     li.innerHTML = `
         <div class="profile-pic user-avatar-mini" style="background-image: url(${avatar})"></div>
         <div class="user-info-container">
-            <span class="user-name">${name}</span>
+            <span class="user-name">${nickname}</span>
             <span class="user-uid">${uid}</span>
         </div>
         ${removeBtnHtml}
@@ -309,11 +320,13 @@ function closeModal(){
 }
 async function fetchDataAndReload() {
     EL.headerSection.fetchBtn.disabled = true;
+    
+    // 선택된 언어 불러오기
     const selectedLang = EL.langSelect.value;
     chrome.storage.sync.set({ 'selectedLanguage': EL.langSelect.value }, function() {
         console.log('Language saved: ' + EL.langSelect.value);
     });
-
+    
     // 폰트 준비
     const font = CONTENT_FONT[selectedLang] || CONTENT_FONT["default"];
     document.body.style.fontFamily = font;
@@ -354,13 +367,27 @@ async function fetchDataAndReload() {
         const {game_role_id: roleId, region} = zzzGame;
         currentUserInfo.uid = String(roleId);
         currentUserInfo.region = region;
-        
+
+        //유저 목록 로드
+        //초기화
+        EL.userList.itemsList.innerHTML = '';
+        EL.userList.uidInput.value = '';
+        userListData = {};
+
+        //자신
         const indexData = await fetchIndex(currentUserInfo.uid, currentUserInfo.region);
         if(indexData) {
             const enkaData = await fetchEnka(roleId)
             addUserToList(enkaData.nickname, currentUserInfo.uid,  indexData.cur_head_icon_url, true);
             await renderUser(currentUserInfo.uid, enkaData, indexData);
         }
+        //나머지
+        chrome.storage.sync.get('userListData', (data) => {
+            userListData = data.userListData || {};
+            Object.entries(userListData).forEach(([uid, user]) => {
+                addUserToList(user.name, uid, user.avatar);
+            })
+        });
     });
 }
 async function fetchEnka(uid){
@@ -371,7 +398,6 @@ async function fetchEnka(uid){
     let regionName = getRegionByUid(uid);
     return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, (res) => {
-            console.log("test", res);
             if (res) {
                 nickname = res.data.PlayerInfo.SocialDetail.ProfileDetail.Nickname;
                 level = res.data.PlayerInfo.SocialDetail.ProfileDetail.Level;
@@ -623,9 +649,9 @@ function openClothes(){
 function openWeaponDetail(){
     const header = i18nData.roles_detail_weapon_popup_title ?? 'W-Engine Detail'
     const weapon = currentAgentDetail.weapon;
-    const title = weapon.talent_title;
+    //const title = weapon.talent_title;
     const content = weapon.talent_content;
-    const weaponTest = `<h3>${title}</h3><span>${content}</span>`;        
+    //const weaponTest = `<h3>${title}</h3><span>${content}</span>`;        
     const wikiUrl = currentAgentFullData.weapon_wiki[weapon.id];
     openModal(header, content, wikiUrl);
 }
