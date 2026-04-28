@@ -282,6 +282,7 @@ function setButtonFunctions(){
                 if (indexData) {
                     currentAgentIndex = -1;
                     const enkaData = await fetchEnka(uid);
+                    document.body.dataset.viewMode = li.dataset.isMe === 'true' ? 'me' : 'others';
                     await renderUser(uid, enkaData, indexData);
                     const avatarElement = li.querySelector('.profile-pic.user-avatar-mini');
                     if (avatarElement) {
@@ -299,6 +300,7 @@ function addUserToList(nickname, uid, avatar, isMe = false) {
     const li = document.createElement('li');
     li.className = 'user-list-item';
     li.dataset.uid = uid;
+    li.dataset.isMe = isMe;
     const removeBtnHtml = isMe ? '' : `<span class="remove-user-btn">×</span>`;
     li.innerHTML = `
         <div class="profile-pic user-avatar-mini" style="background-image: url(${avatar})"></div>
@@ -347,7 +349,8 @@ async function fetchDataAndReload() {
 
     // 1. UI 다국어 데이터(i18n) 가져오기
     const i18nUrl = `https://fastcdn.hoyoverse.com/mi18n/nap_global/m20240410hy38foxb7k/m20240410hy38foxb7k-${selectedLang}.json`;
-
+    EL.headerSection.resultDiv.innerHTML = `Fetching i18n...`;
+    
     console.log('i18nUrl',i18nUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: i18nUrl}, (i18nRes) => {
         if (i18nRes.success) {
@@ -355,20 +358,24 @@ async function fetchDataAndReload() {
             applyI18nLabels(i18nRes.data);
             setSkillIconMap(JSON.parse(i18nData.role_skill_rich_text_icons));
         }
+        else {
+            EL.headerSection.resultDiv.innerHTML = `❌ Fetching i18n Failed: ${i18nRes.data?.message}`
+        }
     });
 
     // 2. 계정 기본 정보 가져오기
     const accountUrl = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard';
+    EL.headerSection.resultDiv.innerHTML = `Fetching GameRecordCard...`;
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: accountUrl}, async (response) => {
         if (!response || !response.success || response.data.retcode !== 0) {
-            EL.headerSection.resultDiv.innerHTML = `❌ 실패1: ${response?.data?.message || "로그인 필요"}`;
+            EL.headerSection.resultDiv.innerHTML = `❌ Fetching GameRecordCard Failed: ${response?.data?.message || "Need Hoyolab Login"}`;
             EL.headerSection.fetchBtn.disabled = false;
             return;
         }
 
         const zzzGame = response.data.data.list.find(game => game.game_id === 8);
         if (!zzzGame) {
-            EL.headerSection.resultDiv.innerHTML = "❌ ZZZ 프로필을 찾을 수 없습니다.";
+            EL.headerSection.resultDiv.innerHTML = "❌ ZZZ Account Not Found";
             EL.headerSection.fetchBtn.disabled = false;
             return;
         }
@@ -393,6 +400,7 @@ async function fetchDataAndReload() {
                 regionName: region_name
             }
             addUserToList(enkaData.nickname, roleId,  indexData.cur_head_icon_url, true);
+            document.body.dataset.viewMode = 'me';
             await renderUser(roleId, enkaData, indexData);
         }
         //나머지
@@ -406,7 +414,8 @@ async function fetchDataAndReload() {
 }
 async function fetchEnka(uid){
     const url = `https://enka.network/api/zzz/uid/${uid}`;
-    console.log(url);
+    EL.headerSection.resultDiv.innerHTML = `Fetching Enka...`;
+    console.log('enka url:', url);
     let nickname = uid;
     let level = "?";
     let regionName = getRegionByUid(uid);
@@ -419,7 +428,7 @@ async function fetchEnka(uid){
                 console.log("nick success", nickname);
             }
             else{
-                console.log("nick fail");
+                EL.headerSection.resultDiv.innerHTML = `❌ Fetching Enka Failed: ${res.data?.message}`;
             }
             resolve({
                 nickname: nickname,
@@ -434,7 +443,7 @@ async function fetchEnka(uid){
 async function fetchIndex(uid){
     const region = getRegionByUid(uid);
     const selectedLang = EL.langSelect.value;
-    EL.headerSection.resultDiv.innerHTML = `Fetching Profile...`;
+    EL.headerSection.resultDiv.innerHTML = `Fetching Index...`;
     const IndexUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${uid}&lang=${selectedLang}`
     console.log("index url:", IndexUrl);
     return new Promise((resolve, reject) => {
@@ -444,7 +453,7 @@ async function fetchIndex(uid){
                 resolve(res.data.data);
             }
             else{
-                EL.headerSection.resultDiv.innerHTML = `❌ 실패2: ${res.data?.message}`;
+                EL.headerSection.resultDiv.innerHTML = `❌ Fetching Index Failed: ${res.data?.message}`;
                 resolve(null);
             }
         });
@@ -452,6 +461,8 @@ async function fetchIndex(uid){
     })
 }
 async function renderUser(uid, enkaData, indexData){
+    EL.loadingImg.classList.remove('hidden');
+    EL.mainContent.classList.add('hidden');
     activeUserUid = uid;
     EL.headerSection.nickname.innerText = enkaData.nickname;
     //EL.headerSection.playerLevel.innerText = `${profile.stats.world_level_name}`;
@@ -472,11 +483,12 @@ async function renderUser(uid, enkaData, indexData){
 function fetchAgentList(uid){
     const region = getRegionByUid(uid);
     const selectedLang = EL.langSelect.value;
+    EL.headerSection.resultDiv.innerHTML = `Fetching Basic...`;
     const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${uid}&server=${region}&lang=${selectedLang}`;
     console.log("basic url:", basicUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: basicUrl}, async (basicRes) => {
         if (!basicRes.success || basicRes.data.retcode !== 0) {
-            EL.headerSection.resultDiv.innerHTML = `❌ 실패3: ${basicRes.data?.message}`;
+            EL.headerSection.resultDiv.innerHTML = `❌ Fetching Basic Failed: ${basicRes.data?.message}`;
             EL.headerSection.fetchBtn.disabled = false;
             return;
         }
@@ -489,7 +501,7 @@ function fetchAgentList(uid){
             currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
             fetchAgentDetail(currentAgentIndex);
         } else {
-            EL.headerSection.resultDiv.innerHTML = `❌ 로드할 에이전트가 없습니다.`;
+            EL.headerSection.resultDiv.innerHTML = `❌ No Agent to load`;
             EL.headerSection.fetchBtn.disabled = false;
         }
     });
@@ -504,7 +516,7 @@ function fetchAgentDetail(index) {
     const selectedLang = EL.langSelect.value;
 
     EL.headerSection.fetchBtn.disabled = true;
-    EL.headerSection.resultDiv.innerHTML = `<b>[3/4]</b> ${agent.name_mi18n} 데이터 로드 중...`;
+    EL.headerSection.resultDiv.innerHTML = `Fetching Detail of ${agent.name_mi18n}...`;
 
     const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${activeUserUid}&server=${getRegionByUid(activeUserUid)}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
     console.log("detail url:", detailUrl);
@@ -516,10 +528,10 @@ function fetchAgentDetail(index) {
             renderAgentDetail(currentAgentDetail);
             EL.headerSection.resultDiv.innerHTML = `Load Success`;
         } else {
-            EL.headerSection.resultDiv.innerHTML = `Load Failed: ${res.data?.message || "no response"}`;
+            EL.headerSection.resultDiv.innerHTML = `❌ Fetching Detail Failed: ${res.data?.message || "no response"}`;
         }
         EL.headerSection.fetchBtn.disabled = false;
-        EL.loadingImg.style.display = 'none';
+        EL.loadingImg.classList.add('hidden');
     });
 }
 function applyI18nLabels(i18nData) {
@@ -1205,6 +1217,7 @@ function renderDisks(equipArray) {
 }
 function updateDiskScore(planInfo) {
     const scoreContainer = EL.discSection.scoreContainer;
+    const isMe = document.body.dataset.viewMode === 'me';
     if (!scoreContainer) return;
 
     // 데이터가 없거나 유효성 정보가 없으면 숨김
@@ -1216,7 +1229,8 @@ function updateDiskScore(planInfo) {
     scoreContainer.classList.remove('hidden');
 
     const score = planInfo.valid_property_cnt;
-    const rank = planInfo.equip_rating || 'ER_Default';
+    const rank = (isMe && planInfo.equip_rating) || 'ER_Default';
+    console.log('Test:' + rank)
 
     // 다국어 제목 처리
     let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";

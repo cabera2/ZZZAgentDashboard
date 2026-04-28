@@ -37,6 +37,14 @@
     --zzz-font: sans-serif;
     --common-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
+
+[data-view-mode="others"] .hide-on-others {
+    display: none !important;
+}
+[data-view-mode="me"] .hide-on-me {
+    display: none !important;
+}
+
 a{
     text-decoration: none;
     color: inherit;
