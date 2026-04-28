@@ -251,6 +251,7 @@ body {
 }
 #player-level{
     color: black;
+    font-weight: bold;
     background-color: #FFDE00;
     padding: 4px;
     border-radius: 4px
@@ -1219,6 +1220,7 @@ input[type="radio"]:checked::after {
 
 /* 유저명 스타일 (윗줄) */
 .user-name {
+    text-shadow: 1px 1px 1px black, 0 0 4px black;
     font-size: 14px;
     font-weight: bold;
     color: #fff;
@@ -1226,8 +1228,9 @@ input[type="radio"]:checked::after {
 
 /* UID 스타일 (아랫줄) */
 .user-uid {
+    text-shadow: 1px 1px 1px black, 0 0 4px black;
     font-size: 12px;
-    color: #888;
+    color: #eee;
 }
 
 .user-avatar-mini {
@@ -1294,7 +1297,7 @@ input[type="radio"]:checked::after {
 .slide-panel .panel-label {
     position: absolute;
     left: -40px;
-    top: 50%;
+    top: 120px;
     transform: translateY(-50%);
     width: 40px;
     height: 120px;

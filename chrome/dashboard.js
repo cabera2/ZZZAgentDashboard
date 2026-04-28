@@ -258,10 +258,11 @@ function setButtonFunctions(){
                 const enkaData = await fetchEnka(uid);
                 userListData[uid] = {
                     name: enkaData.nickname,
-                    avatar: indexData.cur_head_icon_url
+                    avatar: indexData.cur_head_icon_url,
+                    bg: indexData.game_data_show.card_url
                 };
                 chrome.storage.sync.set({ 'userListData': userListData });
-                addUserToList(enkaData.nickname, uid,  indexData.cur_head_icon_url);
+                addUserToList(enkaData.nickname, uid, indexData.cur_head_icon_url, indexData.game_data_show.card_url);
                 EL.userList.uidInput.value = '';
             }
         }
@@ -288,6 +289,13 @@ function setButtonFunctions(){
                     if (avatarElement) {
                         avatarElement.style.backgroundImage = `url(${indexData.cur_head_icon_url})`;
                     }
+                    li.style.backgroundImage = `url(${indexData.game_data_show.card_url})`;
+                    userListData[uid] = {
+                        name: enkaData.nickname,
+                        avatar: indexData.cur_head_icon_url,
+                        bg: indexData.game_data_show.card_url
+                    };
+                    chrome.storage.sync.set({ 'userListData': userListData });
                 }
             }
         }        
@@ -295,17 +303,21 @@ function setButtonFunctions(){
     // 유저 리스트 내 유저 버튼 이벤트
     
 }
-function addUserToList(nickname, uid, avatar, isMe = false) {
+function addUserToList(nickname, uid, avatar, bg, isMe = false) {
     console.log("add Item", nickname, uid, isMe);
     const li = document.createElement('li');
     li.className = 'user-list-item';
     li.dataset.uid = uid;
+    li.style.backgroundImage = `url(${bg})`;
+    li.style.backgroundSize = 'cover';
+    li.style.backgroundRepeat = 'no-repeat';
+    li.style.backgroundPosition = 'center';
     li.dataset.isMe = isMe;
     const removeBtnHtml = isMe ? '' : `<span class="remove-user-btn">×</span>`;
     li.innerHTML = `
         <div class="profile-pic user-avatar-mini" style="background-image: url(${avatar})"></div>
         <div class="user-info-container">
-            <span class="user-name">${nickname}</span>
+            <span class="user-name" >${nickname}</span>
             <span class="user-uid">${uid}</span>
         </div>
         ${removeBtnHtml}
@@ -345,8 +357,6 @@ async function fetchDataAndReload() {
     console.log(`title font: ${ZZZ_FONT[selectedLang]}`);
     document.documentElement.style.setProperty('--zzz-font', ZZZ_FONT[selectedLang] || font);
 
-    EL.headerSection.resultDiv.innerHTML = `<b>[0/4]</b> UI 언어 팩 로드 중...`;
-
     // 1. UI 다국어 데이터(i18n) 가져오기
     const i18nUrl = `https://fastcdn.hoyoverse.com/mi18n/nap_global/m20240410hy38foxb7k/m20240410hy38foxb7k-${selectedLang}.json`;
     EL.headerSection.resultDiv.innerHTML = `Fetching i18n...`;
@@ -373,41 +383,42 @@ async function fetchDataAndReload() {
             return;
         }
 
-        const zzzGame = response.data.data.list.find(game => game.game_id === 8);
-        if (!zzzGame) {
+        const zzzGames = response.data.data.list.filter(game => game.game_id === 8);
+        if (zzzGames.length === 0) {
             EL.headerSection.resultDiv.innerHTML = "❌ ZZZ Account Not Found";
             EL.headerSection.fetchBtn.disabled = false;
-            return;
         }
-        console.log("Fetched User Data5:", zzzGame);
+        else {
+            //유저 목록 초기화
+            EL.userList.itemsList.innerHTML = '';
+            EL.userList.uidInput.value = '';
+            userListData = {};
 
-        const {nickname, level, region_name, game_role_id:roleId} = zzzGame;
-        // activeUserUid.uid = String(roleId);
-        // activeUserUid.region = region;
+            for(const zzzGame of zzzGames){
+                console.log("Fetched User Data:", zzzGame);
 
-        //유저 목록 로드
-        //초기화
-        EL.userList.itemsList.innerHTML = '';
-        EL.userList.uidInput.value = '';
-        userListData = {};
+                const {nickname, level, region_name, game_role_id:roleId} = zzzGame;
 
-        //자신
-        const indexData = await fetchIndex(roleId);
-        if(indexData) {
-            const enkaData = {
-                nickname: nickname,
-                level: level,
-                regionName: region_name
+                //유저 목록 로드 - 자신
+                const indexData = await fetchIndex(roleId);
+                if(indexData) {
+                    const enkaData = {
+                        nickname: nickname,
+                        level: level,
+                        regionName: region_name
+                    }
+                    addUserToList(enkaData.nickname, roleId, indexData.cur_head_icon_url, indexData.game_data_show.card_url, true);
+                    document.body.dataset.viewMode = 'me';
+                    await renderUser(roleId, enkaData, indexData);
+                }
             }
-            addUserToList(enkaData.nickname, roleId,  indexData.cur_head_icon_url, true);
-            document.body.dataset.viewMode = 'me';
-            await renderUser(roleId, enkaData, indexData);
         }
-        //나머지
+        
+        //유저 목록 로드 - 타인
         chrome.storage.sync.get('userListData', (data) => {
             userListData = data.userListData || {};
             Object.entries(userListData).forEach(([uid, user]) => {
-                addUserToList(user.name, uid, user.avatar);
+                addUserToList(user.name, uid, user.avatar, user.bg);
             })
         });
     });
