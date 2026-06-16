@@ -40,6 +40,7 @@ export const ZZZ_RESOURCE = {
         201: "attribute-fire-icon.aeddecee.png",//불
         202: "attribute-ice-icon.5c85742d.png",//얼음
         203: "attribute-electric-icon.ad4c441f.png",//전기
+        204: "attribute-wind-icon.c5358f7e.png",//바람
         205: "attribute-ether-icon.9a1e42a1.png"//에테르
     },
 
