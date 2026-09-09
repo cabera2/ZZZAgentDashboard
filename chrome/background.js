@@ -3,7 +3,7 @@ chrome.action.onClicked.addListener(() => {
     chrome.tabs.create({url: 'dashboard.html'});
 });
 
-// 2. hoyolab.com과 mihoyo.com의 쿠키를 모두 수집하여 하나로 합칩니다.
+// 2. hoyolab.com의 쿠키 수집
 async function getHoyoverseData() {
     const domains = ["https://www.hoyolab.com"];
     let allCookies = [];

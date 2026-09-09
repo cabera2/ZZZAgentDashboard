@@ -20,6 +20,7 @@
                 <span id="result">대기 중...</span></div>
             <div class="header-sub" id="header-right">
                 <button id="fetchBtn" class="button">Refresh</button>
+<!--                <button id="ScrShotBtn" class="button">Screenshot</button>-->
                 <select id="langSelect">
                     <option value="zh-cn">简体中文</option>
                     <option value="zh-tw">繁體中文</option>
@@ -117,8 +118,8 @@
             <div class="section-box weapon-box">
                 <div class="section-box-title">
                     <h3 id="ui-title-weapon">W-엔진 정보</h3>
-                    <img class="title-deco" src="">
-                    <img class="grid-deco" src="">
+                    <img class="title-deco">
+                    <img class="grid-deco">
                 </div>
                 <div id="weapon-content">
                     <div id="weapon-container">
@@ -135,10 +136,7 @@
                                       padding: 5px">Level</span>
                                 <img id= "weapon-star" style="height: 25px">
                             </div>
-                            <div id="weapon-stats-list">
-                                ${mainPropsHtml}
-                                ${subPropsHtml}
-                            </div>
+                            <div id="weapon-stats-list"></div>
                         </div>
                     </div>
                     <div id="weapon-empty" class="zzz-font-display">

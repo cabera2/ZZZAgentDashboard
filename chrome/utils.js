@@ -103,14 +103,14 @@ export function getRegionByUid(uid){
 }
 export async function getNickname(uid){
     let url = "";
-    const mode = 1;
+    const mode = 0;
     switch (mode) {
         case 0:
             url = `https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/hadal_info_v2?server=${getRegionByUid(uid)}&role_id=${uid}&schedule_type=1&without_v2_detail=true`;
             console.log(url);
             return new Promise((resolve, reject) => {
                 chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: url}, (res) => {
-                    if (res.success && res.data.retcode === 0) {
+                    if (res?.success && res.data?.retcode === 0) {
                         const nickname = res.data.data.nick_name;
                         const avatar = res.data.data.icon;
                         console.log("nick success", nickname, avatar);
@@ -139,5 +139,5 @@ export async function getNickname(uid){
                     }
                 });
             })
-    }    
+    }
 }

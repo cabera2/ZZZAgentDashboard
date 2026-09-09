@@ -41,7 +41,8 @@ export const ZZZ_RESOURCE = {
         202: "attribute-ice-icon.5c85742d.png",//얼음
         203: "attribute-electric-icon.ad4c441f.png",//전기
         204: "attribute-wind-icon.c5358f7e.png",//바람
-        205: "attribute-ether-icon.9a1e42a1.png"//에테르
+        205: "attribute-ether-icon.9a1e42a1.png",//에테르
+        300: "attribute-light-icon.3434f5b5.png"//루멘
     },
 
     // 강화형 속성 아이콘 (sub_element_type 기준)
@@ -58,7 +59,8 @@ export const ZZZ_RESOURCE = {
         3: "profession-anomaly-icon.cd1b1573.png",//이상
         4: "profession-support-icon.9cf39df7.png",//지원
         5: "profession-defensive-icon.9bd60af4.png",//방어
-        6: "profession-rupture-icon.4668f112.png"//명파
+        6: "profession-rupture-icon.4668f112.png",//명파
+        7: "profession-fengyu-icon.00032c58.png"//단조
     },
     SKILL_TYPE_ICONS:{
         0: "1f66bafcc1f069c2.png",//일반 공격

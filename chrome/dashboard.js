@@ -7,6 +7,8 @@ import {
     getNickname,
     getRegionByUid
 } from './utils.js';
+// import './html2canvas.min.js';
+// import './html-to-image.min.js';
 
 const EL = {
     loadingImg: document.getElementById('loading-img'),
@@ -21,6 +23,7 @@ const EL = {
         playerLevel: document.getElementById('player-level'),
         serverInfo: document.getElementById('server-info'),
         fetchBtn: document.getElementById('fetchBtn'),
+        ScrShotBtn: document.getElementById('ScrShotBtn'),
         resultDiv: document.getElementById('result'),
     },
     portraitSection:{
@@ -40,14 +43,6 @@ const EL = {
     skillSection: {
         header: document.getElementById('ui-title-skills'),
         skillsContent: document.getElementById('skills-content'),
-        skillIcons:{
-            0: document.getElementById('skillIconType0'),
-            1: document.getElementById('skillIconType1'),
-            2: document.getElementById('skillIconType2'),
-            3: document.getElementById('skillIconType3'),
-            5: document.getElementById('skillIconType5'),
-            6: document.getElementById('skillIconType6'),
-        },
         skillLevels:{
             0: document.getElementById('skillLevelType0'),
             1: document.getElementById('skillLevelType1'),
@@ -108,8 +103,10 @@ const EL = {
 let i18nData;
 
 let isDown = false;
+let isDragging = false;
 let startX;
 let scrollLeft;
+let startMouseX = 0;
 
 // 관성 구현을 위한 변수들
 let velX = 0;          // 현재 속도
@@ -152,6 +149,7 @@ function setNavScrollEvent(){
     //내비게이션 제어
     EL.nav.addEventListener('mousedown', (e) => {
         isDown = true;
+        isDragging = false;
         EL.nav.classList.add('active');
 
         // 클릭 시 진행 중이던 관성 애니메이션 중단
@@ -160,6 +158,7 @@ function setNavScrollEvent(){
         startX = e.pageX - EL.nav.offsetLeft;
         scrollLeft = EL.nav.scrollLeft;
         lastX = e.pageX;
+        startMouseX = e.pageX;
         velX = 0;
 
         EL.nav.style.cursor = 'grabbing';
@@ -173,11 +172,22 @@ function setNavScrollEvent(){
 
         // 마우스를 떼는 순간 미끄러짐 시작
         beginMomentum();
+
+        // 마우스를 떼고 난 뒤 잠시 후(예: 50ms) 드래그 상태를 해제하여 
+        // 클릭 이벤트가 오인식되는 것을 방지
+        setTimeout(() => {
+            isDragging = false;
+        }, 50);
     });
 
     window.addEventListener('mousemove', (e) => {
         if (!isDown) return;
 
+        // 마우스가 처음 누른 위치에서 5픽셀 이상 움직였다면 드래그로 판정
+        if (Math.abs(e.pageX - startMouseX) > 5) {
+            isDragging = true;
+        }
+        
         e.preventDefault();
         const x = e.pageX - EL.nav.offsetLeft;
 
@@ -185,7 +195,7 @@ function setNavScrollEvent(){
         velX = e.pageX - lastX;
         lastX = e.pageX;
 
-        const walk = (x - startX) * 2;
+        const walk = (x - startX);
         EL.nav.scrollLeft = scrollLeft - walk;
     });
 }
@@ -201,6 +211,7 @@ const beginMomentum = () => {
     }
 };
 function setButtonFunctions(){
+    //EL.headerSection.ScrShotBtn.addEventListener('click', capture);
     EL.headerSection.fetchBtn.addEventListener('click', fetchDataAndReload);
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
     EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
@@ -342,6 +353,51 @@ function closeModal(){
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
 }
+function capture2(){
+    const target = document.getElementById('app');
+
+    html2canvas(target, {useCORS: true}).then(function(canvas){
+            // 캔버스를 이미지 URL로 변환
+            const imageURL = canvas.toDataURL('image/png');
+
+            // 가상의 다운로드 링크 생성
+            const link = document.createElement('a');
+            link.href = imageURL;
+            link.download = 'screenshot.png'; // 저장할 파일명
+
+            // 링크를 클릭하여 다운로드 실행
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    )
+}
+function capture(){
+    const target = document.getElementById('app');
+    htmlToImage.toPng(target, {
+        // 1. 브라우저 이미지 캐시 때문에 CORS가 막히는 현상을 방지합니다.
+        cacheBust: true,
+
+        // 2. 중요! 이미지들을 fetch로 긁어올 때 CORS 통신 모드를 강제로 지정합니다.
+        fetchRequestInit: {
+            mode: 'cors' // 혹은 이미지 서버가 엄격하다면 'no-cors'를 시도해볼 수 있습니다.
+        },
+
+        // 3. 만약 특정 이미지가 끝까지 에러를 내면 캡처가 멈추지 않도록 무시하고 넘기는 안전장치
+        skipValidation: true
+    })
+        .then((dataUrl) => {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = 'screenshot.png';
+            link.click();
+        })
+        .catch((error) => {
+            // 위 설정을 넣으면 이 catch로 빠지지 않고 캡처가 진행됩니다.
+            console.error('캡처 중 에러 발생:', error);
+        });
+}
+
 async function fetchDataAndReload() {
     EL.headerSection.fetchBtn.disabled = true;
     
@@ -382,7 +438,7 @@ async function fetchDataAndReload() {
             EL.headerSection.fetchBtn.disabled = false;
             return;
         }
-
+        console.log('GameRecordCard Response: ', response);
         const zzzGames = response.data.data.list.filter(game => game.game_id === 8);
         if (zzzGames.length === 0) {
             EL.headerSection.resultDiv.innerHTML = "❌ ZZZ Account Not Found";
@@ -427,19 +483,34 @@ async function fetchEnka(uid){
     const url = `https://enka.network/api/zzz/uid/${uid}`;
     EL.headerSection.resultDiv.innerHTML = `Fetching Enka...`;
     console.log('enka url:', url);
+    // Enka 데이터가 없을 때를 대비한 기본값 (HoYoLab 데이터만으로 표시 가능하도록)
     let nickname = uid;
     let level = "?";
     let regionName = getRegionByUid(uid);
-    return new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, (res) => {
-            if (res) {
-                nickname = res.data.PlayerInfo.SocialDetail.ProfileDetail.Nickname;
-                level = res.data.PlayerInfo.SocialDetail.ProfileDetail.Level;
-                regionName = res.data.region;
+    return new Promise((resolve) => {
+        chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, async (res) => {
+            // res.success가 false이거나, 응답은 왔지만 PlayerInfo/SocialDetail 구조가 없는 경우
+            // (Enka 서버 다운/점검 등) 모두 안전하게 폴백 처리
+            const profile = res?.data?.PlayerInfo?.SocialDetail?.ProfileDetail;
+            if (res?.success && profile) {
+                nickname = profile.Nickname;
+                level = profile.Level;
+                regionName = res.data.region || regionName;
                 console.log("nick success", nickname);
-            }
-            else{
-                EL.headerSection.resultDiv.innerHTML = `❌ Fetching Enka Failed: ${res.data?.message}`;
+            } else {
+                console.warn("Enka fetch unavailable, falling back to HoYoLab nickname:", res?.error || res?.data?.message || "unknown reason");
+                EL.headerSection.resultDiv.innerHTML = `⚠️ Enka 서버 응답 없음 - HoYoLab 정보로 대체합니다`;
+
+                // getNickname은 Promise를 반환하고 {nickname, avatar} 형태로 resolve되므로
+                // await로 기다린 뒤 nickname 필드만 꺼내 써야 함
+                const fallback = await getNickname(uid);
+                if (fallback?.nickname) {
+                    nickname = fallback.nickname;
+                    console.log("HoYoLab fallback nickname success:", nickname);
+                } else {
+                    console.log("HoYoLab fallback nickname failed, keeping UID as nickname");
+                }
+                // level은 hadal_info_v2에 포함되어 있지 않아 "?"로 유지됨
             }
             resolve({
                 nickname: nickname,
@@ -447,7 +518,6 @@ async function fetchEnka(uid){
                 regionName: regionName
             });
         });
-        return true;
     })
 }
 
@@ -468,7 +538,6 @@ async function fetchIndex(uid){
                 resolve(null);
             }
         });
-        return true;
     })
 }
 async function renderUser(uid, enkaData, indexData){
@@ -487,6 +556,8 @@ async function renderUser(uid, enkaData, indexData){
             background: linear-gradient(to bottom, #${titleMainColor}, #${titleBottomColor});
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;">${indexData.game_data_show.personal_title}</span>`
+    console.log('enkaData')
+    console.log(enkaData)
     EL.headerSection.serverInfo.innerHTML = `${personal_title} / ${enkaData.regionName} / UID: ${uid}`;
     EL.headerSection.profilePic.style.backgroundImage = `url(${indexData.cur_head_icon_url})`;
     fetchAgentList(uid);
@@ -967,6 +1038,7 @@ function renderAgentNav(agents) {
         `;
 
         wrapper.addEventListener('click', () => {
+            if (isDragging) return;
             document.querySelectorAll('.agent-icon-wrapper').forEach(el => el.classList.remove('active'));
             wrapper.classList.add('active');
             currentAgentIndex = index;
@@ -1027,7 +1099,7 @@ function updatePortrait(agent) {
 
     // 3. 랭크 아이콘 (S/A/B)
     if (section.agentRankIcon) {
-        const fileName = ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
+        const fileName = agent.id === 1551 ? '09ef41c0a211d819.png':ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
         if (fileName) {
             section.agentRankIcon.src = baseIcons + fileName;
             section.agentRankIcon.style.display = 'block';
