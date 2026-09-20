@@ -5,7 +5,8 @@ import {
     formatGameText,
     setSkillIconMap,
     getNickname,
-    getRegionByUid
+    getRegionIdByUid,
+    getRegionNameByUid,
 } from './utils.js';
 // import './html2canvas.min.js';
 // import './html-to-image.min.js';
@@ -23,7 +24,10 @@ const EL = {
         playerLevel: document.getElementById('player-level'),
         serverInfo: document.getElementById('server-info'),
         fetchBtn: document.getElementById('fetchBtn'),
-        ScrShotBtn: document.getElementById('ScrShotBtn'),
+        // ScrShotBtn1: document.getElementById('ScrShotBtn1'),
+        // ScrShotBtn2: document.getElementById('ScrShotBtn2'),
+        ScrShotBtn3: document.getElementById('ScrShotBtn3'),
+        ScrShotBtn4: document.getElementById('ScrShotBtn4'),
         resultDiv: document.getElementById('result'),
     },
     portraitSection:{
@@ -31,6 +35,7 @@ const EL = {
         agentPortrait: document.getElementById('agent-portrait'),
         clothesBtn: document.getElementById('clothes-btn'),
         agentName: document.getElementById('agent-name'),
+        agentFullName: document.getElementById('agent-full-name'),
         agentLevel: document.getElementById('agent-level'),
         levelContainer: document.getElementById('level-container'),
         agentRankIcon: document.getElementById('agent-rank-icon'),
@@ -211,7 +216,10 @@ const beginMomentum = () => {
     }
 };
 function setButtonFunctions(){
-    //EL.headerSection.ScrShotBtn.addEventListener('click', capture);
+    // EL.headerSection.ScrShotBtn1.addEventListener('click', capture);
+    // EL.headerSection.ScrShotBtn2.addEventListener('click', capture2);
+    EL.headerSection.ScrShotBtn3.addEventListener('click', () => capture3(true));
+    EL.headerSection.ScrShotBtn4.addEventListener('click', () => capture3(false));
     EL.headerSection.fetchBtn.addEventListener('click', fetchDataAndReload);
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
     EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
@@ -221,6 +229,7 @@ function setButtonFunctions(){
     EL.discSection.disksContainer.addEventListener('click', handleDiskClick);
     EL.discSection.planSelectBtn.addEventListener('click', openPlanSelect);
     
+    //모달 닫기 버튼
     const closeButtons = document.querySelectorAll('.modal-close-btn');
     closeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -353,50 +362,192 @@ function closeModal(){
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
 }
-function capture2(){
-    const target = document.getElementById('app');
+async function capture3(asFile){
+    document.body.classList.add('is-capturing');
+    document.body.style.overflow = 'hidden';
+    await capture3_1(asFile);
+    document.body.classList.remove('is-capturing');
+    document.body.style.overflow = '';
+}
+async function capture3_1(asFile) {
+    //문서 전체를 기준으로 스크롤/높이를 계산 (앱 레이아웃이 body 스크롤을 쓰는 경우 기준)
+    const scrollEl = document.scrollingElement || document.documentElement;
+    const originalScrollTop = scrollEl.scrollTop;
+    const originalScrollLeft = scrollEl.scrollLeft;
+    const viewportHeightCss = window.innerHeight;
+    const viewportWidthCss = window.innerWidth;
+    const totalHeightCss = scrollEl.scrollHeight;
+    const totalWidthCss = scrollEl.scrollWidth;
 
-    html2canvas(target, {useCORS: true}).then(function(canvas){
-            // 캔버스를 이미지 URL로 변환
-            const imageURL = canvas.toDataURL('image/png');
+    EL.headerSection.resultDiv.innerHTML = '📸 캡처 중...';
 
-            // 가상의 다운로드 링크 생성
-            const link = document.createElement('a');
-            link.href = imageURL;
-            link.download = 'screenshot.png'; // 저장할 파일명
+    const pieces = [];
+    let firstImg = null;
 
-            // 링크를 클릭하여 다운로드 실행
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+    try {
+        let targetScrollY = 0;
+        while (true) {
+            let targetScrollX = 0;
+            let actualScrollY = 0;
+
+            while (true) {
+                scrollEl.scrollTop = targetScrollY;
+                scrollEl.scrollLeft = targetScrollX;
+                // 스크롤 반영 + 리렌더링을 기다림 (2프레임이면 대부분 충분)
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+                const dataUrl = await captureVisibleTabOnce();
+                actualScrollY = scrollEl.scrollTop; // 더 못 내려가면 브라우저가 알아서 clamp한 값
+                const actualScrollX = scrollEl.scrollLeft; // 더 못 가면 clamp된 값
+
+                if (!firstImg) firstImg = await loadImage(dataUrl); // 캡처 실제 해상도 파악용
+                pieces.push({ dataUrl, scrollX: actualScrollX, scrollY: actualScrollY });
+
+                const reachedRight = actualScrollX + viewportWidthCss >= totalWidthCss;
+                if (reachedRight) break;
+
+                targetScrollX = actualScrollX + viewportWidthCss;
+
+                // captureVisibleTab은 초당 호출 횟수 제한이 있어 살짝 텀을 둠
+                await new Promise(r => setTimeout(r, 400));
+            }
+
+            const reachedBottom = actualScrollY + viewportHeightCss >= totalHeightCss;
+            if (reachedBottom) break;
+
+            targetScrollY = actualScrollY + viewportHeightCss;
+
+            await new Promise(r => setTimeout(r, 400));
         }
-    )
+    } finally {
+        scrollEl.scrollTop = originalScrollTop; // 원래 스크롤 위치로 복구
+        scrollEl.scrollLeft = originalScrollLeft;
+    }
+
+    EL.headerSection.resultDiv.innerHTML = '📸 이미지 합성 중...';
+    //console.log(EL.app.clientWidth)
+    //console.log(EL.app.clientHeight)
+    // 캡처된 이미지의 실제 픽셀 높이 ÷ CSS 뷰포트 높이 = 배율 (기기 해상도/줌 보정)
+    const scale = firstImg.height / viewportHeightCss;
+
+    // #app이 페이지 중앙에 위치해 있다고 가정하고, 그 폭만 남기고 좌우를 잘라냄
+    const APP_WIDTH_CSS = EL.app.clientWidth;
+    const cropLeftCss = Math.max(0, (totalWidthCss - APP_WIDTH_CSS) / 2);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(APP_WIDTH_CSS * scale);
+    canvas.height = Math.round(EL.app.clientHeight * scale);
+    const ctx = canvas.getContext('2d');
+
+    for (const piece of pieces) {
+        const img = piece.dataUrl === pieces[0].dataUrl ? firstImg : await loadImage(piece.dataUrl);
+        // x좌표에서 잘라낼 왼쪽 여백만큼 빼줌 -> 캔버스 밖으로 나가는 부분은 drawImage가 알아서 잘라줌
+        ctx.drawImage(img, Math.round((piece.scrollX - cropLeftCss) * scale), Math.round(piece.scrollY * scale));
+    }
+    
+    if (asFile) {
+        // 파일 다운로드 시에는 기존처럼 dataURL 사용
+        const finalDataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = finalDataUrl;
+        link.download = `zzz-dashboard-${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        EL.headerSection.resultDiv.innerHTML = '✅ Saved';
+    } else {
+        // 클립보드 복사 시에는 fetch 없이 canvas에서 바로 Blob 추출하여 복사
+        try {
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+
+            if (!blob) throw new Error('Canvas to Blob conversion failed');
+
+            await navigator.clipboard.write([
+                new ClipboardItem({ [blob.type]: blob })
+            ]);
+
+            EL.headerSection.resultDiv.innerHTML = '✅ Copied to clipboard';
+        } catch (err) {
+            console.error("클립보드 복사 실패:", err);
+            EL.headerSection.resultDiv.innerHTML = '❌ Copy failed';
+            alert("클립보드 복사에 실패했습니다. HTTPS 환경인지 확인해주세요.");
+        }
+    }
+    
 }
-function capture(){
-    const target = document.getElementById('app');
-    htmlToImage.toPng(target, {
-        // 1. 브라우저 이미지 캐시 때문에 CORS가 막히는 현상을 방지합니다.
-        cacheBust: true,
-
-        // 2. 중요! 이미지들을 fetch로 긁어올 때 CORS 통신 모드를 강제로 지정합니다.
-        fetchRequestInit: {
-            mode: 'cors' // 혹은 이미지 서버가 엄격하다면 'no-cors'를 시도해볼 수 있습니다.
-        },
-
-        // 3. 만약 특정 이미지가 끝까지 에러를 내면 캡처가 멈추지 않도록 무시하고 넘기는 안전장치
-        skipValidation: true
-    })
-        .then((dataUrl) => {
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = 'screenshot.png';
-            link.click();
-        })
-        .catch((error) => {
-            // 위 설정을 넣으면 이 catch로 빠지지 않고 캡처가 진행됩니다.
-            console.error('캡처 중 에러 발생:', error);
+// captureVisibleTab 호출 1회. 초당 호출 제한(MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND)에
+// 걸리면 짧게 대기 후 한 번 재시도함.
+function captureVisibleTabOnce(retry = true) {
+    return new Promise((resolve, reject) => {
+        chrome.tabs.captureVisibleTab(null, { format: 'png' }, (dataUrl) => {
+            const err = chrome.runtime.lastError;
+            if (err) {
+                if (retry && /MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND/i.test(err.message || '')) {
+                    setTimeout(() => {
+                        captureVisibleTabOnce(false).then(resolve, reject);
+                    }, 600);
+                    return;
+                }
+                reject(new Error(err.message));
+                return;
+            }
+            resolve(dataUrl);
         });
+    });
 }
+function loadImage(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+    });
+}
+// function capture2(){
+//     const target = document.getElementById('app');
+//
+//     html2canvas(target, {useCORS: true}).then(function(canvas){
+//             // 캔버스를 이미지 URL로 변환
+//             const imageURL = canvas.toDataURL('image/png');
+//
+//             // 가상의 다운로드 링크 생성
+//             const link = document.createElement('a');
+//             link.href = imageURL;
+//             link.download = 'screenshot.png'; // 저장할 파일명
+//
+//             // 링크를 클릭하여 다운로드 실행
+//             document.body.appendChild(link);
+//             link.click();
+//             document.body.removeChild(link);
+//         }
+//     )
+// }
+// function capture(){
+//     const target = document.getElementById('app');
+//     htmlToImage.toPng(target, {
+//         // 1. 브라우저 이미지 캐시 때문에 CORS가 막히는 현상을 방지합니다.
+//         cacheBust: true,
+//
+//         // 2. 중요! 이미지들을 fetch로 긁어올 때 CORS 통신 모드를 강제로 지정합니다.
+//         fetchRequestInit: {
+//             mode: 'cors' // 혹은 이미지 서버가 엄격하다면 'no-cors'를 시도해볼 수 있습니다.
+//         },
+//
+//         // 3. 만약 특정 이미지가 끝까지 에러를 내면 캡처가 멈추지 않도록 무시하고 넘기는 안전장치
+//         skipValidation: true
+//     })
+//         .then((dataUrl) => {
+//             const link = document.createElement('a');
+//             link.href = dataUrl;
+//             link.download = 'screenshot.png';
+//             link.click();
+//         })
+//         .catch((error) => {
+//             // 위 설정을 넣으면 이 catch로 빠지지 않고 캡처가 진행됩니다.
+//             console.error('캡처 중 에러 발생:', error);
+//         });
+// }
 
 async function fetchDataAndReload() {
     EL.headerSection.fetchBtn.disabled = true;
@@ -486,7 +637,7 @@ async function fetchEnka(uid){
     // Enka 데이터가 없을 때를 대비한 기본값 (HoYoLab 데이터만으로 표시 가능하도록)
     let nickname = uid;
     let level = "?";
-    let regionName = getRegionByUid(uid);
+    let regionName = getRegionNameByUid(uid);
     return new Promise((resolve) => {
         chrome.runtime.sendMessage({type: 'FETCH_ENKA', url: url}, async (res) => {
             // res.success가 false이거나, 응답은 왔지만 PlayerInfo/SocialDetail 구조가 없는 경우
@@ -522,7 +673,7 @@ async function fetchEnka(uid){
 }
 
 async function fetchIndex(uid){
-    const region = getRegionByUid(uid);
+    const region = getRegionIdByUid(uid);
     const selectedLang = EL.langSelect.value;
     EL.headerSection.resultDiv.innerHTML = `Fetching Index...`;
     const IndexUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index?server=${region}&role_id=${uid}&lang=${selectedLang}`
@@ -563,7 +714,7 @@ async function renderUser(uid, enkaData, indexData){
     fetchAgentList(uid);
 }
 function fetchAgentList(uid){
-    const region = getRegionByUid(uid);
+    const region = getRegionIdByUid(uid);
     const selectedLang = EL.langSelect.value;
     EL.headerSection.resultDiv.innerHTML = `Fetching Basic...`;
     const basicUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/basic?role_id=${uid}&server=${region}&lang=${selectedLang}`;
@@ -600,7 +751,7 @@ function fetchAgentDetail(index) {
     EL.headerSection.fetchBtn.disabled = true;
     EL.headerSection.resultDiv.innerHTML = `Fetching Detail of ${agent.name_mi18n}...`;
 
-    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${activeUserUid}&server=${getRegionByUid(activeUserUid)}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
+    const detailUrl = `https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/avatar/info?role_id=${activeUserUid}&server=${getRegionIdByUid(activeUserUid)}&id_list[]=${agent.id}&lang=${selectedLang}&need_wiki=true`;
     console.log("detail url:", detailUrl);
     chrome.runtime.sendMessage({type: 'FETCH_HOYOLAB', url: detailUrl}, (res) => {
         if (res.success && res.data.retcode === 0) {
@@ -984,7 +1135,7 @@ function changePlanRequest(planType){
     const url = 'https://sg-act-public-api.hoyolab.com/event/game_record_zzz/api/zzz/equip_assessment';
     let body = {
         uid: String(activeUserUid), // 확실하게 문자열로 변환
-        region: getRegionByUid(activeUserUid),
+        region: getRegionIdByUid(activeUserUid),
         avatar_id: Number(currentAgentDetail.id), // 확실하게 숫자로 변환
         type: Number(planType) // 확실하게 숫자로 변환
     };
@@ -1009,7 +1160,7 @@ function changePlanRequest(planType){
         url: url,
         body: body,
         lang: EL.langSelect.value,
-        region: getRegionByUid(activeUserUid)
+        region: getRegionIdByUid(activeUserUid)
     }, (res) => {
         if (res && res.success && res.data.retcode === 0) {
             console.log("✅ 서버 저장 성공:", res.data);
@@ -1095,6 +1246,8 @@ function updatePortrait(agent) {
     // 2. 캐릭터 이미지 및 텍스트
     section.agentPortrait.src = agent.role_vertical_painting_url || agent.hollow_icon_path;
     section.agentName.innerText = agent.name_mi18n;
+    section.agentFullName.innerText = agent.full_name_mi18n;
+    //section.agentName.innerHTML = `<ruby>${agent.name_mi18n}<rt>${agent.full_name_mi18n}</rt></ruby>`;
     section.agentLevel.innerText = `Lv. ${agent.level}`;
 
     // 3. 랭크 아이콘 (S/A/B)
@@ -1313,7 +1466,7 @@ function updateDiskScore(planInfo) {
 
     const score = planInfo.valid_property_cnt;
     const rank = (isMe && planInfo.equip_rating) || 'ER_Default';
-    console.log('Test:' + rank)
+    //console.log('Rank Test:' + rank)
 
     // 다국어 제목 처리
     let titleText = "디스크에 유효한 서브 스탯 명중 횟수: {num}회";

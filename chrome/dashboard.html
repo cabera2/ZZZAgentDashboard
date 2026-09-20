@@ -16,11 +16,14 @@
                 <span id="player-level"></span>
                 <span id="server-info"></span>
              </div>
-            <div class="header-sub" id="header-center">
+            <div class="header-sub hide-on-capture" id="header-center">
                 <span id="result">대기 중...</span></div>
-            <div class="header-sub" id="header-right">
+            <div class="header-sub hide-on-capture" id="header-right">
                 <button id="fetchBtn" class="button">Refresh</button>
-<!--                <button id="ScrShotBtn" class="button">Screenshot</button>-->
+<!--                <button id="ScrShotBtn1" class="button">htmlToImage</button>-->
+<!--                <button id="ScrShotBtn2" class="button">html2canvas</button>-->
+                <button id="ScrShotBtn3" class="button">Save</button>
+                <button id="ScrShotBtn4" class="button">Copy</button>
                 <select id="langSelect">
                     <option value="zh-cn">简体中文</option>
                     <option value="zh-tw">繁體中文</option>
@@ -44,7 +47,7 @@
                 </a>
             </div>
         </div>
-        <nav class="hidden" id="agent-nav"></nav>
+        <nav class="hidden hide-on-capture" id="agent-nav"></nav>
     </header>
 
     <main class="hidden" id="main-content">
@@ -65,6 +68,7 @@
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <img id="agent-rank-icon" src="" style="width: 36px; height: 36px; display: none;">
                         <h1 id="agent-name" style="margin: 0;">-</h1>
+                        <span id="agent-full-name" style="color: #bbb;height: 7px"></span>
                         <img id="agent-element-type" src="" style="width: 36px; height: 36px; display: none;">
                         <img id="agent-profession" src="" style="width: 36px; height: 36px; display: none;">
                         <img class="agent-group-icon" id="agent-group-icon" src="">
@@ -201,7 +205,7 @@
                     <h3 id="ui-title-disks">디스크</h3>
                     <img class="title-deco" src="">
                     <img class="grid-deco hide-on-me" src="">
-                    <button id="plan-select-btn" class="zzz-font-display hide-on-others">change plan</button>
+                    <button id="plan-select-btn" class="zzz-font-display hide-on-others hide-on-capture">change plan</button>
                 </div>
                 <div id="disk-score-container">
                     <img id="disk-score-deco">
@@ -261,7 +265,7 @@
     </div>
 </div>
 
-<div id="user-list-panel" class="slide-panel">
+<div id="user-list-panel" class="slide-panel hide-on-capture">
     <div class="panel-content">
         <h3>저장된 유저 목록</h3>
         <div id="user-items-scroll-view">
