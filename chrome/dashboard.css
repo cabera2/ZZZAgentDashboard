@@ -30,8 +30,7 @@
     --text-main: #fff; /* 메인 텍스트: 완전 흰색 */
     --text-sub: #eee; /* [변경] 서브 텍스트(제목 등): 밝은 회색 */
     --border-color: #444; /* 경계선: 더 어둡게 */
-    --highlight: #f7768e; /* 포인트 컬러: 유지 */
-    --selected: #ffde00;
+    --highlighted: #ffde00;
 
     --awaken-enable: none;
     --zzz-font: sans-serif;
@@ -259,7 +258,7 @@ body {
 #player-level{
     color: black;
     font-weight: bold;
-    background-color: #FFDE00;
+    background-color: var(--highlighted);
     padding: 4px;
     border-radius: 4px
 }
@@ -284,8 +283,8 @@ body {
 
 button {
     padding: 10px 20px;
-    background-color: #fff;
-    color: #000;
+    background-color: var(--header-bg);
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -294,7 +293,8 @@ button {
 }
 
 button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--highlighted);
+    color: black;
 }
 
 #server-info,
@@ -307,11 +307,17 @@ button:hover {
 }
 
 /* 에이전트 목록 (상단 바) (스타일 유지) */
+#nav-section{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    align-items: center;
+}
 #agent-nav {
+    flex: 1 1 auto;
     display: flex;
     gap: 0;
     overflow-x: auto; /* 기능은 유지 */
-    margin-bottom: 20px;
     cursor: grab;
 
     /* 스크롤바 숨기기 (IE, Edge, Firefox) */
@@ -375,6 +381,85 @@ button:hover {
     z-index: 10 !important;
     object-fit: contain;
 }
+#open-grid-btn{
+    flex: 0 0 auto;
+    background-color: var(--header-bg);
+    color: white;
+    border-radius: 999px;
+    padding: 10px;
+    margin-left: 10px;
+}
+.open-grid-icon{
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    -webkit-mask-image: url("./assets/listIcon.svg");
+    mask-image: url("./assets/listIcon.svg");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+#modal-content-grid{
+    max-width: 1340px;
+    width: 1340px;
+}
+#modal-body-grid{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.character-card{
+    position: relative;
+    border-radius: 15px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    cursor: pointer;
+}
+.character-card[selected],
+.character-card:hover{
+    border: 2px solid var(--highlighted);
+}
+.character-card .top{
+    display: flex;
+    flex-direction: row;
+}
+.character-card .left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+.character-card .left img
+{
+    margin: 7px;
+    width: 30px;
+    height: 30px;
+}
+.character-card .left .rank{
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .6);
+    padding: 5px 10px;
+    border-radius: 0 0 0 5px;
+}
+.character-card .portrait{
+    background-image: url("./assets/cardBg.png");
+    display: block;
+    width: 152px;
+    height: 186px;
+}
+.character-card .bottom{
+    text-align: center;
+    background-color: var(--header-bg);
+    padding: 5px;
+}
 
 /* 메인 레이아웃 (좌우 분할) */
 #main-content {
@@ -420,10 +505,34 @@ button:hover {
     height: 28px;
 }
 
-.grid-deco {
-    content: var(--url-grid-deco);
+.grid-deco,
+#upgrade-guide-btn,
+#plan-select-btn{
     position: absolute;
     right: 20px;
+}
+
+.grid-deco {
+    content: var(--url-grid-deco);
+}
+#upgrade-guide-btn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: black;
+    background-color: var(--highlighted);
+    padding: 5px 20px;
+    border-radius: 9999px;
+    border: 2px solid black;
+}
+#upgrade-guide-arrow{
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin-right: -10px;
+    background-color: black;
+    -webkit-mask-image: url('https://act.hoyoverse.com/gt-ui/assets/icons/65bdc60fe3f6616d.svg');
+    mask-image: url('https://act.hoyoverse.com/gt-ui/assets/icons/65bdc60fe3f6616d.svg');
 }
 
 #plan-select-btn{
@@ -431,9 +540,7 @@ button:hover {
     background-color: #333534;
     padding: 5px 20px;
     border-radius: 9999px;
-    border: 1px solid black;
-    position: absolute;
-    right: 20px;
+    border: 2px solid black;
 }
 
 /* 3. 본문 콘텐츠 영역 패딩 설정 */
@@ -1128,15 +1235,15 @@ input[type="radio"] {
 /* 마우스 호버 시 */
 input[type="checkbox"]:hover,
 input[type="radio"]:hover {
-    border-color: var(--selected);
+    border-color: var(--highlighted);
     border-radius: 50%;
 }
 
 /* 체크되었을 때 (Checked state) */
 input[type="checkbox"]:checked,
 input[type="radio"]:checked {
-    background-color: var(--selected);
-    border-color: var(--selected);
+    background-color: var(--highlighted);
+    border-color: var(--highlighted);
 }
 
 /* 체크 표시 (V자 또는 점) */
@@ -1291,7 +1398,7 @@ input[type="radio"]:checked::after {
 }
 
 #new-user-uid:focus {
-    border-color: var(--selected);
+    border-color: var(--highlighted);
 }
 
 #add-user-btn {
@@ -1299,7 +1406,7 @@ input[type="radio"]:checked::after {
     height: 40px;
     padding: 0;
     font-size: 24px;
-    background-color: var(--selected);
+    background-color: var(--highlighted);
     color: black;
 }
 
@@ -1311,7 +1418,7 @@ input[type="radio"]:checked::after {
     transform: translateY(-50%);
     width: 40px;
     height: 120px;
-    background: var(--selected);
+    background: var(--highlighted);
     color: black;
     writing-mode: vertical-lr;
     display: flex;

@@ -14,7 +14,12 @@ import {
 const EL = {
     loadingImg: document.getElementById('loading-img'),
     app: document.getElementById('app'),
-    nav: document.getElementById('agent-nav'),
+    navSection:{
+        body: document.getElementById('nav-section'),
+        nav: document.getElementById('agent-nav'),
+        openGridBtn: document.getElementById('open-grid-btn'),
+        characterCardTemplate: document.getElementById('character-card-template'),
+    },
     langSelect: document.getElementById('langSelect'),
     mainContent: document.getElementById('main-content'),
     statsContent: document.getElementById('stats-content'),
@@ -70,6 +75,8 @@ const EL = {
     },
     statSection:{
         header: document.getElementById('ui-title-stats'),
+        upgradeGuideBtn: document.getElementById('upgrade-guide-btn'),
+        upgradeGuideLabel: document.getElementById('upgrade-guide-label')
     },
     discSection: {
         header: document.getElementById('ui-title-disks'),
@@ -85,12 +92,19 @@ const EL = {
     modal: {
         modalOverlay: document.getElementById('modal-overlay'),
         modalBackBtn: document.getElementById('modal-back-btn'),
+        
         modalTitleCommon: document.getElementById('ui-title-modal-common'),
         modalTitleCustom: document.getElementById('ui-title-modal-custom'),
+        modalTitleGrid: document.getElementById('ui-title-modal-grid'),
+        
         modalContentCommon: document.getElementById('modal-content-common'),
         modalContentCustom: document.getElementById('modal-content-custom'),
+        modalContentGrid: document.getElementById('modal-content-grid'),
+        
         modalBodyCommon: document.getElementById('modal-body-common'),
         modalBodyCustom: document.getElementById('modal-body-custom'),
+        modalBodyGrid: document.getElementById('modal-body-grid'),
+        
         subStatClearAll: document.getElementById('sub-stat-clear-all'),
         subStatSaveAll: document.getElementById('sub-stat-save-all'),
         wikiBtn: document.getElementById('wiki-btn'),
@@ -123,11 +137,11 @@ let globalAgents = [];
 let currentAgentFullData = null;
 let currentAgentDetail = null;
 let currentAgentIndex = -1;
-let myUidList = [];
 let activeUserUid; // 전역 사용자 정보 추가
 let userListData = {};
+let guideUrl;
 loadSaveData(()=>{
-    fetchDataAndReload();});
+    void fetchDataAndReload();});
 setNavScrollEvent();
 setButtonFunctions();
 function loadSaveData(callback){
@@ -152,28 +166,28 @@ function loadSaveData(callback){
 }
 function setNavScrollEvent(){
     //내비게이션 제어
-    EL.nav.addEventListener('mousedown', (e) => {
+    EL.navSection.nav.addEventListener('mousedown', (e) => {
         isDown = true;
         isDragging = false;
-        EL.nav.classList.add('active');
+        EL.navSection.nav.classList.add('active');
 
         // 클릭 시 진행 중이던 관성 애니메이션 중단
         cancelAnimationFrame(rafID);
 
-        startX = e.pageX - EL.nav.offsetLeft;
-        scrollLeft = EL.nav.scrollLeft;
+        startX = e.pageX - EL.navSection.nav.offsetLeft;
+        scrollLeft = EL.navSection.nav.scrollLeft;
         lastX = e.pageX;
         startMouseX = e.pageX;
         velX = 0;
 
-        EL.nav.style.cursor = 'grabbing';
+        EL.navSection.nav.style.cursor = 'grabbing';
     });
 
     window.addEventListener('mouseup', () => {
         if (!isDown) return;
         isDown = false;
-        EL.nav.classList.remove('active');
-        EL.nav.style.cursor = 'grab';
+        EL.navSection.nav.classList.remove('active');
+        EL.navSection.nav.style.cursor = 'grab';
 
         // 마우스를 떼는 순간 미끄러짐 시작
         beginMomentum();
@@ -194,21 +208,21 @@ function setNavScrollEvent(){
         }
         
         e.preventDefault();
-        const x = e.pageX - EL.nav.offsetLeft;
+        const x = e.pageX - EL.navSection.nav.offsetLeft;
 
         // 현재 프레임에서의 속도 계산 (현재 위치 - 직전 위치)
         velX = e.pageX - lastX;
         lastX = e.pageX;
 
         const walk = (x - startX);
-        EL.nav.scrollLeft = scrollLeft - walk;
+        EL.navSection.nav.scrollLeft = scrollLeft - walk;
     });
 }
 // 관성 애니메이션 함수
 const beginMomentum = () => {
     // 속도가 아주 작아질 때까지 반복
     if (Math.abs(velX) > 0.5) {
-        EL.nav.scrollLeft -= velX;
+        EL.navSection.nav.scrollLeft -= velX;
         velX *= friction; // 매 프레임마다 속도 감소
         rafID = requestAnimationFrame(beginMomentum);
     } else {
@@ -221,6 +235,9 @@ function setButtonFunctions(){
     EL.headerSection.ScrShotBtn3.addEventListener('click', () => capture3(true));
     EL.headerSection.ScrShotBtn4.addEventListener('click', () => capture3(false));
     EL.headerSection.fetchBtn.addEventListener('click', fetchDataAndReload);
+    EL.navSection.nav.addEventListener('click', handleNavIconClick);
+    EL.modal.modalBodyGrid.addEventListener('click', handleCharacterCardClick);
+    EL.navSection.openGridBtn.addEventListener('click', openGrid);
     EL.portraitSection.levelContainer.addEventListener('click', handleCinemaClick);
     EL.portraitSection.levelContainer.addEventListener('click', handleAwakenClick);
     EL.portraitSection.clothesBtn.addEventListener('click', openClothes);
@@ -245,6 +262,10 @@ function setButtonFunctions(){
         if (e.target === EL.modal.modalOverlay) {
             closeModal();
         }
+    })
+    //육성 가이드
+    EL.statSection.upgradeGuideBtn.addEventListener('click', () => {
+        window.open(guideUrl, "_blank");
     })
     //사용자 정의 보조 속성 전부 지우기
     EL.modal.subStatClearAll.addEventListener('click', () => {
@@ -359,8 +380,22 @@ function openModal(header, content, wikiUrl = null){
 function closeModal(){
     EL.modal.modalContentCustom.classList.remove('active');
     EL.modal.modalContentCommon.classList.remove('active');
+    EL.modal.modalContentGrid.classList.remove('active');
     EL.modal.modalOverlay.classList.remove('active');
     document.body.style.overflow = '';
+}
+function openGrid(){
+    EL.modal.modalContentGrid.classList.add('active');
+    EL.modal.modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    Array.from(EL.modal.modalBodyGrid.children).forEach(btn => {
+        if(parseInt(btn.dataset.index) === currentAgentIndex){
+            btn.setAttribute('selected', '');
+        }
+        else{
+            btn.removeAttribute('selected');
+        }
+    });
 }
 async function capture3(asFile){
     document.body.classList.add('is-capturing');
@@ -731,6 +766,7 @@ function fetchAgentList(uid){
 
         if (globalAgents.length > 0) {
             renderAgentNav(globalAgents);
+            renderCharacterGrid(globalAgents)
             currentAgentIndex = currentAgentIndex < 0 ? 0 : currentAgentIndex;
             fetchAgentDetail(currentAgentIndex);
         } else {
@@ -759,6 +795,7 @@ function fetchAgentDetail(index) {
             currentAgentDetail = res.data.data.avatar_list[0];
             console.log("Detail Data:", currentAgentDetail);
             renderAgentDetail(currentAgentDetail);
+            guideUrl = currentAgentFullData.cultivate_index[currentAgentDetail.id];
             EL.headerSection.resultDiv.innerHTML = `Load Success`;
         } else {
             EL.headerSection.resultDiv.innerHTML = `❌ Fetching Detail Failed: ${res.data?.message || "no response"}`;
@@ -774,10 +811,12 @@ function applyI18nLabels(i18nData) {
         {el: EL.statSection.header, key: 'roles_detail_props_title'},  // 에이전트 속성
         {el: EL.discSection.header, key: 'roles_equipment'},            // 디스크
         {el: EL.discSection.planSelectBtn, key: 'roles_change_plan'},
+        {el: EL.modal.modalTitleGrid, key: 'agent'},
         {el: EL.modal.subStatClearAll, key: 'roles_clear_all'},
         {el: EL.modal.subStatSaveAll, key: 'roles_save_all'},
         {el: EL.modal.modalTitleCustom, key: 'roles_select_custom_property'},
         {el: EL.modal.wikiBtnLabel, key: 'wiki'},
+        {el: EL.statSection.upgradeGuideLabel, key: 'roles_guide_plan'},
     ]
 
     mapping.forEach(({ el, key }) => {
@@ -785,6 +824,24 @@ function applyI18nLabels(i18nData) {
             el.textContent = i18nData[key]??key;
         }
     });
+}
+function handleNavIconClick(e){
+    const indicator = e.target.closest('.agent-icon-wrapper');
+    if (!indicator) return;
+    if (isDragging) return;
+    document.querySelectorAll('.agent-icon-wrapper').forEach(el => el.classList.remove('active'));
+    indicator.classList.add('active');
+    currentAgentIndex = parseInt(indicator.dataset.index);
+    console.log(`selectedAgentIndex: ${currentAgentIndex}`);
+    fetchAgentDetail(currentAgentIndex); // 클릭 시 상세 정보 가져오기
+}
+function handleCharacterCardClick(e){
+    const indicator = e.target.closest('.character-card');
+    if (!indicator) return;
+    currentAgentIndex = parseInt(indicator.dataset.index);
+    console.log(`selectedAgentIndex: ${currentAgentIndex}`);
+    fetchAgentDetail(currentAgentIndex); // 클릭 시 상세 정보 가져오기
+    closeModal();
 }
 function handleCinemaClick(e) {
     // 1. 이벤트 위임의 핵심: 클릭된 위치에서 가장 가까운 시네마 아이콘 찾기
@@ -1174,30 +1231,40 @@ function changePlanRequest(planType){
 }
 
 function renderAgentNav(agents) {
-    EL.nav.innerHTML = '';
-    EL.nav.classList.remove('hidden');
+    EL.navSection.nav.innerHTML = '';
+    EL.navSection.body.classList.remove('hidden');
 
     agents.forEach((agent, index) => {
         const wrapper = document.createElement('div');
         wrapper.className = 'agent-icon-wrapper';
         if (index === 0) wrapper.classList.add('active');
 
+        wrapper.dataset.id = agent.id;
+        wrapper.dataset.index = index;
         wrapper.innerHTML = `
             <img src="${agent.hollow_icon_path}" class="icon-char" draggable="false">
             <img src="${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.NAV_FRAME.UNSELECTED}" class="icon-frame unselected-frame" draggable="false">
             <img src="${ZZZ_RESOURCE.BASE.IMAGES}${ZZZ_RESOURCE.NAV_FRAME.SELECTED}" class="icon-selected-frame selected-frame" draggable="false">
         `;
 
-        wrapper.addEventListener('click', () => {
-            if (isDragging) return;
-            document.querySelectorAll('.agent-icon-wrapper').forEach(el => el.classList.remove('active'));
-            wrapper.classList.add('active');
-            currentAgentIndex = index;
-            console.log(`selectedAgentIndex: ${currentAgentIndex}`);
-            fetchAgentDetail(currentAgentIndex); // 클릭 시 상세 정보 가져오기
-        });
-
-        EL.nav.appendChild(wrapper);
+        EL.navSection.nav.appendChild(wrapper);
+    });
+}
+function renderCharacterGrid(agents){
+    EL.modal.modalBodyGrid.innerHTML = '';
+    agents.forEach((agent, index) => {
+        const clone = EL.navSection.characterCardTemplate.content.cloneNode(true);
+        clone.querySelector('.character-card').dataset.id = agent.id;
+        clone.querySelector('.character-card').dataset.index = index;
+        clone.querySelector('.portrait').src = agent.role_square_url;
+        clone.querySelector('.name').innerText = agent.name_mi18n;
+        const {rarity, element, profession} = getIconUrls(agent)
+        clone.querySelector('.rarity').src = rarity;
+        clone.querySelector('.element').src = element;
+        clone.querySelector('.profession').src = profession;
+        clone.querySelector('.level').innerText = `Lv. ${agent.level}`;
+        clone.querySelector('.rank').innerText = agent.rank;
+        EL.modal.modalBodyGrid.appendChild(clone);
     });
 }
 
@@ -1227,8 +1294,6 @@ function renderAgentDetail(agent) {
 function updatePortrait(agent) {
     if (!agent) return;
     const section = EL.portraitSection;
-    const baseImages = ZZZ_RESOURCE.BASE.IMAGES;
-    const baseIcons = ZZZ_RESOURCE.BASE.ICONS;
 
     // 1. 배경색 설정
     const themeColor = agent.vertical_painting_color || '#24283b';
@@ -1250,41 +1315,10 @@ function updatePortrait(agent) {
     //section.agentName.innerHTML = `<ruby>${agent.name_mi18n}<rt>${agent.full_name_mi18n}</rt></ruby>`;
     section.agentLevel.innerText = `Lv. ${agent.level}`;
 
-    // 3. 랭크 아이콘 (S/A/B)
-    if (section.agentRankIcon) {
-        const fileName = agent.id === 1551 ? '09ef41c0a211d819.png':ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
-        if (fileName) {
-            section.agentRankIcon.src = baseIcons + fileName;
-            section.agentRankIcon.style.display = 'block';
-        } else {
-            section.agentRankIcon.style.display = 'none';
-        }
-    }
-
-    // 4. 속성 아이콘 (element_type / sub_element_type)
-    if (section.agentElementType) {
-        let fileName = ZZZ_RESOURCE.SUB_ELEMENT_ICONS[agent.sub_element_type];
-        if (!fileName) {
-            fileName = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
-        }
-        if (fileName) {
-            section.agentElementType.src = ZZZ_RESOURCE.BASE.IMAGES + fileName;
-            section.agentElementType.style.display = 'block';
-        } else {
-            section.agentElementType.style.display = 'none';
-        }
-    }
-
-    // 5. 특성 아이콘 (avatar_profession)
-    if (section.agentProfession) {
-        const fileName = ZZZ_RESOURCE.PROFESSION_ICONS[agent.avatar_profession];
-        if (fileName) {
-            section.agentProfession.src = baseImages + fileName;
-            section.agentProfession.style.display = 'block';
-        } else {
-            section.agentProfession.style.display = 'none';
-        }
-    }
+    const {rarity, element, profession} = getIconUrls(agent)
+    section.agentRankIcon.src = rarity;
+    section.agentElementType.src = element;
+    section.agentProfession.src = profession;
 
     // 6. 진영 아이콘
     if (section.agentGroupIcon) {
@@ -1527,4 +1561,23 @@ function updateDiskScore(planInfo) {
     EL.discSection.scoreTargetStatsWrapper.innerHTML = validStatsHtml;
     EL.discSection.scoreRankSide.innerHTML = 
         `${rankIconUrl ? `<img src="${rankIconUrl}" class="score-rank-img" alt="${rank}">` : ''}`
+}
+function getIconUrls(agent){
+    const baseImages = ZZZ_RESOURCE.BASE.IMAGES;
+    const baseIcons = ZZZ_RESOURCE.BASE.ICONS;
+    let rarity, element, profession;
+    
+    rarity = agent.id === 1551 ? '09ef41c0a211d819.png':ZZZ_RESOURCE.RANK_ICONS[agent.rarity];
+    rarity = baseIcons + rarity;
+
+    element = ZZZ_RESOURCE.SUB_ELEMENT_ICONS[agent.sub_element_type];
+    if (!element) {
+        element = ZZZ_RESOURCE.ELEMENT_ICONS[agent.element_type];
+    }
+    element = baseImages + element;
+
+    profession = ZZZ_RESOURCE.PROFESSION_ICONS[agent.avatar_profession];
+    profession = baseImages + profession;
+    
+    return{rarity, element, profession};
 }

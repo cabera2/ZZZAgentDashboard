@@ -41,13 +41,15 @@
                     <option value="tr-tr">Türkçe</option>
                     <option value="vi-vn">Tiếng Việt</option>
                 </select>
-                <a target="_blank"
-                   href="https://www.buymeacoffee.com/WriterPark">
-                    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=WriterPark&button_colour=161616&font_colour=ffffff&font_family=Inter&outline_colour=ffffff&coffee_colour=FFDD00" />
-                </a>
+                <a href='https://ko-fi.com/L5B727E59M' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
             </div>
         </div>
-        <nav class="hidden hide-on-capture" id="agent-nav"></nav>
+        <div id="nav-section" class="hidden hide-on-capture">
+            <nav id="agent-nav"></nav>
+            <button id="open-grid-btn">
+                <span class="open-grid-icon">""</span>
+            </button>
+        </div>
     </header>
 
     <main class="hidden" id="main-content">
@@ -66,11 +68,11 @@
                 <div class="portrait-frame-overlay" id="portrait-frame"></div>
                 <div class="agent-title">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img id="agent-rank-icon" src="" style="width: 36px; height: 36px; display: none;">
+                        <img id="agent-rank-icon" src="" style="width: 36px; height: 36px;">
                         <h1 id="agent-name" style="margin: 0;">-</h1>
                         <span id="agent-full-name" style="color: #bbb;height: 7px"></span>
-                        <img id="agent-element-type" src="" style="width: 36px; height: 36px; display: none;">
-                        <img id="agent-profession" src="" style="width: 36px; height: 36px; display: none;">
+                        <img id="agent-element-type" src="" style="width: 36px; height: 36px;">
+                        <img id="agent-profession" src="" style="width: 36px; height: 36px;">
                         <img class="agent-group-icon" id="agent-group-icon" src="">
                     </div>
                     <div id="level-container">
@@ -195,7 +197,10 @@
                 <div class="section-box-title">
                     <h3 id="ui-title-stats">상세 스탯</h3>
                     <img class="title-deco">
-                    <img class="grid-deco" src="">
+                    <img class="grid-deco hide-on-me" src="">
+                    <button id="upgrade-guide-btn" class="zzz-font-display hide-on-others hide-on-capture">
+                        <span id="upgrade-guide-label">upgrade guides</span><span id="upgrade-guide-arrow"></span>
+                    </button>
                 </div>
                 <div class="stats-grid-container" id="stats-content"></div>
             </div>
@@ -225,7 +230,7 @@
     <div class="modal-content" id="modal-content-common">
         <div class="modal-title">
             <h3 id="ui-title-modal-common">Modal</h3>
-            <a href="https://x.com/Writer_Park" target="_blank" id="wiki-btn">
+            <a href="" target="_blank" id="wiki-btn">
                 <div style="
                 padding: 4px 4px 4px 8px;
                 display: -webkit-flex;
@@ -263,11 +268,20 @@
             </button>
         </div>
     </div>
+    <div class="modal-content" id="modal-content-grid">
+        <div class="modal-title">
+            <h3 id="ui-title-modal-grid">Modal</h3>
+            <img src="https://act.hoyolab.com/app/zzz-game-record/images/close-icon-sea.3e1386d8.png" class="modal-close-btn">
+        </div>
+        <div class="modal-body" id="modal-body-grid">
+            <p>Content</p>
+        </div>
+    </div>
 </div>
 
 <div id="user-list-panel" class="slide-panel hide-on-capture">
     <div class="panel-content">
-        <h3>저장된 유저 목록</h3>
+        <h3>User List</h3>
         <div id="user-items-scroll-view">
             <ul id="user-items-list">
             </ul>
@@ -297,6 +311,25 @@
             <span class="sub-val"></span>
         </li>
     </ul>
+</template>
+<template id="character-card-template">
+    <div class="character-card">
+        <div class="top">
+            <div class="left">
+                <img class="rarity">
+                <img class="element">
+                <img class="profession">
+                <span class="level"></span>
+                <span class="rank"></span>
+            </div>
+            <div class="right">
+                <img class="portrait">
+            </div>
+        </div>
+        <div class="bottom">
+            <span class="name"></span>
+        </div>
+    </div>
 </template>
 </body>
 </html>
