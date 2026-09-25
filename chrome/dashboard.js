@@ -829,19 +829,21 @@ function handleNavIconClick(e){
     const indicator = e.target.closest('.agent-icon-wrapper');
     if (!indicator) return;
     if (isDragging) return;
-    document.querySelectorAll('.agent-icon-wrapper').forEach(el => el.classList.remove('active'));
-    indicator.classList.add('active');
-    currentAgentIndex = parseInt(indicator.dataset.index);
-    console.log(`selectedAgentIndex: ${currentAgentIndex}`);
-    fetchAgentDetail(currentAgentIndex); // 클릭 시 상세 정보 가져오기
+    onCharacterSelect(parseInt(indicator.dataset.index));
 }
+
 function handleCharacterCardClick(e){
     const indicator = e.target.closest('.character-card');
     if (!indicator) return;
-    currentAgentIndex = parseInt(indicator.dataset.index);
-    console.log(`selectedAgentIndex: ${currentAgentIndex}`);
-    fetchAgentDetail(currentAgentIndex); // 클릭 시 상세 정보 가져오기
+    onCharacterSelect(parseInt(indicator.dataset.index));
     closeModal();
+}
+function onCharacterSelect(index) {
+    currentAgentIndex = index
+    document.querySelectorAll('.agent-icon-wrapper').forEach(el => {
+        el.classList.toggle('active', parseInt(el.dataset.index) === index);
+    });
+    fetchAgentDetail(index);
 }
 function handleCinemaClick(e) {
     // 1. 이벤트 위임의 핵심: 클릭된 위치에서 가장 가까운 시네마 아이콘 찾기
